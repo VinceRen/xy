@@ -1,0 +1,175 @@
+<html>
+	<title>二阶贝塞尔曲线</title>
+	<style type="text/css">
+		body {
+			background: black;
+		}
+		
+		#canvas {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 1200px;
+			height: 1200px;
+		}
+		
+		#line {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 1200px;
+			height: 1200px;
+		}
+	</style>
+
+	<body>
+		<canvas id="canvas" width="1200" height="1200"></canvas>
+		<canvas id="line" width="1200" height="1200"></canvas>
+		<script type="text/javascript">
+			var ajaxdata = [{
+					type: 'line',
+					point: [{
+							x: 0,
+							y: 0
+						},
+						{
+							x: 100,
+							y: 100
+						}
+					]
+				},
+				{
+					type: 'arc',
+					center: {
+						x: 100,
+						y: 100
+					},
+					start: {
+						x: Math.sqrt(3) * 50 + 100,
+						y: 150
+					},
+					end: {
+						x: 150,
+						y: Math.sqrt(3) * 50 + 100
+					},
+					clockwise: false
+				}, {
+					type: 'line',
+					point: [{
+							x: 150,
+							y: 270
+						},
+						{
+							x: 400,
+							y: 400
+						}
+					]
+				}
+
+			];
+
+			drawline(ajaxdata);
+			
+
+			function getpoint(ajaxdata) {
+				var linedata = [];
+				for(var j = 0; j < ajaxdata.length; j++) {
+					if(ajaxdata[j].type == 'line') {
+						linedata = linedata.concat(ajaxdata[j].point);
+					} else {
+						var arcdata = getcircular(ajaxdata[j].center, ajaxdata[j].start, ajaxdata[j].end, ajaxdata[j].clockwise, 50);
+						linedata = linedata.concat(arcdata);
+					}
+				}
+				return linedata;
+			}
+
+			function drawline(ajaxdata) {
+				let canvas = document.getElementById("line");
+				let ctx = canvas.getContext("2d");
+				//清除上一次的点
+				ctx.clearRect(0, 0, 600, 600);
+				ctx.beginPath();
+				var drawdata = getpoint(ajaxdata);
+				console.log(drawdata);
+				ctx.moveTo(drawdata[0].x, drawdata[0].y);
+				for(var i = 1; i < drawdata.length; i++) {
+					ctx.lineTo(drawdata[i].x, drawdata[i].y);
+				}
+				ctx.lineWidth = 2;
+				ctx.strokeStyle = '#ff0000';
+				ctx.stroke();
+			}
+
+			function getcircular(center, srart, end, bool, time) {
+				var newstart = {
+					x: srart.x - center.x,
+					y: srart.y - center.y,
+				}
+				var newend = {
+					x: end.x - center.x,
+					y: end.y - center.y,
+				}
+				var radius = pythagorean(srart, center);
+				var startangle = getangle({
+					x: newstart.x / radius,
+					y: newstart.y / radius
+				});
+				var endangle = getangle({
+					x: newend.x / radius,
+					y: newend.y / radius
+				});
+				var newpoint = [];
+				if(bool == false) {
+					if(endangle > startangle) {
+						endangle -= 360;
+					}
+				} else {
+					if(endangle < startangle) {
+						startangle -= 360;
+					}
+				}
+				console.log('startangle' + startangle);
+				console.log('endangle' + endangle);
+				var spacing = endangle - startangle;
+				var drawtime = time ? time : 10;
+				for(var i = 0; i < (drawtime + 1); i++) {
+					eachangle = startangle + (spacing * i / drawtime);
+					var newx = radius * Math.cos(eachangle * Math.PI / 180) + center.x;
+					var newy = radius * Math.sin(eachangle * Math.PI / 180) + center.y;
+					newpoint.push({
+						x: newx,
+						y: newy
+					})
+				}
+				return newpoint;
+			}
+
+			function pythagorean(a, b) {
+				var x = a.x - b.x;
+				var y = a.y - b.y;
+				return Math.sqrt(x * x + y * y);
+			}
+
+			function getangle(point) {
+				var x = point.x;
+				var y = point.y;
+				console.log('x坐标：' + x + '\n' + 'y坐标：' + y);
+				var angle = 0;
+				if(x >= 0 && y >= 0) {
+					console.log('第一象限');
+					angle = Math.asin(y) * 180 / Math.PI;
+				} else if(x <= 0 && y >= 0) {
+					console.log('第二象限');
+					angle = 180 - (Math.asin(y) * 180 / Math.PI);
+				} else if(x <= 0 && y <= 0) {
+					console.log('第三象限');
+					angle = 180 - (Math.asin(y) * 180 / Math.PI);
+				} else {
+					console.log('第四象限');
+					angle = 360 + (Math.asin(y) * 180 / Math.PI);
+				}
+				return angle
+			}
+		</script>
+	</body>
