@@ -1,0 +1,18 @@
+[
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45",
+    "lvs":"lv1",
+    "name": "欢乐谷",
+    "video_url":"http://vjs.zencdn.net/v/oceans.mp4",
+    "poster_img":"../images/video_m.jpg",
+    "info":"5555555555555555555555",
+    "isParent": "true",
+    "pId": "1",
+    "datatype": "video",
+
+
+    "sort": "",
+    "ownerid": "3A1E2390-A78C-3F84-59B3-7B49594009D5",
+    "judge": "true"
+  }
+]

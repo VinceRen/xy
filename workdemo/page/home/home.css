@@ -1,0 +1,108 @@
+/**
+ * Created by Administrator on 2020/3/2 0002.
+ */
+@charset "utf-8";
+/* header-s */
+header{
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    background: #50a0eb;
+    font-size: 18px;
+}
+header .user-info:hover{
+    background: #4181bd;
+}
+.user-info:hover .icon-down{
+    transform: rotate(180deg);
+}
+.user-info:hover aside{
+    display: block;
+}
+.user-info{
+    position: relative;
+}
+.user-info aside{
+    position: absolute;
+    top: 50px;
+    right: 0;
+    border: 1px solid #ddd;
+}
+/* header-e */
+/* nav-s */
+nav{
+    height: calc(100vh - 50px);
+    background: #333744;
+}
+.nav-pills>li {
+    width: 100%;
+    height: 60px;
+}
+.nav-pills>li+li {
+    margin: 0;
+}
+.nav>li>a {
+    padding: 10px 3px;
+    color: #ccc;
+    font-size: 16px;
+}
+.nav>li>a:focus,
+.nav>li>a:hover,
+.nav-pills>li.active>a,
+.nav-pills>li.active>a:focus,
+.nav-pills>li.active>a:hover {
+    font-weight: bold;
+    color: #fff;
+    background-color: #1a1c22;
+}
+.nav-pills>li i.fa{
+    font-size: 22px;
+    margin: 0 0 5px 0;
+}
+.nav-pills>li{
+    position: relative;
+}
+.nav-pills>li .arrow{
+    display: none;
+    position: absolute;
+    top: 25px;
+    right: 0;
+    border: 6px solid transparent;
+    border-right: 12px solid #fff;
+}
+.nav-pills>li.active .arrow{
+    display: inline;
+}
+
+.nav-pills>li aside{
+    position: fixed;
+    top: 50px;
+    left: 120px;
+    width: 100px;
+    height: calc(100vh - 50px);
+    padding: 20px 10px;
+    display: none;
+    background: #f2f2f2;
+    border: 1px solid #dfdfdf;
+}
+.nav-pills>li.active aside{
+    display: block;
+}
+.nav-aside-info li{
+    padding: 15px 0;
+}
+.nav-aside-info li a{
+    text-decoration: none;
+}
+.nav-aside-info li.active a,
+.nav-aside-info li:focus a,
+.nav-aside-info li:hover a{
+    color:#50a0eb;
+}
+/* nav-e */
+/* main-s */
+.main-box{
+    height: calc(100vh - 50px);
+    margin-left: 120px;
+}
+/* main-e */
