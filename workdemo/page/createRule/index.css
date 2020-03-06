@@ -1,0 +1,273 @@
+.main-box {
+    display: flex;
+}
+
+.ruleTree {
+    flex: 0 0 300px;
+    background: #fff;
+    padding: 10px;
+}
+
+.ruleBox {
+    flex: 1;
+    background: rgba(245, 245, 245, 1);
+    padding: 10px;
+}
+
+.setTabs {
+    display: none;
+}
+
+.ruleBox .tabs {
+    margin-bottom: 10px;
+    ;
+}
+
+.tabs li {
+    margin-right: 5px;
+}
+
+.tabs li a {
+    padding: 10px;
+}
+
+.actionBtns>.context {
+    text-align: right;
+}
+
+
+/* 规则编辑器 */
+
+.ruleDefine {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
+.ruleItem {
+    display: flex;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.ruleDefine .steps {
+    flex: 0 0 100px;
+    box-sizing: border-box;
+    display: flex;
+    color: #0079fe;
+    font-size: 12px;
+}
+
+.ruleDefine .context {
+    flex: 1;
+}
+
+.tactics {
+    min-height: 200px;
+    border: 1px solid #D7E8F4;
+    background: #F7FBFE;
+}
+
+.tactics span {
+    display: inline-block;
+    border: 1px solid #999;
+    padding: 5px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.conditionOptions,
+.gourpOptions,
+.customInput,
+.setUp,
+.service {
+    display: none;
+    flex-direction: column;
+}
+
+.projectOptions {
+    display: flex;
+    flex-direction: column;
+}
+
+.projectOptions .radio-inline,
+.conditionOptions .radio-inline,
+.gourpOptions .radio-inline {
+    margin: 10px 0;
+}
+
+.conclusion {
+    min-height: 150px;
+    border: 1px solid #D7E8F4;
+    background: #F7FBFE;
+}
+
+.conclusion span {
+    display: inline-block;
+    border: 1px solid #999;
+    padding: 5px;
+    margin: 2px;
+    cursor: pointer;
+}
+
+.handle {
+    flex: 0 0 100px;
+    text-align: center;
+}
+
+
+/* 源代码 */
+
+.code {
+    display: none;
+}
+
+
+/* 概述 */
+
+.summary {
+    display: none;
+}
+
+.summaryTitle {
+    display: flex;
+    height: 30px;
+    align-items: center;
+    justify-content: start;
+}
+
+.summaryTitle span {
+    flex: 0 0 5px;
+    background: #0079FE;
+    height: 15px;
+    margin-right: 10px;
+    ;
+}
+
+.summaryTitle p {
+    flex: 1;
+}
+
+.summary .form-horizontal .form-group {
+    margin-bottom: 10px;
+}
+
+
+/* 数据对象 */
+
+.data {
+    display: none;
+}
+
+
+/* 函数 */
+
+.func {
+    display: none;
+}
+
+
+/* 设置 */
+
+.setUp>div:first-child {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    ;
+}
+
+
+/* 弹出层相关 */
+
+.dialogBtn {
+    display: flex;
+    justify-content: flex-end;
+}
+
+#tacticsLayer,
+#conclusionLayer {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+#tacticsLayer>div:nth-child(2) {
+    flex: 1;
+    padding: 20px 0;
+}
+
+#conclusionLayer>div:first-child {
+    flex: 1;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+
+#conclusionLayer>div:first-child .form-group {
+    margin-top: 30px;
+    width: 60%;
+}
+
+#conclusionLayer>div:first-child .radio-inline {
+    margin: 10px 0;
+}
+
+
+/* 复写框架相关 */
+
+.form-horizontal .form-group {
+    margin: 0;
+    padding: 0;
+}
+
+.checkbox-inline+.checkbox-inline,
+.radio-inline+.radio-inline {
+    margin-left: 0;
+}
+
+
+/*-- 标签类 -----------------------------------------------------------------*/
+
+pre {
+    font-size: inherit;
+    color: inherit;
+    line-height: inherit;
+    margin: 0px;
+    padding: 0px;
+    border: 1px solid #999;
+}
+
+code {
+    overflow-wrap: break-word;
+    margin: 0px 2px;
+    line-height: 18px;
+    font-size: 14px;
+    font-weight: normal;
+    word-spacing: 0px;
+    letter-spacing: 0px;
+    font-family: Consolas, Inconsolata, Courier, monospace;
+    border-radius: 0px;
+    overflow-x: auto;
+    padding: 0.5em;
+    background: rgb(40, 40, 40);
+    color: rgb(235, 219, 178);
+    white-space: pre !important;
+    word-wrap: normal !important;
+    word-break: normal !important;
+    overflow: auto !important;
+    display: -webkit-box !important;
+}
+
+code span {
+    font-size: inherit;
+    line-height: inherit;
+    margin: 0px;
+    padding: 0px;
+    color: rgb(211, 134, 155);
+    padding-right: 20px;
+    word-spacing: 0px;
+    word-wrap: inherit !important;
+    word-break: inherit !important;
+}

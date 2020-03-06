@@ -1,0 +1,13 @@
+[
+  {
+    "name": "/",
+    "children": [
+      {
+        "name": "global"
+      },
+      {
+        "name": "src"
+      }
+    ]
+  }
+]
