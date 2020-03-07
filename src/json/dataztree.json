@@ -1,0 +1,23 @@
+[
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45",
+    "lvs":"lv1",
+    "name": "一级分类",
+    "isParent": "true",
+    "pId": "0"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE46",
+    "lvs":"lv2",
+    "name": "pom.txt",
+    "isParent": "false",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE49",
+    "lvs":"1v2",
+    "name": "pom.xml",
+    "isParent": "false",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45"
+  }
+]

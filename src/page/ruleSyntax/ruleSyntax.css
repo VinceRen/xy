@@ -1,0 +1,58 @@
+/**
+ * Created by Administrator on 2020/3/2
+ */
+@charset "utf-8";
+/* main-s */
+.main-box{
+    margin-left: 220px;
+    padding: 20px 15px;
+}
+.form-name-title{
+    padding-right: 85px;
+}
+.form-horizontal label.control-label{
+    text-align: left !important;
+}
+.form-horizontal label.control-label::before{
+    display: inline-block;
+    content: '';
+    width: 10px;
+    height: 10px;
+    border: 2px solid #50a0eb;
+    border-radius: 50%;
+    margin-right: 5px;
+}
+.form-horizontal .form-group:first-child label::before{
+    background: #50a0eb;
+}
+.form-horizontal .form-name-title .arrow{
+    display: inline-block;
+    display: inline-block;
+    border: 12px solid transparent;
+    border-right-color: #50a0eb;
+    vertical-align: top;
+}
+.form-horizontal .form-name-title .title-name{
+    display: inline-block;
+    height: 24px;
+    padding: 5px 10px;
+    background: #50a0eb;
+    color: #fff;
+ }
+.table-error-log th,
+.table-error-log td{
+    min-width: 120px;
+    text-align: center;
+}
+.layui-tab-title .layui-this {
+    background: #50a0eb;
+    color: #fff;
+    font-weight: bold;
+}
+.layui-tab-content {
+    padding: 10px;
+    background: #f5f5f5;
+    border: 1px solid #f5f5f5;
+    border-top: none;
+}
+/* main-e */

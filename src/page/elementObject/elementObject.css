@@ -1,0 +1,52 @@
+/**
+ * Created by Administrator on 2020/3/2
+ */
+@charset "utf-8";
+/* main-s */
+.main-box{
+    margin-left: 220px;
+    padding: 20px 15px;
+}
+.tab-content {
+    width: calc(100% - 250px);
+    height: 100%;
+    overflow: auto;
+}
+.space-object-title {
+    padding: 5px 10px;
+    border-left: 5px solid #5bc0de;
+}
+.input-search {
+    width: 220px;
+    height: 30px;
+    padding: 0 45px 0 10px;
+    border: 1px solid #efefef;
+    border-radius: 20px;
+    outline: none;
+}
+.input-delete {
+    visibility: hidden;
+    margin: 0 0 0 -42px;
+    font-size: 16px;
+    vertical-align: text-bottom;
+    cursor: pointer;
+    color: #999;
+}
+.input-search:focus ~ .input-delete {
+    visibility: visible;
+}
+.btn-search {
+    margin: 0 0 0 0;
+    font-size: 16px;
+    vertical-align: text-bottom;
+    cursor: pointer;
+}
+.table-datatable tr td:first-child {
+    width: 100px;
+    text-align: center;
+}
+.data-name,
+.data-name:hover{
+    color: #50a0eb;
+}
+/* main-e */

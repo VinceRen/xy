@@ -1,0 +1,29 @@
+{
+  "pageData": [
+    {
+      "id": "A001",
+      "attribute": "长度",
+      "type": "String",
+      "description": "xxxxx"
+    },
+    {
+      "id": "A002",
+      "attribute": "深度",
+      "type": "int",
+      "description": "xxxxx"
+    },
+    {
+      "id": "A003",
+      "attribute": "浮点数",
+      "type": "float",
+      "description": "xxxxx"
+    },
+    {
+      "id": "A004",
+      "attribute": "日期",
+      "type": "date",
+      "description": "xxxxx"
+    }
+  ],
+  "total": 35
+}

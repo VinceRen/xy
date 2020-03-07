@@ -1,0 +1,29 @@
+{
+  "pageData": [
+    {
+      "id": "A001",
+      "name": "X",
+      "description": "X轴坐标",
+      "type": "double"
+    },
+    {
+      "id": "A002",
+      "name": "Y",
+      "description": "Y轴坐标",
+      "type": "double"
+    },
+    {
+      "id": "A002",
+      "name": "Z",
+      "description": "Z轴坐标",
+      "type": "double"
+    },
+    {
+      "id": "A002",
+      "name": "XXXXXX",
+      "description": "XYZ轴坐标",
+      "type": "double"
+    }
+  ],
+  "total": 35
+}

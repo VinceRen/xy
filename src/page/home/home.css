@@ -1,0 +1,10 @@
+/**
+ * Created by Administrator on 2020/3/2
+ */
+@charset "utf-8";
+/* main-s */
+.main-box{
+    height: calc(100vh - 50px);
+    margin-left: 120px;
+}
+/* main-e */

@@ -1,0 +1,44 @@
+[
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45",
+    "lvs":"lv1",
+    "name": "规则应用",
+    "isParent": "true",
+    "pId": "0"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE46",
+    "lvs":"lv2",
+    "name": "城市综合查询",
+    "isParent": "true",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE331",
+    "lvs":"lv3",
+    "name": "基于河流的查询规则",
+    "isParent": "false",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE46"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE332",
+    "lvs":"lv3",
+    "name": "基于行政区域的查询规则",
+    "isParent": "false",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE46"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE49",
+    "lvs":"1v2",
+    "name": "个体查询",
+    "isParent": "true",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45"
+  },
+  {
+    "id": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE50",
+    "lvs":"1v2",
+    "name": "城市平衡计算",
+    "isParent": "true",
+    "pId": "F6C30DD3-CB3F-DE52-87A5-2BCA45CDFE45"
+  }
+]

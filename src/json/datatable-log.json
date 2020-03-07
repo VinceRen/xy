@@ -1,0 +1,33 @@
+{
+  "pageData": [
+    {
+      "id": "A001",
+      "level": "警告",
+      "errorLog": "Build of module 'TestWorkBench' (requested by admin) completed. Build: FAILURE",
+      "row": "1",
+      "column": "1"
+    },
+    {
+      "id": "A001",
+      "level": "警告",
+      "errorLog": " [KBase: defaultKieBase]: Unable to resolve ObjectType 'Message'",
+      "row": "2",
+      "column": "2"
+    },
+    {
+      "id": "A001",
+      "level": "严重",
+      "errorLog": " [KBase: defaultKieBase]: Unable to resolve ObjectType 'Message'",
+      "row": "2",
+      "column": "2"
+    },
+    {
+      "id": "A001",
+      "level": "严重",
+      "errorLog": " [KBase: defaultKieBase]: Unable to resolve ObjectType 'Message'",
+      "row": "2",
+      "column": "2"
+    }
+  ],
+  "total": 35
+}

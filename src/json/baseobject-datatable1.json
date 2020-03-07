@@ -1,0 +1,19 @@
+{
+  "pageData": [
+    {
+      "id": "A001",
+      "descripttion": "POI服务",
+      "groupId": "com.nvci.MavenSpringStruct2Drools",
+      "artifactId": "MavenSpringStruct2Drools",
+      "version": "0.0.1-SNAPSHOT"
+    },
+    {
+      "id": "A002",
+      "descripttion": "POI服务",
+      "groupId": "com.nvci.MavenSpringStruct2Drools",
+      "artifactId": "MavenSpringStruct2Drools",
+      "version": "0.0.1-SNAPSHOT"
+    }
+  ],
+  "total": 35
+}

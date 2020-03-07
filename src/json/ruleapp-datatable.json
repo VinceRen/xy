@@ -1,0 +1,14 @@
+{
+  "pageData": [
+    {
+      "id": "A001",
+      "name": "基于河流的查询规则",
+      "description": "基于河流的查询规则",
+      "conversationName": "ksession-eventrule",
+      "groupId": "com.nvci.MavenSpringStruct2Drools",
+      "artifactId": "MavenSpringStruct2Drools",
+      "version": "0.0.1-SNAPSHOT"
+    }
+  ],
+  "total": 35
+}
