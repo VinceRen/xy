@@ -143,6 +143,12 @@
     text-align: center;
 }
 
+.projectItem form {
+    display: flex;
+}
+.projectItem .layui-input {
+    height: 30px;
+}
 
 /* 源代码 */
 
@@ -315,4 +321,8 @@ code span {
 /* 复写自定义公共样式 */
 .ruleDefine .form-horizontal .form-group .form-control {
     width: 100%;
+}
+
+#projectLayer .layui-input-block {
+    display: flex;
 }

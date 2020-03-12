@@ -173,7 +173,7 @@
                         <div class="ruleItem actionBtns">
                             <div class="steps">规则名称1</div>
                             <div class="context">
-                                <button type="reset" class="btn btn-sm btn-primary" id="submit"><i
+                                <button type="reset" class="btn btn-sm btn-primary"><i
                                         class="fa fa-floppy-o form-btn-floppy"></i> 确定</button>
                                 <button type="button" class="btn btn-sm btn-primary mr20"><i
                                         class="fa fa-user-md form-btn-md"></i> 诊断</button>
@@ -592,7 +592,6 @@
     </main>
     <footer></footer>
     <!-- 弹出层内容 -->
-    <!-- 规则的策略定义, 添加按钮弹层 -->
     <div id="tacticsLayer">
         <div>
             <button type="button" id="project" class="btn btn-sm btn-default">对象</button>
@@ -644,10 +643,10 @@
             <button type="button" id="tacticsConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
-    <!-- 对象相关内容设置的弹出层 -->
+
     <div id="projectLayer">
         <div class="projectContent">
-            <!-- <div class="form-group">
+            <div class="form-group">
                 <div class="col-sm-4">
                     <input type="radio" name="enabled" id="project0" value="true"><label for="project0"
                         class="control-label">选项对象的字段</label>
@@ -721,100 +720,14 @@
                         <option>5</option>
                     </select>
                 </div>
-            </div> -->
-            <form class="layui-form">
-                <div class="layui-form-item">
-                    <div class="layui-input-block">
-                        <input type="radio" name="property" value="0" title="选项对象的字段" lay-filter="property">
-                        <select name="city" lay-verify="required" lay-filter="field">
-                            <option value=""></option>
-                            <option value="width">宽</option>
-                            <option value="height">高度</option>
-                        </select>
-                    </div>
-                    <div class="layui-input-block">
-                        <input type="radio" name="property" value="1" title="选项多约束对象" lay-filter="property">
-                        <select name="city" lay-verify="required">
-                            <option value=""></option>
-                            <option value="0">北京</option>
-                            <option value="1">上海</option>
-                            <option value="2">广州</option>
-                            <option value="3">深圳</option>
-                            <option value="4">杭州</option>
-                        </select>
-                    </div>
-                    <div class="layui-input-block">
-                        <input type="radio" name="property" value="2" title="新建公式和函数" lay-filter="property">
-                        <select name="city" lay-verify="required">
-                            <option value=""></option>
-                            <option value="0">北京</option>
-                            <option value="1">上海</option>
-                            <option value="2">广州</option>
-                            <option value="3">深圳</option>
-                            <option value="4">杭州</option>
-                        </select>
-                    </div>
-                    <div class="layui-input-block">
-                        <input type="radio" name="property" value="3" title="选择使用表达式方式" lay-filter="property">
-                    </div>
-                    <div class="layui-input-block">
-                        <input type="radio" name="property" value="4" title="设置变量名" lay-filter="property">
-                        <input type="text">
-                    </div>
-                </div>
-            </form>
-        </div>
-        <div class="dialogBtn">
-            <button type="button" id="" class="btn btn-sm btn-default">取消</button>
-            <button type="button" id="projectConfrim" class="btn btn-sm btn-primary">确定</button>
-        </div>
-    </div>
-    <!-- 设置规则的策略定义中变量名(对象的) -->
-    <div id="setObjectName">
-        <div class="layui-form-item">
-            <label class="layui-form-label">变量名称</label>
-            <div class="layui-input-block">
-                <input type="text" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
-                    class="layui-input">
             </div>
         </div>
         <div class="dialogBtn">
             <button type="button" id="" class="btn btn-sm btn-default">取消</button>
-            <button type="button" id="setProjrctNameConfrim" class="btn btn-sm btn-primary">确定</button>
+            <button type="button" id="tacticsConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
-    <!-- 规的结论,添加按钮弹层 -->
-    <div id="objectItemEdit">
-        <form class="layui-form">
-            <div class="layui-form-item">
-                <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="属性值" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
-                </div>
-                <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="属性公式" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
-                </div>
-                <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="获取变量" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
-                </div>
-            </div>
-        </form>
-    </div>
-    <!-- 规的结论,添加按钮弹层 -->
+
     <div id="conclusionLayer">
         <div class="">
             <label class="radio-inline">
