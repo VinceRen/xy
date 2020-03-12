@@ -1,5 +1,7 @@
 $(function () {
     // 全局变量相关定义
+    const SUCCESS = 200;
+
     let tacticsSelection = 222;
 
 
@@ -11,6 +13,9 @@ $(function () {
         let treeData = "index.json";
         treeShow(treeData, $("#ruleTree"), true);
 
+
+
+
         $('.tabs a').on('click', function () {
             let type = $(this).attr('href')
             // console.log(type)
@@ -19,11 +24,110 @@ $(function () {
             } else if (type === 'tab-code') {
                 $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-brief') {
-                $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
+                $.ajax({
+                    url: './history.json',
+                    success: function (data) {
+                        if (data && +data.code === SUCCESS) {
+                            let res = data.data
+                            $('#summaryRuleName').val(res.NAME)
+                            $('#summaryRuleType').val(res.TYPE)
+                            $('#summaryRuleDesc').val(res.DESCRIPTION)
+                            $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
+                            $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
+                            $('#summaryRuleMan').val(res.CREATOR)
+                            $('#summaryRuleVersion').val(res.VERSION)
+
+                            let { history } = res
+                            let html = ''
+                            history.map((e) => {
+                                html += `<tr>
+                                    <td>${moment(e.CREATETIME).format('YYYY年MM月DD日')}</td>
+                                    <td>${e.CREATOR}</td>
+                                    <td>${e.VERSION}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-xs btn-link">
+                                            <span class="glyphicon glyphicon-trash"></span>删除
+                                        </button>
+                                    </td>
+                                </tr>`
+                            })
+                            $("#historyTable tbody").html(html)
+                            $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
+                        } else {
+                            alert(data.message)
+                        }
+                    }
+                })
+
             } else if (type === 'tab-data') {
-                $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
+                $.ajax({
+                    url: './data.json',
+                    success: function (data) {
+                        if (data && +data.code === SUCCESS) {
+                            let res = data.data
+                            let { space, business } = res
+                            let spaceHtml = ''
+                            let businessHtml = ''
+                            space.map((e) => {
+                                spaceHtml += `<tr>
+                                    <td>${e.name}</td>
+                                    <td>${e.desc}</td>
+                                    <td>${e.path}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-xs btn-link">
+                                            <span class="glyphicon glyphicon-trash"></span>删除
+                                        </button>
+                                    </td>
+                                </tr>`
+                            })
+                            business.map((e) => {
+                                businessHtml += `<tr>
+                                    <td>${e.name}</td>
+                                    <td>${e.desc}</td>
+                                    <td>${e.path}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-xs btn-link">
+                                            <span class="glyphicon glyphicon-trash"></span>删除
+                                        </button>
+                                    </td>
+                                </tr>`
+                            })
+                            $("#spaceTable tbody").html(spaceHtml)
+                            $("#businessTable tbody").html(businessHtml)
+                            $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
+                        } else {
+                            alert(data.message)
+                        }
+                    }
+                })
             } else if (type === 'tab-func') {
-                $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
+                $.ajax({
+                    url: './func.json',
+                    success: function (data) {
+                        if (data && +data.code === SUCCESS) {
+                            let res = data.data
+                            let { methods } = res
+                            let html = ''
+                            methods.map((e) => {
+                                html += `<tr>
+                                    <td>${e.methodnickname}</td>
+                                    <td>${e.methodtype}</td>
+                                    <td>${e.methodcontent}</td>
+                                    <td>${e.objpath}</td>
+                                    <td>
+                                        <button type="button" class="btn btn-xs btn-link">
+                                            <span class="glyphicon glyphicon-trash"></span>删除
+                                        </button>
+                                    </td>
+                                </tr>`
+                            })
+                            $("#funcTable tbody").html(html)
+                            $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
+                        } else {
+                            alert(data.message)
+                        }
+                    }
+                })
             } else if (type === 'tab-rely') {
                 $('.rely').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-service') {
@@ -179,7 +283,8 @@ $(function () {
         }
     })
 
-    $('body').on('click', '.projectItemEdit', function () {
+    $('body').on('click', '.projectItemEdit', function (e) {
+        e.preventDefault()
         let parentName = $(this).closest('.objectItem').find('.objectTitle').find('i').html()
         projectItemEdit = layer.open({
             type: 1,

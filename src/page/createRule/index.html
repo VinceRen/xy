@@ -341,44 +341,44 @@
                         <div class="form-group">
                             <label for="userName" class="col-sm-2 control-label">规则名称</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="userName" name="userName">
+                                <input type="text" class="form-control" id="summaryRuleName" name="userName">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="userPassword" class="col-sm-2 control-label">规则类型</label>
                             <div class="col-sm-10">
-                                <input type="password" class="form-control" id="userPassword" name="userPassword">
+                                <input type="text" class="form-control" id="summaryRuleType" name="userPassword">
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">规则描述</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="email" name="email">
+                                <input type="text" class="form-control" id="summaryRuleDesc" name="email">
                             </div>
                         </div>
                         <div class="form-group">
-                            <label for="alias" class="col-sm-2 control-label">创建事件</label>
+                            <label for="alias" class="col-sm-2 control-label">创建时间</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="alias" name="alias">
+                                <input type="text" class="form-control" id="summaryRuleCreate" name="alias">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="email" class="col-sm-2 control-label">修改时间</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="email" name="email">
+                                <input type="text" class="form-control" id="summaryRuleEdit" name="email">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="alias" class="col-sm-2 control-label">创建人</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="alias" name="alias">
+                                <input type="text" class="form-control" id="summaryRuleMan" name="alias">
                             </div>
                         </div>
                         <div class="form-group">
                             <label for="alias" class="col-sm-2 control-label">版本</label>
                             <div class="col-sm-10">
-                                <input type="text" class="form-control" id="alias" name="alias">
+                                <input type="text" class="form-control" id="summaryRuleVersion" name="alias">
                             </div>
                         </div>
 
@@ -389,7 +389,7 @@
                         <p>规则历史</p>
                     </div>
                     <div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="historyTable">
                             <thead>
                                 <tr>
                                     <th>提交日期</th>
@@ -427,10 +427,10 @@
                             <span></span>
                             <p>业务数据对象</p>
                         </div>
-                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 确定</button>
+                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 添加</button>
                     </div>
                     <div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="businessTable">
                             <thead>
                                 <tr>
                                     <th>对象名称</th>
@@ -462,10 +462,10 @@
                             <span></span>
                             <p>空间数据对象</p>
                         </div>
-                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 确定</button>
+                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 添加</button>
                     </div>
                     <div>
-                        <table class="table table-bordered">
+                        <table class="table table-bordered" id="spaceTable">
                             <thead>
                                 <tr>
                                     <th>对象名称</th>
@@ -499,10 +499,10 @@
                             <span></span>
                             <p>函数</p>
                         </div>
-                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 确定</button>
+                        <button type="reset" class="btn btn-sm btn-primary"><i class="fa fa-plus"></i> 添加</button>
                     </div>
                     <div>
-                        <table class="table table-bordered">
+                        <table class="layui-form table table-bordered" id="funcTable">
                             <thead>
                                 <tr>
                                     <th>函数名称</th>
@@ -512,16 +512,7 @@
                                     <th>操作</th>
                                 </tr>
                             </thead>
-                            <tbody>
-                                <tr>
-                                    <th scope="row">获取个体轮廓线</th>
-                                    <td>String</td>
-                                    <td>json</td>
-                                    <td>com.nvci.build.getLine</td>
-                                    <td><button type="button" class="btn btn-link"><span
-                                                class="glyphicon glyphicon-trash"></span>删除</button></td>
-                                </tr>
-                            </tbody>
+                            <tbody></tbody>
                         </table>
                     </div>
                 </div>
@@ -647,85 +638,10 @@
     <!-- 对象相关内容设置的弹出层 -->
     <div id="projectLayer">
         <div class="projectContent">
-            <!-- <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="radio" name="enabled" id="project0" value="true"><label for="project0"
-                        class="control-label">选项对象的字段</label>
-                </div>
-                <div class="col-sm-8">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="radio" name="enabled" id="project1" value="true"><label for="project1"
-                        class="control-label">选项多约束对象</label>
-                </div>
-                <div class="col-sm-8">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="radio" name="enabled" id="project2" value="true"><label for="project2"
-                        class="control-label">新建公式和函数</label>
-                </div>
-                <div class="col-sm-8">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="radio" name="enabled" id="project3" value="true"><label for="project3"
-                        class="control-label">选择使用表达式方式</label>
-                </div>
-                <div class="col-sm-8">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-sm-4">
-                    <input type="radio" name="enabled" id="project3" value="true"><label for="project3"
-                        class="control-label">设置变量名</label>
-                </div>
-                <div class="col-sm-8">
-                    <select class="form-control">
-                        <option>1</option>
-                        <option>2</option>
-                        <option>3</option>
-                        <option>4</option>
-                        <option>5</option>
-                    </select>
-                </div>
-            </div> -->
             <form class="layui-form">
                 <div class="layui-form-item">
                     <div class="layui-input-block">
-                        <input type="radio" name="property" value="0" title="选项对象的字段" lay-filter="property">
+                        <input type="radio" name="property" value="0" title="选项对象的字段" lay-filter="property" checked>
                         <select name="city" lay-verify="required" lay-filter="field">
                             <option value=""></option>
                             <option value="width">宽</option>
@@ -813,6 +729,10 @@
                 </div>
             </div>
         </form>
+        <div class="dialogBtn">
+            <button type="button" id="" class="btn btn-sm btn-default">取消</button>
+            <button type="button" id="setProjrctNameConfrim" class="btn btn-sm btn-primary">确定</button>
+        </div>
     </div>
     <!-- 规的结论,添加按钮弹层 -->
     <div id="conclusionLayer">
@@ -864,6 +784,7 @@
     <script src="../../public/layer/layer.js"></script>
     <!--public js e-->
     <script src="./../home/home.js"></script>
+    <script src="./moment.js"></script>
     <script src="./index.js"></script>
 </body>
 

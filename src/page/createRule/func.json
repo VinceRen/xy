@@ -1,0 +1,18 @@
+{
+  "code": 200,
+  "data": {
+    "methods": [
+      {
+        "methoddesc": null,
+        "methodnickname": "更新道路名称",
+        "methodid": "5CA367DD4BCE44A1A290C0C76C123458",
+        "methodname": "UpdateName",
+        "methodcontent": "return false",
+        "objpath": "com.vci.ruleservice.entity",
+        "methodtype": "boolean",
+        "objname": "Level1Road"
+      }
+    ]
+  },
+  "message": ""
+}

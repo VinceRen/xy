@@ -1,0 +1,32 @@
+{
+  "code": "200",
+  "data": {
+    "NAME": "测试规则1",
+    "TYPE": "规则类型1",
+    "DESCRIPTION": "描述",
+    "CREATETIME": "2020-03-12T02:57:59.842+0000",
+    "LASTMODIFYTIME": "2020-03-12T02:57:59.842+0000",
+    "CREATOR": "王二",
+    "VERSION": "1.3",
+    "history": [
+      {
+        "OID": "1",
+        "CREATETIME": "2020-03-12T06:11:40.561+0000",
+        "CREATOR": null,
+        "VERSION": "1.0"
+      },
+      {
+        "OID": "2",
+        "CREATETIME": "2020-03-12T06:11:40.578+0000",
+        "CREATOR": null,
+        "VERSION": "1.1"
+      },
+      {
+        "OID": "3",
+        "CREATETIME": "2020-03-12T06:11:40.591+0000",
+        "CREATOR": null,
+        "VERSION": "1.2"
+      }
+    ]
+  }
+}

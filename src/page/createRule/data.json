@@ -1,0 +1,24 @@
+{
+  "data": {
+    "space": [
+      {
+        "path": "com.vci.ruleservice.entity",
+        "desc": "城市主干道或市际公路",
+        "nickname": "一级道路",
+        "id": "5CA367DD4BCE44A1A290C0C76C953677",
+        "name": "Level1Road"
+      }
+    ],
+    "business": [
+      {
+        "path": "com.vci.ruleservice.entity",
+        "desc": "城市主干道或市际公路(业务)",
+        "nickname": "一级道路",
+        "id": "5CA367DD4BCE44A1A290C0C76C953677",
+        "name": "Level1Road"
+      }
+    ]
+  },
+  "message": "",
+  "code": 200
+}
