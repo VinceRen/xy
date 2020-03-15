@@ -45,8 +45,11 @@ $(function () {
                                     <td>${e.CREATOR}</td>
                                     <td>${e.VERSION}</td>
                                     <td>
-                                        <button type="button" class="btn btn-xs btn-link">
-                                            <span class="glyphicon glyphicon-trash"></span>删除
+                                        <button type="button" class="btn btn-xs btn-link historyEdit" data="${JSON.stringify(e)}">
+                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑
+                                        </button>
+                                        <button type="button" class="btn btn-xs btn-link historyDownload" data-id="${e.OID}">
+                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载
                                         </button>
                                     </td>
                                 </tr>`
@@ -74,7 +77,7 @@ $(function () {
                                     <td>${e.desc}</td>
                                     <td>${e.path}</td>
                                     <td>
-                                        <button type="button" class="btn btn-xs btn-link">
+                                        <button type="button" class="btn btn-xs btn-link spaceDelect" data-id="${e.id}">
                                             <span class="glyphicon glyphicon-trash"></span>删除
                                         </button>
                                     </td>
@@ -86,7 +89,7 @@ $(function () {
                                     <td>${e.desc}</td>
                                     <td>${e.path}</td>
                                     <td>
-                                        <button type="button" class="btn btn-xs btn-link">
+                                        <button type="button" class="btn btn-xs btn-link businessDelect" data-id="${e.id}">
                                             <span class="glyphicon glyphicon-trash"></span>删除
                                         </button>
                                     </td>
@@ -115,7 +118,7 @@ $(function () {
                                     <td>${e.methodcontent}</td>
                                     <td>${e.objpath}</td>
                                     <td>
-                                        <button type="button" class="btn btn-xs btn-link">
+                                        <button type="button" class="btn btn-xs btn-link funcDelect" data-id="${e.methodid}">
                                             <span class="glyphicon glyphicon-trash"></span>删除
                                         </button>
                                     </td>
@@ -241,8 +244,8 @@ $(function () {
                     return `<option value="${e.id}">${e.text}</option>`
                 })}
                         </select>
-                        <button class="btn btn-sm btn-default projectItemEdit">edit</button>
-                        <button class="btn btn-sm btn-default">del</button>
+                        <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                        <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                     </form>
                 </div>`
                 tacticsSelection.parent().append(result)
@@ -294,20 +297,89 @@ $(function () {
             content: $('#objectItemEdit')
         });
     })
+
+    // 添加事件
+    $('#addFunc').on('click', function () {
+        layer.msg('添加函数事件');
+    })
+    $('#businessAdd').on('click', function () {
+        layer.msg('业务数据对象');
+    })
+    $('#spaceAdd').on('click', function () {
+        layer.msg('空间数据对象');
+    })
+    // 删除事件
+    $('body').on('click', '.spaceDelect', function (e) {
+        // 删除空间数据对象
+        layer.confirm(`删除空间数据对象，id为：${$(this).attr('data-id')}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('删除成功');
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.businessDelect', function (e) {
+        // 删除业务数据对象
+        layer.confirm(`删除业务数据对象，id为：${$(this).attr('data-id')}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('删除成功');
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.funcDelect', function (e) {
+        // 删除函数
+        layer.confirm(`删除函数，id为：${$(this).attr('data-id')}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('删除成功');
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.historyDownload', function (e) {
+        // 下载规则
+        layer.confirm(`下载，id为：${$(this).attr('data-id')}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('下载成功');
+        }, function () {
+            layer.msg('取消下载');
+        });
+    })
     // 提交 规则编辑器内容
     $('#submit').on('click', function () {
         let tactics = $('.objectItem')
+        let data = []
         tactics.each(function (e) {
+            let name = tactics.eq(e).find('.objectTitle > i').html()
+            let id = tactics.eq(e).attr('data')
             let type = tactics.eq(e).attr('data-type')
-            console.log('对象的类型', type)
+            // console.log('对象的名字', name)
+            // console.log('对象的值(id)', id)
+            // console.log('对象的类型', type)
             let allItem = tactics.eq(e).find('.projectItem')
+            let attr_data = []
             allItem.each(function (index) {
                 let itemType = allItem.eq(index).attr('data-type')
-                console.log('对象子集属性的类型', itemType)
-                console.log('select选中的值的文本', allItem.eq(index).find('select').find("option:selected").text())
-                console.log('select选中的值', allItem.eq(index).find('select').find("option:selected").val())
+                // console.log('对象子集属性的类型', itemType)
+                // console.log('select选中的值的文本', allItem.eq(index).find('select').find("option:selected").text())
+                // console.log('select选中的值', allItem.eq(index).find('select').find("option:selected").val())
+                attr_data.push({
+                    type: itemType,
+                    name: allItem.eq(index).find('select').find("option:selected").text(),
+                    value: allItem.eq(index).find('select').find("option:selected").val()
+                })
             })
-
+            data.push({
+                name,
+                id,
+                type,
+                attr_data
+            })
         })
+        console.log(data)
     })
 })
