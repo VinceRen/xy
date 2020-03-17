@@ -212,12 +212,12 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 		ajax: function(data, callback, settings) {
 			//封装请求参数
 			var param = userManage.getQueryCondition(data);
-			var ajaxType = "GET";
+			var ajaxType = "POST";
 			//ajax请求判断
 			if(url.search('POST') > 0){
 				url = url.split("&",2)[0];
 				ajaxType = "POST";
-			}else if(url.search('POST') > 0){
+			}else if(url.search('GET') > 0){
 				url = url.split("&",2)[0];
 				ajaxType = "GET";
 			}
