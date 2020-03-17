@@ -445,12 +445,27 @@ header .user-info:hover{
 .user-info{
     position: relative;
 }
+.font30{
+	font-size: 30px;
+	position: relative;
+	top: 5px;
+}
+.firstlogo{
+	font-size: 30px;
+	color: #fff;
+	padding: 20px;
+	text-align: center;
+}
 .user-info aside{
     position: absolute;
     top: 50px;
     right: 0;
     border: 1px solid #ddd;
+    background: #fff;
 }
+.user-info aside li{
+    line-height:30px;
+} 
 /* header-e */
 /* nav-s */
 nav{

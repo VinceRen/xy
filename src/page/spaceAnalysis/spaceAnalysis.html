@@ -1,208 +1,243 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
-<head>
-    <title>空间分析</title>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!--[if lt IE 9]-->
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
-    <!--[endif]-->
-    <!--public css s-->
-    <link rel="stylesheet" href="../../public/bootstrap-3.3.7/css/bootstrap.min.css">
-    <link rel="stylesheet" href="../../public/validator/css/bootstrapValidator.css">
-    <link rel="stylesheet" href="../../public/dataTables/css/dataTables.bootstrap.css">
-    <link rel="stylesheet" href="../../public/zTree/css/zTreeStyle/zTreeStyle.css">
-    <link rel="stylesheet" href="../../public/layui/css/layui.css">
-    <link rel="stylesheet" href="../../public/font-awesome/css/font-awesome.css">
-    <link rel="stylesheet" href="../../css/base.css">
-    <!--public css e-->
-    <link rel="stylesheet" href="spaceAnalysis.css">
-</head>
-<body>
-<header class="wh">
-    <hgroup>
-        <a class="tdn" href="../home/home.html">
-            <!--<img src="" alt="">-->
-            <i class="fa fa-cog ml10"></i>
-            <span class="ml10 b">规则系统管理</span>
-        </a>
 
-        <span class="r mr20 wh pointer user-info">
+	<head>
+		<title>空间分析</title>
+		<meta charset="UTF-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<!--[if lt IE 9]-->
+		<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+		<script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+		<!--[endif]-->
+		<!--public css s-->
+		<link rel="stylesheet" href="../../public/bootstrap-3.3.7/css/bootstrap.min.css">
+		<link rel="stylesheet" href="../../public/validator/css/bootstrapValidator.css">
+		<link rel="stylesheet" href="../../public/dataTables/css/dataTables.bootstrap.css">
+		<link rel="stylesheet" href="../../public/zTree/css/zTreeStyle/zTreeStyle.css">
+		<link rel="stylesheet" href="../../public/layui/css/layui.css">
+		<link rel="stylesheet" href="../../public/font-awesome/css/font-awesome.css">
+		<link rel="stylesheet" href="../../css/base.css">
+		<!--public css e-->
+		<link rel="stylesheet" href="spaceAnalysis.css">
+	</head>
+
+	<body>
+		<header class="wh">
+			<hgroup>
+				<a class="tdn" href="../home/home.html">
+					<i class="fa fa-gears ml10 font30"></i>
+					<span class="ml10 b">规则系统管理</span>
+				</a>
+
+				<span class="r mr20 wh pointer user-info">
             <i class="fa fa-user-circle ml10"></i>
             <span class="user-name">admin</span>
-            <i class="fa fa-angle-down mr10 icon-down"></i>
+				<i class="fa fa-angle-down mr10 icon-down"></i>
 
-            <aside class="pct100 g6 tc f12 bg-white d-hidden">
-                <ul>
-                    <li class="manage-data">修改资料</li>
-                    <li class="manage-photo">修改头像</li>
-                    <li class="manage-password">修改密码</li>
-                    <li class="manage-out">退出系统</li>
-                </ul>
-            </aside>
-        </span>
-    </hgroup>
-</header>
-<nav class="w120 l">
-    <ul class="pct100 nav nav-pills">
-        <!--<li class="active" role="presentation">-->
-        <li role="presentation">
-            <a href="#" class="tc">
-                <i class="fa fa-cog"></i>
-                <p>规则设计</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../ruleEngin/ruleEngin.html">规则工程</a></li>
-                    <li><a href="../classDefinition/classDefinition.html">分类定义</a></li>
-                    <li><a href="../ruleSyntax/ruleSyntax.html">规则语法</a></li>
-                </ul>
-            </aside>
-        </li>
-        <li role="presentation">
-            <a href="#" class="tc">
-                <i class="fa fa-cog"></i>
-                <p>规则应用</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../ruleApplication/ruleApplication.html">规则应用</a></li>
-                </ul>
-            </aside>
-        </li>
-        <li role="presentation">
-            <a class="tc" href="#">
-                <i class="fa fa-cog"></i>
-                <p>规则分析</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../ruleTest/ruleTest.html">规则测试</a></li>
-                </ul>
-            </aside>
-        </li>
-        <li role="presentation">
-            <a class="tc" href="#">
-                <i class="fa fa-cog"></i>
-                <p>对象库</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../spaceObject/spaceObject.html">空间对象管理</a></li>
-                    <li><a href="../baseObject/baseObject.html">JAVA基础对象管理</a></li>
-                    <li><a href="../elementObject/elementObject.html">城市要素对象管理</a></li>
-                </ul>
-            </aside>
-        </li>
-        <li class="active" role="presentation">
-            <a class="tc" href="#">
-                <i class="fa fa-cog"></i>
-                <p>函数库</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../spaceDataObject/spaceDataObject.html">空间数据对象</a></li>
-                    <li><a href="../coordinate/coordinate.html">坐标转换</a></li>
-                    <li><a href="../spaceCompute/spaceCompute.html">空间计算</a></li>
-                    <li class="active"><a href="../spaceAnalysis/spaceAnalysis.html">空间分析</a></li>
-                    <li><a href="../baseInfo/baseInfo.html">GIS基础信息</a></li>
-                    <li><a href="../elementFunction/elementFunction.html">城市要素函数</a></li>
-                </ul>
-            </aside>
-        </li>
-        <li role="presentation">
-            <a class="tc" href="#">
-                <i class="fa fa-cog"></i>
-                <p>应用基础库</p>
-            </a>
-            <span class="arrow"></span>
-            <aside>
-                <ul class="nav-aside-info">
-                    <li><a href="../cityPlanRule/cityPlanRule.html">城市规划规则</a></li>
-                </ul>
-            </aside>
-        </li>
-    </ul>
-</nav>
-<main class="main-box">
-    <section>
-        <table class="layui-form table table-bordered table-datatable">
-            <caption>
-                <p class="b mb15 f16 space-object-title">
-                    <span>空间分析函数列表</span>
-                </p>
-                <p class="pb15">
-                    <button type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus table-add"></i> 添加</button>
-                    <span class="r">
+				<aside class="pct100 g6 tc f12 bg-white d-hidden">
+					<ul>
+						<li class="manage-data">修改资料</li>
+						<li class="manage-photo">修改头像</li>
+						<li class="manage-password">修改密码</li>
+						<li class="manage-out">退出系统</li>
+					</ul>
+				</aside>
+				</span>
+			</hgroup>
+		</header>
+		<nav class="w120 l">
+			<p class="firstlogo">
+				<i class="fa fa-gears"></i>
+			</p>
+			<ul class="pct100 nav nav-pills">
+				<!--<li class="active" role="presentation">-->
+				<li role="presentation">
+					<a href="#" class="tc">
+						<i class="fa fa-bars"></i>
+						<p>规则设计</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../ruleEngin/ruleEngin.html">规则工程</a>
+							</li>
+							<li>
+								<a href="../classDefinition/classDefinition.html">分类定义</a>
+							</li>
+							<li>
+								<a href="../ruleSyntax/ruleSyntax.html">规则语法</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+				<li role="presentation">
+					<a href="#" class="tc">
+						<i class="fa fa-user"></i>
+						<p>规则应用</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../ruleApplication/ruleApplication.html">规则应用</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+				<li role="presentation">
+					<a class="tc" href="#">
+						<i class="fa fa-gg"></i>
+						<p>规则分析</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../ruleTest/ruleTest.html">规则测试</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+				<li role="presentation">
+					<a class="tc" href="#">
+						<i class="fa fa-file"></i>
+						<p>对象库</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../spaceObject/spaceObject.html">空间对象管理</a>
+							</li>
+							<li>
+								<a href="../baseObject/baseObject.html">JAVA基础对象管理</a>
+							</li>
+							<li>
+								<a href="../elementObject/elementObject.html">城市要素对象管理</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+				<li class="active" role="presentation">
+					<a class="tc" href="#">
+						<i class="fa fa-file-o"></i>
+						<p>函数库</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../spaceDataObject/spaceDataObject.html">空间数据对象</a>
+							</li>
+							<li>
+								<a href="../coordinate/coordinate.html">坐标转换</a>
+							</li>
+							<li>
+								<a href="../spaceCompute/spaceCompute.html">空间计算</a>
+							</li>
+							<li class="active">
+								<a href="../spaceAnalysis/spaceAnalysis.html">空间分析</a>
+							</li>
+							<li>
+								<a href="../baseInfo/baseInfo.html">GIS基础信息</a>
+							</li>
+							<li>
+								<a href="../elementFunction/elementFunction.html">城市要素函数</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+				<li role="presentation">
+					<a class="tc" href="#">
+						<i class="fa fa-file-text"></i>
+						<p>应用基础库</p>
+					</a>
+					<span class="arrow"></span>
+					<aside>
+						<ul class="nav-aside-info">
+							<li>
+								<a href="../cityPlanRule/cityPlanRule.html">城市规划规则</a>
+							</li>
+						</ul>
+					</aside>
+				</li>
+			</ul>
+		</nav>
+		<main class="main-box">
+			<section>
+				<table class="layui-form table table-bordered table-datatable">
+					<caption>
+						<p class="b mb15 f16 space-object-title">
+							<span>空间分析函数列表</span>
+						</p>
+						<p class="pb15">
+							<button type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus table-add"></i> 添加</button>
+							<span class="r">
                         <input class="input-search" type="text" placeholder="搜索对象名称" />
                         <i class="fa fa-times-circle input-delete"></i>
                         <i class="fa fa-search btn-search"></i>
                     </span>
-                </p>
-            </caption>
-            <thead>
-            <tr>
-                <th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
-                <th>空间分析换函数名称</th>
-                <th>空间分析函数描述</th>
-                <th>URL地址</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-        </table>
-        <table class="layui-form table table-bordered table-datatable2">
-            <caption>
-                <p class="b mb15 f16 space-object-title">
-                    <span>空间分析函数属性</span>
-                    <!--<span class="mr15 r">
+						</p>
+					</caption>
+					<thead>
+						<tr>
+							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
+							<th>空间分析换函数名称</th>
+							<th>空间分析函数描述</th>
+							<th>URL地址</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+				</table>
+				<table class="layui-form table table-bordered table-datatable2">
+					<caption>
+						<p class="b mb15 f16 space-object-title">
+							<span>空间分析函数属性</span>
+							<!--<span class="mr15 r">
                         <input class="input-search" type="text" placeholder="搜索对象名称" />
                         <i class="fa fa-times-circle input-delete"></i>
                         <i class="fa fa-search btn-search"></i>
                     </span>-->
-                </p>
-            </caption>
-            <thead>
-            <tr>
-                <th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
-                <th>函数参数名称</th>
-                <th>函数描述</th>
-                <th>参数类型</th>
-                <th>操作</th>
-            </tr>
-            </thead>
-        </table>
-    </section>
-</main>
-<footer></footer>
-<!--public js s-->
-<script src="../../public/jquery/jquery-3.3.1.js"></script>
-<script src="../../public/bootstrap-3.3.7/js/bootstrap.js"></script>
-<script src="../../public/validator/js/bootstrapValidator.js"></script>
-<script src="../../public/dataTables/js/jquery.dataTables.js"></script>
-<script src="../../public/dataTables/js/dataTables.bootstrap.js"></script>
-<script src="../../public/zTree/js/jquery.ztree.core.js"></script>
-<script type="text/javascript" src="../../public/zTree/js/jquery.ztree.excheck.js"></script>
-<script type="text/javascript" src="../../public/zTree/js/jquery.ztree.exedit.js"></script>
-<script src="../../public/layer/layer.js"></script>
-<script src="../../public/layui/layui.js"></script>
-<script src="../../js/base.js"></script>
-<!--public js e-->
-<script>
-    //table数据获取
-    var ajaxdatatable1 = "../../json/spacedataobject-datatable1.json";
-    var ajaxdatatable2 = "../../json/spacedataobject-datatable2.json";
-    //table数据添加/编辑
-    var ajaxdatatableupdate = "../../json/datatable.json";
-    //table数据删除
-    var ajaxdatatabledelete = "../../json/datatable.json";
-</script>
-<script src="spaceAnalysis.js"></script>
-</body>
+						</p>
+					</caption>
+					<thead>
+						<tr>
+							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
+							<th>函数参数名称</th>
+							<th>函数描述</th>
+							<th>参数类型</th>
+							<th>操作</th>
+						</tr>
+					</thead>
+				</table>
+			</section>
+		</main>
+		<footer></footer>
+		<!--public js s-->
+		<script src="../../public/jquery/jquery-3.3.1.js"></script>
+		<script src="../../public/bootstrap-3.3.7/js/bootstrap.js"></script>
+		<script src="../../public/validator/js/bootstrapValidator.js"></script>
+		<script src="../../public/dataTables/js/jquery.dataTables.js"></script>
+		<script src="../../public/dataTables/js/dataTables.bootstrap.js"></script>
+		<script src="../../public/zTree/js/jquery.ztree.core.js"></script>
+		<script type="text/javascript" src="../../public/zTree/js/jquery.ztree.excheck.js"></script>
+		<script type="text/javascript" src="../../public/zTree/js/jquery.ztree.exedit.js"></script>
+		<script src="../../public/layer/layer.js"></script>
+		<script src="../../public/layui/layui.js"></script>
+		<script src="../../js/base.js"></script>
+		<!--public js e-->
+		<script>
+			//table数据获取
+			var ajaxdatatable1 = "../../json/spacedataobject-datatable1.json";
+			var ajaxdatatable2 = "../../json/spacedataobject-datatable2.json";
+			//table数据添加/编辑
+			var ajaxdatatableupdate = "../../json/datatable.json";
+			//table数据删除
+			var ajaxdatatabledelete = "../../json/datatable.json";
+		</script>
+		<script src="spaceAnalysis.js"></script>
+	</body>
+
 </html>
