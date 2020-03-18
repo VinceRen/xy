@@ -206,20 +206,15 @@ function callbacka(ele, tableele) {}
 
 function delFun() {}
 
-function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delUrl) {
-	var $table = ele;
-	tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
-		ajax: function(data, callback, settings) {
+function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delUrl,ajaxType) {
+			var $table = ele;
+			tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
+				ajax: function(data, callback, settings) {
 			//封装请求参数
 			var param = userManage.getQueryCondition(data);
-			var ajaxType = "POST";
 			//ajax请求判断
-			if(url.search('POST') > 0){
-				url = url.split("&",2)[0];
-				ajaxType = "POST";
-			}else if(url.search('GET') > 0){
-				url = url.split("&",2)[0];
-				ajaxType = "GET";
+			if( typeof(ajaxType) == "string" && ajaxType.toLocaleUpperCase() != "POST"){
+				ajaxType = "GET"
 			}
 			$.ajax({
 				type: ajaxType,
