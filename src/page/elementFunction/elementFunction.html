@@ -167,13 +167,13 @@
 		</nav>
 		<main class="main-box">
 			<section>
-				<table class="layui-form table table-bordered table-datatable">
+				<table class="layui-form table table-bordered table-datatable" id="table-datatable">
 					<caption>
 						<p class="b mb15 f16 space-object-title">
 							<span>城市要素函数列表</span>
 						</p>
 						<p class="pb15">
-							<button type="button" class="btn btn-sm btn-primary"><i class="fa fa-plus table-add"></i> 添加</button>
+							<button type="button" class="btn btn-sm btn-primary table-add"><i class="fa fa-plus"></i> 添加</button>
 							<span class="r">
                         <input class="input-search" type="text" placeholder="搜索对象名称" />
                         <i class="fa fa-times-circle input-delete"></i>
@@ -208,12 +208,54 @@
 							<th>函数参数名称</th>
 							<th>函数描述</th>
 							<th>参数类型</th>
-							<th>操作</th>
+<!--							<th>操作</th>-->
 						</tr>
 					</thead>
+					<tbody>
+					<tr>
+						<td colspan="4">暂无数据</td>
+					</tr>
+					</tbody>
 				</table>
 			</section>
 		</main>
+		<!--form 弹窗 s-->
+		<div class="d-hidden layer-form1">
+			<form class="form-horizontal table-form1" id="table-form1">
+				<div class="form-group">
+					<label class="control-label" title="函数库名称">函数库名称</label>
+					<input type="text" class="form-control" name="name1" onkeyup="value=value.replace(/[^a-zA-Z]/g,'')">
+				</div>
+				<div class="form-group">
+					<label class="control-label" title="描述">描述</label>
+					<input type="text" class="form-control" name="name2">
+				</div>
+				<div class="form-group">
+					<label class="control-label" title="URL地址">URL地址</label>
+					<!--            <input type="text" class="form-control" name="name3" disabled>-->
+					<select class="form-control" name="name3">
+						<option value="com.vci.ruleservice.entity">com.vci.ruleservice.entity</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label class="control-label" title="方法名称">方法名称</label>
+					<input type="text" class="form-control" name="name4" onkeyup="value=value.replace(/[^a-zA-Z]/g,'')">
+				</div>
+				<!--        <div class="form-group">-->
+				<!--            <label class="control-label" title="URL地址">方法类型</label>-->
+				<!--            <select class="form-control" name="name5">-->
+				<!--                <option value="String">String</option>-->
+				<!--                <option value="int">int</option>-->
+				<!--            </select>-->
+				<!--        </div>-->
+				<div class="form-group">
+					<label class="control-label"></label>
+					<button type="button" class="btn btn-sm btn-primary form-save">确定</button>
+					<button type="button" class="btn btn-sm btn-default layui-layer-close">取消</button>
+				</div>
+			</form>
+		</div>
+		<!--form 弹窗 e-->
 		<footer></footer>
 		<!--public js s-->
 		<script src="../../public/jquery/jquery-3.3.1.js"></script>
@@ -230,12 +272,18 @@
 		<!--public js e-->
 		<script>
 			//table数据获取
-			var ajaxdatatable1 = "../../json/spacedataobject-datatable1.json";
-			var ajaxdatatable2 = "../../json/spacedataobject-datatable2.json";
+			// var ajaxdatatable1 = "../../json/spacedataobject-datatable1.json";
+			var ajaxdatatable1 = basePath + "ruleService/bean/queryFunctionByType";
+			// var ajaxdatatable2 = "../../json/spacedataobject-datatable2.json";
+			var ajaxdatatable2 = basePath + "ruleService/bean/queryParamByMethodId";
 			//table数据添加/编辑
-			var ajaxdatatableupdate = "../../json/datatable.json";
+			// var ajaxdatatableadd = "success-data.json";
+			var ajaxdatatableadd = basePath + "ruleService/bean/addFunction";
+			// var ajaxdatatableedit = "../../success-data.json";
+			var ajaxdatatableedit = basePath + "ruleService/bean/updateFunction";
 			//table数据删除
-			var ajaxdatatabledelete = "../../json/datatable.json";
+			// var ajaxdatatabledelete = "../../json/success-data.json";
+			var ajaxdatatabledelete = basePath + "ruleService/bean/deleteFunction";
 		</script>
 		<script src="elementFunction.js"></script>
 	</body>

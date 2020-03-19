@@ -203,13 +203,14 @@ function scrollTable(height) {
 function drawcallback(ele, tableele) {}
 
 function callbacka(ele, tableele) {}
+function callbackBtn(ele, tableele) {}
 
 function delFun() {}
 
 function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delUrl,ajaxType) {
-			var $table = ele;
-			tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
-				ajax: function(data, callback, settings) {
+		var $table = ele;
+	  tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
+			ajax: function(data, callback, settings) {
 			//封装请求参数
 			var param = userManage.getQueryCondition(data);
 			//ajax请求判断
@@ -268,6 +269,11 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 			ele.find("td span").click(function(event) {
 				event.stopPropagation();
 				callbacka($(this), tableele);
+			});
+			ele.find("td .btn").unbind("click");
+			ele.find("td .btn").click(function(event) {
+				event.stopPropagation();
+				callbackBtn($(this), tableele);
 			})
 		}
 	})).api();
@@ -339,13 +345,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 	ele.find(".upsearch").keyup(function(){
 	$(this).closest("tr").find(".tablesearch").trigger("click");
 	})
-	
-	
-	
-	
-	
-	
-	
+
 	$table.on("click", ".btn-edit", function() {
 		//编辑按钮
 		var item = tableele.row($(this).closest('tr')).data();

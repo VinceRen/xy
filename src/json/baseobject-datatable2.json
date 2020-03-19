@@ -2,31 +2,31 @@
   "pageData": [
     {
       "id": "A001",
-      "name": "字符串",
-      "keyWords": "String",
-      "description": "xxxxx",
-      "URL": "con.nvci.xx.xxxxxxxxx"
+      "nickname": "字符串",
+      "name": "String",
+      "desc": "xxxxx",
+      "path": "con.nvci.xx.xxxxxxxxx"
     },
     {
       "id": "A002",
-      "name": "整型数字",
-      "keyWords": "int",
-      "description": "xxxxx",
-      "URL": "con.nvci.xx.xxxxxxxxx"
+      "nickname": "整型数字",
+      "name": "int",
+      "desc": "xxxxx",
+      "path": "con.nvci.xx.xxxxxxxxx"
     },
     {
       "id": "A003",
-      "name": "浮点型",
-      "keyWords": "float",
-      "description": "xxxxx",
-      "URL": "con.nvci.xx.xxxxxxxxx"
+      "nickname": "浮点型",
+      "name": "float",
+      "desc": "xxxxx",
+      "path": "con.nvci.xx.xxxxxxxxx"
     },
     {
       "id": "A004",
-      "name": "日期",
-      "keyWords": "date",
-      "description": "xxxxx",
-      "URL": "con.nvci.xx.xxxxxxxxx"
+      "nickname": "日期",
+      "name": "date",
+      "desc": "xxxxx",
+      "path": "con.nvci.xx.xxxxxxxxx"
     }
   ],
   "total": 35

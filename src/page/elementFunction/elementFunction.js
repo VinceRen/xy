@@ -1,33 +1,28 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
+const paramType = "FUNCTION_ELEMENT";//要素函数
 
-function drawcallback(ele, tableele) {
-    layui.use('form', function(){
-        var form = layui.form;
-        form.render();
-    });
-}
 function tableFun1() {
     var datatable_columns = [
         {
-            data: "id",
+            data: "methodid",
             render: function (data, type, row) {
                 return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
             },
             orderable: false
         },
         {
-            data: "name",
+            data: "methodname",
             render: function (data, type, row) {
-                return '<a  class="pointer tdn data-name">' + data + '</a>';
+                return '<div class="pointer function-name"><a  class="bl tdn">' + data + '</a></div>';
             },
             orderable: false
         },
-        {   data: "description",  orderable: false },
-        {   data: "URL",  orderable: false },
+        {   data: "methoddesc",  orderable: false },
+        {   data: "methodcontent",  orderable: false },
         {
-            data: "id",
+            data: "methodid",
             render: function (data, type, row) {
 
                 return `<div class="data-name" data-id=${data}>
@@ -43,7 +38,7 @@ function tableFun1() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            // var param = {};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -60,16 +55,20 @@ function tableFun1() {
         }
     };
     var del_url = "undefined";
-    tableshow($(".table-datatable"),
-        datatable_columns,
-        datatable_ele,
-        dataurl,
-        delete_ele,
-        data_manage,
-        del_url);
+    var param = {type: paramType, search: ''};
+    table = tableshow($(".table-datatable"),
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
+    return table;
+
 }
 
-function tableFun2() {
+function tableFun2(tableId) {
     var datatable_columns = [
         {
             data: "id",
@@ -85,8 +84,8 @@ function tableFun2() {
             },
             orderable: false
         },
-        {   data: "type", orderable: false   },
-        {   data: "description", orderable: false   },
+        // {   data: "description", orderable: false   },
+        {   data: "nickname", orderable: false   },
         {   data: "type", orderable: false   },
     ];
     var datatable_ele = null;
@@ -94,7 +93,7 @@ function tableFun2() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            var param = {id: tableId, search: ''};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -112,84 +111,174 @@ function tableFun2() {
     };
     var del_url = "undefined";
     tableshow($(".table-datatable2"),
-        datatable_columns,
-        datatable_ele,
-        dataurl,
-        delete_ele,
-        data_manage,
-        del_url);
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
 }
-tableFun1();
-tableFun2();
 
+function drawcallback(ele, tableele) {
+    layui.use('form', function(){
+        var form = layui.form;
+        form.render();
+        if($(ele).hasClass('table-datatable')) {
+            // $(ele).find('tr:first').trigger('click');
+        }
+    });
+
+}
+
+function callbackBtn(ele, tableele) {
+    if($(ele).hasClass("table-edit")){//表格编辑-弹层
+        let id = $(ele).closest('div').attr('data-id');
+        $('#table-form1 .form-save').attr('data-id', id);
+        layershow("表格编辑",["500px","auto"],$(".layer-form1"),$(".layer-form1 div"));
+
+        $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
+        $('#table-form1 [name="name4"]').val($(ele).closest('tr').find('td:nth-child(2)').text());
+        // $.ajax({
+        //     url: 'ddd',
+        //     type: 'POST',
+        //     data: {},
+        //     dataType: 'json',
+        //     success: function (rlt) {
+        //         if(rlt.code == 200){
+        //
+        //
+        //             $('#table-form1 [name="name1"]').val("Spacedata");
+        //             $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
+        //         }
+        //         layer.msg(rlt.message);
+        //
+        //     }
+        // });
+
+    }else if($(ele).hasClass("table-delete")){//表格删除
+        let that = $(ele);
+        $.ajax({
+            url: ajaxdatatabledelete,
+            type: "POST",
+            data:{id: that.closest('div').attr("data-id")},
+            dataType: 'json',
+            success: function (rlt) {
+                if(rlt.code = 200){
+                    // that.closest('tr').remove();
+                    tableFun1();
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                layer.msg('服务错误，删除失败');
+            }
+        });
+    }
+
+}
+
+//函数列表table加载
+tableFun1();
+
+//函数属性table加载
+// tableFun2();
+$('.main-box').on( 'click', '.table-datatable td', function (e) {
+    if($(this).index() == $(this).siblings().length){return false}
+    // var table1 = $('.table-datatable').dataTable();
+    let table1 = $(".table-datatable").DataTable();
+    let tr = this.parentNode;
+    let id = table1.row(tr).data().methodid;
+    tableFun2(id);
+});
 //表格添加
 $('.main-box').on('click','.table-add',function () {
-    layershow("表格添加",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', null);
-});
+    layershow("表格添加",["500px","auto"],$(".layer-form1"),$(".layer-form1 div"));
+    $('#table-form1 .form-save').attr('data-id', null);
 
-//表格编辑-弹层
-$('.main-box').on('click','.table-edit',function () {
-    layershow("表格编辑",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
-    $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
-    $('#table-form1 #founder').val($(this).closest('tr').find('td:nth-child(3)').text());
-    $('#table-form1 #time').val($(this).closest('tr').find('td:nth-child(4)').text());
-    $('#table-form1 #groupId').val($(this).closest('tr').find('td:nth-child(5)').text());
-    $('#table-form1 #artifactId').val($(this).closest('tr').find('td:nth-child(6)').text());
-    $('#table-form1 #version').val($(this).closest('tr').find('td:nth-child(7)').text());
+    $('#table-form1 [name="name1"]').val("Spacedata");
+    $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
 });
 
 //表格弹层表单-保存
-$('.layer-form1').on('click','#form-save',function () {
-    let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null;
-    let formdata = {
-        id : id,
-        name : $('#table-form1 #name').val(),
-        founder : $('#table-form1 #founder').val(),
-        time : $('#table-form1 #time').val(),
-        groupId : $('#table-form1 #groupId').val(),
-        artifactId : $('#table-form1 #artifactId').val(),
-        version : $('#table-form1 #version').val()
+$('.layer-form1').on('click','.form-save',function () {
+    let that = $(this),
+      id = $('#table-form1 .form-save').attr('data-id') ? $('#table-form1 .form-save').attr('data-id') : null,
+      ajaxUrl = $('#table-form1 .form-save').attr('data-id') ? ajaxdatatableedit : ajaxdatatableadd,
+      formData = {},
+      type = paramType;
+    if(!id){//添加form
+        let method_data = [
+            {
+                "name": $('#table-form1 [name="name4"]').val(),
+                "nickName": "获取信息",
+                "content":"",
+                "type":"void",
+                "param_data":""
+            }
+        ];
+        formData = {
+            type: type,
+            id : id,
+            objNickName: "空间数据对象",
+            objName : $('#table-form1 [name="name1"]').val(),
+            // desc: $('#table-form1 input[name="name2"]').val(),
+            path: $('#table-form1 [name="name3"]').val(),
+            method_data: JSON.stringify(method_data)
+        }
+    }else{//编辑form
+        let method_data = [
+            // {
+            //     "name": $('#table-form1 [name="name4"]').val(),
+            //     "nickName": "获取信息",
+            //     "content":"",
+            //     "type":"void",
+            //     "param_data":""
+            // },
+            {
+                "name": $('#table-form1 [name="name4"]').val(),
+                "nickName": "获取信息",
+                "content":"String info = '123';" + "return info;",
+                "type":"",
+                "param_data":[
+                    {
+                        "name": 'number',
+                        'type':'int'
+                    }
+                ]
+            }
+        ];
+        formData = {
+            // type: type,
+            id : id,
+            // objNickName: "空间数据对象",
+            // objName : $('#table-form1 [name="name1"]').val(),
+            // desc: $('#table-form1 input[name="name2"]').val(),
+            // path: $('#table-form1 [name="name3"]').val(),
+            method_data: JSON.stringify(method_data)
+        }
     }
 
+    console.log(JSON.stringify(formData));
     $.ajax({
-        url: ajaxdatatableupdate,
-        data: formdata,
+        url: ajaxUrl,
+        type: "POST",
+        data: formData,
         dataType: 'json',
         success: function(rlt){
-            if(!id){
-                layer.msg('添加成功');
-            }else{
-                layer.msg('修改完成');
+            if(rlt.code == 200){
+                that.siblings('button').trigger('click');
+                // $('.table-datatable').DataTable().draw();
+                tableFun1();
             }
-            $('#form-save').siblings('button').trigger('click');
-            $('#example').DataTable().draw();;
+            layer.msg(rlt.message);
+
         },
         error: function (r) {
-            if(!id){
-                layer.msg('添加失败');
-            }else{
-                layer.msg('修改失败');
-            }
-        }
-    });
-    tableshow($(".table-datatable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
-});
-//表格删除
-$('.main-box').on('click','.table-delete',function () {
-    let that = $(this);
-    $.ajax({
-        url: ajaxdatatabledelete,
-        data:{},
-        dataType: 'json',
-        success: function (rlt) {
-            that.closest('tr').remove();
-            layer.msg('删除成功');
-        },
-        error: function (r) {
-            layer.msg('服务错误，删除失败');
+            console.log(r);
+            layer.msg('服务错误，操作失败');
         }
     });
 });
+
 
