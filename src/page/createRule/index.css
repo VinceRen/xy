@@ -229,7 +229,9 @@
 
 #tacticsLayer,
 #conclusionLayer,
-#projectLayer {
+#projectLayer,
+#addBusinessLayer,
+#addFuncLayer {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -259,6 +261,17 @@
 
 #projectLayer .projectContent {
     flex: 1;
+}
+
+#addBusinessLayer>div:first-child, #addFuncLayer>div:first-child {
+    flex: 1;
+    padding: 20px 0;
+    display: flex;
+    flex-direction: column;
+}
+#addBusinessLayer .form-group, #addFuncLayer .form-group {
+    display: flex;
+    align-items: center;
 }
 
 /* 复写框架相关 */

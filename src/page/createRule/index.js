@@ -1,14 +1,33 @@
 $(function () {
-    // 全局变量相关定义
-    const SUCCESS = 200;
-
-    let tacticsSelection = 222;
-
-
-
     layui.use('form', function () {
         // layui相关插件定义
         let form = layui.form;
+
+        // 全局变量相关定义
+        const SUCCESS = 200;
+
+        let tacticsSelection = 222;
+
+        // $.ajax({
+        //     url: 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/',
+        //     type: 'POST',
+        //     data: JSON.stringify({
+        //         "type": 'SPACE',
+        //         "startIndex": 0,
+        //         "pageSize": 10
+        //     }),
+        //     contentType: 'application/json;charset=UTF-8',
+        //     success: function (data) {
+        //         console.log(data)
+        //     }
+        // })
+
+
+
+
+
+
+    
 
         let treeData = "index.json";
         treeShow(treeData, $("#ruleTree"), true);
@@ -24,113 +43,53 @@ $(function () {
             } else if (type === 'tab-code') {
                 $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-brief') {
-                $.ajax({
-                    url: './history.json',
-                    success: function (data) {
-                        if (data && +data.code === SUCCESS) {
-                            let res = data.data
-                            $('#summaryRuleName').val(res.NAME)
-                            $('#summaryRuleType').val(res.TYPE)
-                            $('#summaryRuleDesc').val(res.DESCRIPTION)
-                            $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
-                            $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
-                            $('#summaryRuleMan').val(res.CREATOR)
-                            $('#summaryRuleVersion').val(res.VERSION)
+                // $.ajax({
+                //     url: './history.json',
+                //     success: function (data) {
+                //         if (data && +data.code === SUCCESS) {
+                //             let res = data.data
+                //             $('#summaryRuleName').val(res.NAME)
+                //             $('#summaryRuleType').val(res.TYPE)
+                //             $('#summaryRuleDesc').val(res.DESCRIPTION)
+                //             $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
+                //             $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
+                //             $('#summaryRuleMan').val(res.CREATOR)
+                //             $('#summaryRuleVersion').val(res.VERSION)
 
-                            let { history } = res
-                            let html = ''
-                            history.map((e) => {
-                                html += `<tr>
-                                    <td>${moment(e.CREATETIME).format('YYYY年MM月DD日')}</td>
-                                    <td>${e.CREATOR}</td>
-                                    <td>${e.VERSION}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-xs btn-link historyEdit" data="${JSON.stringify(e)}">
-                                            <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑
-                                        </button>
-                                        <button type="button" class="btn btn-xs btn-link historyDownload" data-id="${e.OID}">
-                                            <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载
-                                        </button>
-                                    </td>
-                                </tr>`
-                            })
-                            $("#historyTable tbody").html(html)
-                            $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
-                        } else {
-                            alert(data.message)
-                        }
-                    }
-                })
-
+                //             let { history } = res
+                //             let html = ''
+                //             history.map((e) => {
+                //                 html += `<tr>
+                //                     <td>${moment(e.CREATETIME).format('YYYY年MM月DD日')}</td>
+                //                     <td>${e.CREATOR}</td>
+                //                     <td>${e.VERSION}</td>
+                //                     <td>
+                //                         <button type="button" class="btn btn-xs btn-link historyEdit" data="${JSON.stringify(e)}">
+                //                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑
+                //                         </button>
+                //                         <button type="button" class="btn btn-xs btn-link historyDownload" data-id="${e.OID}">
+                //                             <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载
+                //                         </button>
+                //                     </td>
+                //                 </tr>`
+                //             })
+                //             $("#historyTable tbody").html(html)
+                //             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
+                //         } else {
+                //             alert(data.message)
+                //         }
+                //     }
+                // })
+                $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
+                loadFormData()
+                loadBriefTable()
             } else if (type === 'tab-data') {
-                $.ajax({
-                    url: './data.json',
-                    success: function (data) {
-                        if (data && +data.code === SUCCESS) {
-                            let res = data.data
-                            let { space, business } = res
-                            let spaceHtml = ''
-                            let businessHtml = ''
-                            space.map((e) => {
-                                spaceHtml += `<tr>
-                                    <td>${e.name}</td>
-                                    <td>${e.desc}</td>
-                                    <td>${e.path}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-xs btn-link spaceDelect" data-id="${e.id}">
-                                            <span class="glyphicon glyphicon-trash"></span>删除
-                                        </button>
-                                    </td>
-                                </tr>`
-                            })
-                            business.map((e) => {
-                                businessHtml += `<tr>
-                                    <td>${e.name}</td>
-                                    <td>${e.desc}</td>
-                                    <td>${e.path}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-xs btn-link businessDelect" data-id="${e.id}">
-                                            <span class="glyphicon glyphicon-trash"></span>删除
-                                        </button>
-                                    </td>
-                                </tr>`
-                            })
-                            $("#spaceTable tbody").html(spaceHtml)
-                            $("#businessTable tbody").html(businessHtml)
-                            $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
-                        } else {
-                            alert(data.message)
-                        }
-                    }
-                })
+                loadSpaceTable()
+                loadBusinessTable()
+                $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-func') {
-                $.ajax({
-                    url: './func.json',
-                    success: function (data) {
-                        if (data && +data.code === SUCCESS) {
-                            let res = data.data
-                            let { methods } = res
-                            let html = ''
-                            methods.map((e) => {
-                                html += `<tr>
-                                    <td>${e.methodnickname}</td>
-                                    <td>${e.methodtype}</td>
-                                    <td>${e.methodcontent}</td>
-                                    <td>${e.objpath}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-xs btn-link funcDelect" data-id="${e.methodid}">
-                                            <span class="glyphicon glyphicon-trash"></span>删除
-                                        </button>
-                                    </td>
-                                </tr>`
-                            })
-                            $("#funcTable tbody").html(html)
-                            $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
-                        } else {
-                            alert(data.message)
-                        }
-                    }
-                })
+                loadFuncTable()
+                $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-rely') {
                 $('.rely').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-service') {
@@ -268,7 +227,7 @@ $(function () {
             tacticsSelection.find('em').html(result)
             layer.close(setObjecgName)
         })
-    });
+    
     // 相关事件
     $('body').on('click', '.tactics .objectTitle', function () {
         tacticsSelection = $(this)
@@ -295,58 +254,6 @@ $(function () {
             shadeClose: true, //点击遮罩关闭层
             area: ['800px', '520px'],
             content: $('#objectItemEdit')
-        });
-    })
-
-    // 添加事件
-    $('#addFunc').on('click', function () {
-        layer.msg('添加函数事件');
-    })
-    $('#businessAdd').on('click', function () {
-        layer.msg('业务数据对象');
-    })
-    $('#spaceAdd').on('click', function () {
-        layer.msg('空间数据对象');
-    })
-    // 删除事件
-    $('body').on('click', '.spaceDelect', function (e) {
-        // 删除空间数据对象
-        layer.confirm(`删除空间数据对象，id为：${$(this).attr('data-id')}`, {
-            btn: ['确认', '取消']
-        }, function () {
-            layer.msg('删除成功');
-        }, function () {
-            layer.msg('取消删除');
-        });
-    })
-    $('body').on('click', '.businessDelect', function (e) {
-        // 删除业务数据对象
-        layer.confirm(`删除业务数据对象，id为：${$(this).attr('data-id')}`, {
-            btn: ['确认', '取消']
-        }, function () {
-            layer.msg('删除成功');
-        }, function () {
-            layer.msg('取消删除');
-        });
-    })
-    $('body').on('click', '.funcDelect', function (e) {
-        // 删除函数
-        layer.confirm(`删除函数，id为：${$(this).attr('data-id')}`, {
-            btn: ['确认', '取消']
-        }, function () {
-            layer.msg('删除成功');
-        }, function () {
-            layer.msg('取消删除');
-        });
-    })
-    $('body').on('click', '.historyDownload', function (e) {
-        // 下载规则
-        layer.confirm(`下载，id为：${$(this).attr('data-id')}`, {
-            btn: ['确认', '取消']
-        }, function () {
-            layer.msg('下载成功');
-        }, function () {
-            layer.msg('取消下载');
         });
     })
     // 提交 规则编辑器内容
@@ -382,4 +289,400 @@ $(function () {
         })
         console.log(data)
     })
+
+    // 添加事件
+    $('#addFunc').on('click', function () {
+        // 添加函数事件
+        addFuncLayer = layer.open({
+            type: 1,
+            title: `添加函数`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#addFuncLayer')
+        });
+    })
+    $('#addFuncConfirm').on('click', function () {
+        let data = form.val('addFunc')
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/bean/addFunction/',
+            data,
+            type: 'POST',
+            success: function (data) {
+                layer.msg(data.message);
+                loadFuncTable()
+                layer.close(addFuncLayer)
+                // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
+                // else layer.msg('添加失败');
+            }
+        })
+    })
+    $('#businessAdd').on('click', function () {
+        // 业务对象添加事件
+        addBusinessLayer = layer.open({
+            type: 1,
+            title: `添加业务数据对象`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#addBusinessLayer')
+        });
+    })
+    $('#addBusinessConfrim').on('click', function () {
+        let data = form.val("addBusiness");
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
+            data,
+            type: 'POST',
+            success: function (data) {
+                layer.msg(data.message);
+                loadBusinessTable()
+                layer.close(addBusinessLayer)
+                // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
+                // else layer.msg('添加失败');
+            }
+        })
+    })
+    $('#spaceAdd').on('click', function () {
+        // 空间对象添加事件
+        // $.ajax({
+        //     url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
+        //     data: {
+        //         type: 'java',
+        //         objName: 'Building',
+        //         objNickName: '建筑1',
+        //         path: 'com.vci.ruleservice.entity',
+        //         desc: '测试建筑描述',
+        //         attr_data: [],
+        //         method_data: []
+        //     },
+        //     type: 'POST',
+        //     success: function (data) {
+        //         layer.msg(data.message);
+        //         loadSpaceTable()
+        //         // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
+        //         // else layer.msg('添加失败');
+        //     }
+        // })
+        
+    })
+
+    // 删除事件
+    $('body').on('click', '.spaceDelect', function (e) {
+        // 删除空间数据对象
+        let id = $(this).attr('data-id')
+        layer.confirm(`确认删除该空间数据对象`, {
+            btn: ['确认', '取消']
+        }, function () {
+            $.ajax({
+                url: 'http://172.18.84.114:8081/ruleService/bean/deleteBean/',
+                data: {
+                    id
+                },
+                type: 'POST',
+                success: function(data) {
+                    layer.msg(data.message);
+                    loadSpaceTable()
+                    // if (data && data.code === 'SUCCESS') layer.msg('删除成功');
+                    // else layer.msg('删除失败');
+                }
+            })
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.businessDelect', function (e) {
+        // 删除业务数据对象
+        let id = $(this).attr('data-id')
+        layer.confirm(`确认删除该业务数据对象`, {
+            btn: ['确认', '取消']
+        }, function () {
+            $.ajax({
+                url: 'http://172.18.84.114:8081/ruleService/bean/deleteBean/',
+                data: {
+                    id
+                },
+                type: 'POST',
+                success: function(data) {
+                    if (data && data.code === SUCCESS) {
+                        layer.msg('删除成功');
+                        loadBusinessTable()
+                    } else layer.msg('删除失败');
+                }
+            })
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.funcDelect', function (e) {
+        // 删除函数
+        let id = $(this).attr('data-id')
+        layer.confirm(`确认删除该函数吗？`, {
+            btn: ['确认', '取消']
+        }, function () {
+            $.ajax({
+                url: 'http://172.18.84.114:8081/ruleService/bean/deleteFunction/',
+                data: {
+                    id
+                },
+                type: 'POST',
+                success: function(data) {
+                    if (data && data.code === SUCCESS) {
+                        layer.msg('删除成功');
+                        loadFuncTable()
+                    } else layer.msg('删除失败');
+                }
+            })
+        }, function () {
+            layer.msg('取消删除');
+        });
+    })
+    $('body').on('click', '.historyDownload', function (e) {
+        // 下载规则
+        layer.confirm(`下载，id为：${$(this).attr('data-id')}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('下载成功');
+        }, function () {
+            layer.msg('取消下载');
+        });
+    })
+
+    // 相关事件提取为函数
+    function loadSpaceTable () {
+        let datatable_columns = [
+            {
+                data: "name",
+                orderable: false
+            },
+            {
+                data: "desc",
+                orderable: false
+            },
+            {
+                data: "path",
+                orderable: false
+            },
+            {
+                data: "id",
+                render: function (data, type, row) {
+                    return `
+                    <button class="btn btn-xs btn-primary spaceDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+                    `;
+                },
+                orderable: false
+            },
+        ];
+        let datatable_ele = null;
+        let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
+        let delete_ele = "undefined";
+        let data_manage = {
+            getQueryCondition: function (data) {
+                let param = {};
+                //组装排序参数
+                if (data.order && data.order.length && data.order[0]) {
+                    let sqlName = data.columns[data.order[0].column].data;
+                    param.orderColumn = sqlName;
+                    //排序方式asc或者desc
+                    param.orderDir = data.order[0].dir;
+                }
+    
+                //组装分页参数
+                param.startIndex = data.start;
+                param.pageSize = data.length;
+                param.draw = data.draw;
+                param.type = 'java'
+                return param;
+            }
+        };
+        let del_url = "undefined";
+    
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+        tableshow($("#spaceTable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
+    }
+    function loadBusinessTable() {
+        let datatable_columns = [
+            {
+                data: "name",
+                orderable: false
+            },
+            {
+                data: "desc",
+                orderable: false
+            },
+            {
+                data: "path",
+                orderable: false
+            },
+            {
+                data: "id",
+                render: function (data, type, row) {
+                    return `
+                    <button class="btn btn-xs btn-primary businessDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+                    `;
+                },
+                orderable: false
+            },
+        ];
+        let datatable_ele = null;
+        let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
+        let delete_ele = "undefined";
+        let data_manage = {
+            getQueryCondition: function (data) {
+                let param = {};
+                //组装排序参数
+                if (data.order && data.order.length && data.order[0]) {
+                    let sqlName = data.columns[data.order[0].column].data;
+                    param.orderColumn = sqlName;
+                    //排序方式asc或者desc
+                    param.orderDir = data.order[0].dir;
+                }
+    
+                //组装分页参数
+                param.startIndex = data.start;
+                param.pageSize = data.length;
+                param.draw = data.draw;
+                param.type = 'java'
+                return param;
+            }
+        };
+        let del_url = "undefined";
+    
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+        tableshow($("#businessTable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
+    }
+    function loadFuncTable() {
+        let datatable_columns = [
+            {
+                data: "methodnickname",
+                orderable: false
+            },
+            {
+                data: "methodtype",
+                orderable: false
+            },
+            {
+                data: "methodcontent",
+                orderable: false
+            },
+            {
+                data: "objpath",
+                orderable: false
+            },
+            {
+                data: "methodid",
+                render: function (data, type, row) {
+                    return `
+                    <button class="btn btn-xs btn-primary funcDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+                    `;
+                },
+                orderable: false
+            },
+        ];
+        let datatable_ele = null;
+        let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryMethod/';
+        let delete_ele = "undefined";
+        let data_manage = {
+            getQueryCondition: function (data) {
+                let param = {};
+                //组装排序参数
+                if (data.order && data.order.length && data.order[0]) {
+                    let sqlName = data.columns[data.order[0].column].data;
+                    param.orderColumn = sqlName;
+                    //排序方式asc或者desc
+                    param.orderDir = data.order[0].dir;
+                }
+    
+                //组装分页参数
+                param.startIndex = data.start;
+                param.pageSize = data.length;
+                param.draw = data.draw;
+                param.type = 'FUNCTION_SPACE'
+                return param;
+            }
+        };
+        let del_url = "undefined";
+    
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+        tableshow($("#funcTable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
+    }
+    function loadFormData() {
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/rule/ruleOverview',
+            data: {
+                ruleId: 3
+            },
+            type: 'POST',
+            success: function(data) {
+                if (data && +data.code === SUCCESS) {
+                    let res = data.data
+                    $('#summaryRuleName').val(res.NAME)
+                    $('#summaryRuleType').val(res.TYPE)
+                    $('#summaryRuleDesc').val(res.DESCRIPTION)
+                    $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
+                    $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
+                    $('#summaryRuleMan').val(res.CREATOR)
+                    $('#summaryRuleVersion').val(res.VERSION)
+                }
+            }
+        })
+    }
+    function loadBriefTable() {
+        let datatable_columns = [
+            {
+                data: "CREATETIME",
+                render: function(data) {
+                    return `${moment(data).format('YYYY年MM月DD日')}`
+                },
+                orderable: false
+            },
+            {
+                data: "CREATOR",
+                orderable: false
+            },
+            {
+                data: "VERSION",
+                orderable: false
+            },
+            {
+                data: "OID",
+                render: function (data, type, row) {
+                    return `
+                    <button class="btn btn-xs btn-primary briefEdit" data-id=${data}><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑</button>
+                    <button class="btn btn-xs btn-primary briefDownload" data-id=${data}><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载</button>
+                    `;
+                },
+                orderable: false
+            },
+        ];
+        let datatable_ele = null;
+        let dataurl = 'http://172.18.84.114:8081/ruleService/rule/getRuleHistoryById';
+        let delete_ele = "undefined";
+        let data_manage = {
+            getQueryCondition: function (data) {
+                let param = {};
+                //组装排序参数
+                if (data.order && data.order.length && data.order[0]) {
+                    let sqlName = data.columns[data.order[0].column].data;
+                    param.orderColumn = sqlName;
+                    //排序方式asc或者desc
+                    param.orderDir = data.order[0].dir;
+                }
+    
+                //组装分页参数
+                param.startIndex = data.start;
+                param.pageSize = data.length;
+                param.draw = data.draw;
+                param.ruleId = 3
+                return param;
+            }
+        };
+        let del_url = "undefined";
+    
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+        // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+        tableshow($("#historyTable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
+    }
+});
 })
