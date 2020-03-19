@@ -1,6 +1,9 @@
 /**
  * Created by Administrator
  */
+//基础服务路径
+var basePath = 'http://172.18.84.114:8081/';
+
 var CONSTANT = {
 	DATA_TABLES: {
 		DEFAULT_OPTION: { //DataTables初始化选项
@@ -203,14 +206,18 @@ function callbacka(ele, tableele) {}
 
 function delFun() {}
 
-function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delUrl) {
-	var $table = ele;
-	tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
-		ajax: function(data, callback, settings) {
+function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delUrl,ajaxType) {
+			var $table = ele;
+			tableele = $table.dataTable($.extend(true, {}, CONSTANT.DATA_TABLES.DEFAULT_OPTION, {
+				ajax: function(data, callback, settings) {
 			//封装请求参数
 			var param = userManage.getQueryCondition(data);
+			//ajax请求判断
+			if( typeof(ajaxType) == "string" && ajaxType.toLocaleUpperCase() != "POST"){
+				ajaxType = "GET"
+			}
 			$.ajax({
-				type: "GET",
+				type: ajaxType,
 				url: url,
 				cache: false, //禁用缓存
 				data: param, //传入已封装的参数
@@ -218,7 +225,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 				// async: false,//同步
 				success: function(result) {
 					//异常判断与处理
-					if(result.errorCode) {
+					if(result.code == 400) {
 						alert("查询失败");
 						return;
 					}
