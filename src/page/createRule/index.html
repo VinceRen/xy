@@ -477,20 +477,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">Building</th>
-                                    <td>居住建筑</td>
-                                    <td>com.nvci.build</td>
-                                    <td><button type="button" class="btn btn-link"><span
-                                                class="glyphicon glyphicon-trash"></span>删除</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Waterworks</th>
-                                    <td>水厂</td>
-                                    <td>com.nvci.Waterworks</td>
-                                    <td><button type="button" class="btn btn-link"><span
-                                                class="glyphicon glyphicon-trash"></span>删除</button></td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -513,20 +500,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <th scope="row">Building</th>
-                                    <td>居住建筑</td>
-                                    <td>com.nvci.build</td>
-                                    <td><button type="button" class="btn btn-link"><span
-                                                class="glyphicon glyphicon-trash"></span>删除</button></td>
-                                </tr>
-                                <tr>
-                                    <th scope="row">Waterworks</th>
-                                    <td>水厂</td>
-                                    <td>com.nvci.Waterworks</td>
-                                    <td><button type="button" class="btn btn-link"><span
-                                                class="glyphicon glyphicon-trash"></span>删除</button></td>
-                                </tr>
+                                
                             </tbody>
                         </table>
                     </div>
@@ -545,9 +519,8 @@
                             <thead>
                                 <tr>
                                     <th>函数名称</th>
-                                    <th>函数参数</th>
+                                    <th>函数类型</th>
                                     <th>返回值</th>
-                                    <th>函数参数</th>
                                     <th>操作</th>
                                 </tr>
                             </thead>
@@ -792,7 +765,7 @@
         </div>
     </div>
     <!-- 添加业务对象数据弹层 -->
-    <div id="addBusinessLayer">
+    <div id="addDataLayer">
         <div>
             <form class="layui-form" lay-filter="addBusiness">
                 <div class="form-group">
@@ -841,15 +814,7 @@
         </div>
         <div class="dialogBtn">
             <button type="button" id="" class="btn btn-sm btn-default">取消</button>
-            <button type="button" id="addBusinessConfrim" class="btn btn-sm btn-primary">确2定</button>
-        </div>
-    </div>
-    <!-- 添加空间对象数据弹层 -->
-    <div id="addSpaceLayer">
-        <div>addSpaceLayer</div>
-        <div class="dialogBtn">
-            <button type="button" id="" class="btn btn-sm btn-default">取消</button>
-            <button type="button" id="" class="btn btn-sm btn-primary">确定</button>
+            <button type="button" id="addDataConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
     <!-- 添加函数弹层 -->
@@ -883,7 +848,7 @@
                 <div class="form-group">
                     <label for="userName" class="col-sm-2 control-label">方法信息</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" id="" name="method_data" value="[]">
+                        <input type="text" class="form-control" id="" name="method_data" value='[{"name":"getInfo","nickName":"获取信息"," desc ":"描述","content":"","type":"void","param_data":"[{\"name\":\"id\",\"type\":\"String\"}]"}]'>
                     </div>
                 </div>
             </form>

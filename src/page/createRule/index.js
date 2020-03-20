@@ -405,6 +405,7 @@ $(function () {
         })
         $('#addFuncConfirm').on('click', function () {
             let data = form.val('addFunc')
+            // if (data.method_data.length) data.method_data = JSON.stringify(data.method_data)
             $.ajax({
                 url: 'http://172.18.84.114:8081/ruleService/bean/addFunction/',
                 data,
@@ -420,15 +421,28 @@ $(function () {
         })
         $('#businessAdd').on('click', function () {
             // 业务对象添加事件
-            addBusinessLayer = layer.open({
+            $('#addDataLayer .form-control').eq(0).val('business')
+            addDataLayer = layer.open({
                 type: 1,
                 title: `添加业务数据对象`,
                 shadeClose: true, //点击遮罩关闭层
                 area: ['800px', '520px'],
-                content: $('#addBusinessLayer')
+                content: $('#addDataLayer')
             });
         })
-        $('#addBusinessConfrim').on('click', function () {
+        
+        $('#spaceAdd').on('click', function () {
+            // 空间对象添加事件
+            $('#addDataLayer .form-control').eq(0).val('space')
+            addDataLayer = layer.open({
+                type: 1,
+                title: `添加空间数据对象`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#addDataLayer')
+            });
+        })
+        $('#addDataLayer #addDataConfrim').on('click', function () {
             let data = form.val("addBusiness");
             $.ajax({
                 url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
@@ -437,34 +451,12 @@ $(function () {
                 success: function (data) {
                     layer.msg(data.message);
                     loadBusinessTable()
-                    layer.close(addBusinessLayer)
+                    loadSpaceTable()
+                    layer.close(addDataLayer)
                     // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
                     // else layer.msg('添加失败');
                 }
             })
-        })
-        $('#spaceAdd').on('click', function () {
-            // 空间对象添加事件
-            // $.ajax({
-            //     url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
-            //     data: {
-            //         type: 'java',
-            //         objName: 'Building',
-            //         objNickName: '建筑1',
-            //         path: 'com.vci.ruleservice.entity',
-            //         desc: '测试建筑描述',
-            //         attr_data: [],
-            //         method_data: []
-            //     },
-            //     type: 'POST',
-            //     success: function (data) {
-            //         layer.msg(data.message);
-            //         loadSpaceTable()
-            //         // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
-            //         // else layer.msg('添加失败');
-            //     }
-            // })
-
         })
 
         // 删除事件
@@ -591,7 +583,8 @@ $(function () {
                     param.startIndex = data.start;
                     param.pageSize = data.length;
                     param.draw = data.draw;
-                    param.type = 'java'
+                    param.type = 'space'
+                    param.search = ''
                     return param;
                 }
             };
@@ -599,7 +592,7 @@ $(function () {
 
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#spaceTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url);
+            tableshow($("#spaceTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
         }
         function loadBusinessTable() {
             let datatable_columns = [
@@ -643,7 +636,8 @@ $(function () {
                     param.startIndex = data.start;
                     param.pageSize = data.length;
                     param.draw = data.draw;
-                    param.type = 'java'
+                    param.type = 'business',
+                    param.search = ''
                     return param;
                 }
             };
@@ -651,7 +645,7 @@ $(function () {
 
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#businessTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url);
+            tableshow($("#businessTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
         }
         function loadFuncTable() {
             let datatable_columns = [
@@ -665,10 +659,6 @@ $(function () {
                 },
                 {
                     data: "methodcontent",
-                    orderable: false
-                },
-                {
-                    data: "objpath",
                     orderable: false
                 },
                 {
@@ -700,6 +690,7 @@ $(function () {
                     param.pageSize = data.length;
                     param.draw = data.draw;
                     param.type = 'FUNCTION_SPACE'
+                    param.search = ''
                     return param;
                 }
             };
@@ -707,7 +698,7 @@ $(function () {
 
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#funcTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url);
+            tableshow($("#funcTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
         }
         function loadFormData() {
             $.ajax({
@@ -784,7 +775,7 @@ $(function () {
 
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
             // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url);
+            tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
         }
     });
 })
