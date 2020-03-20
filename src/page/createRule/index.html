@@ -681,32 +681,27 @@
                 <div class="layui-form-item">
                     <div class="layui-input-block">
                         <input type="radio" name="property" value="0" title="选项对象的字段" lay-filter="property" checked>
-                        <select name="city" lay-verify="required" lay-filter="field">
+                        <select name="" lay-verify="required" lay-filter="field">
                             <option value=""></option>
                             <option value="width">宽</option>
                             <option value="height">高度</option>
                         </select>
                     </div>
-                    <div class="layui-input-block">
+                    <div class="layui-input-block constraintType">
                         <input type="radio" name="property" value="1" title="选项多约束对象" lay-filter="property">
-                        <select name="city" lay-verify="required">
-                            <option value=""></option>
-                            <option value="0">北京</option>
-                            <option value="1">上海</option>
-                            <option value="2">广州</option>
-                            <option value="3">深圳</option>
-                            <option value="4">杭州</option>
+                        <select name="" lay-verify="required">
+                            <option value="0">并且</option>
+                            <option value="1">或</option>
                         </select>
                     </div>
-                    <div class="layui-input-block">
+                    <div class="layui-input-block funcType">
                         <input type="radio" name="property" value="2" title="新建公式和函数" lay-filter="property">
                         <select name="city" lay-verify="required">
                             <option value=""></option>
-                            <option value="0">北京</option>
-                            <option value="1">上海</option>
-                            <option value="2">广州</option>
-                            <option value="3">深圳</option>
-                            <option value="4">杭州</option>
+                            <option value="0" data='["a","b"]'>和</option>
+                            <option value="1" data='["A","B"]'>次幂</option>
+                            <option value="2" data='["x","y"]'>面积</option>
+                            <option value="3" data='["a","b","c"]'>平衡计算</option>
                         </select>
                     </div>
                     <div class="layui-input-block">
@@ -714,7 +709,7 @@
                     </div>
                     <div class="layui-input-block">
                         <input type="radio" name="property" value="4" title="设置变量名" lay-filter="property">
-                        <input type="text">
+                        <input type="text" id="objectName">
                     </div>
                 </div>
             </form>
@@ -724,47 +719,34 @@
             <button type="button" id="projectConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
-    <!-- 设置规则的策略定义中变量名(对象的) -->
-    <div id="setObjectName">
-        <div class="layui-form-item">
-            <label class="layui-form-label">变量名称</label>
-            <div class="layui-input-block">
-                <input type="text" required lay-verify="required" placeholder="请输入标题" autocomplete="off"
-                    class="layui-input">
+    <!-- 设置对象属性变量名 -->
+    <div id="setAttrName">
+        <form class="layui-form">
+            <div class="form-group">
+                <label for="userName" class="col-sm-2 control-label">变量名</label>
+                <div class="col-sm-10">
+                    <input type="text" class="form-control" id="objectAttrName" name="">
+                </div>
             </div>
-        </div>
+        </form>
         <div class="dialogBtn">
             <button type="button" id="" class="btn btn-sm btn-default">取消</button>
-            <button type="button" id="setProjrctNameConfrim" class="btn btn-sm btn-primary">确定</button>
+            <button type="button" id="setAttrNameConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
     <!-- 规的结论,添加按钮弹层 -->
     <div id="objectItemEdit">
-        <form class="layui-form">
+        <form class="layui-form" lay-filter="showAttrLayer">
             <div class="layui-form-item">
                 <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="属性值" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
+                    <input type="radio" name="setProperty" value="0" title="属性值" lay-filter="setProperty" checked>
                 </div>
                 <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="属性公式" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
+                    <input type="radio" name="setProperty" value="1" title="属性公式" lay-filter="setProperty">
                 </div>
                 <div class="layui-input-block">
-                    <input type="radio" name="property" value="0" title="获取变量" lay-filter="property">
-                    <select name="city" lay-verify="required" lay-filter="field">
-                        <option value=""></option>
-                        <option value="width">宽</option>
-                        <option value="height">高度</option>
-                    </select>
+                    <input type="radio" name="setProperty" value="2" title="获取变量" lay-filter="setProperty">
+                    <select name="city" lay-verify="required" lay-filter="" class="showVariable"></select>
                 </div>
             </div>
         </form>
@@ -809,7 +791,7 @@
             <button type="button" id="conclusionConfrim" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
-
+    <!-- 添加业务对象数据弹层 -->
     <div id="addBusinessLayer">
         <div>
             <form class="layui-form" lay-filter="addBusiness">
@@ -862,6 +844,7 @@
             <button type="button" id="addBusinessConfrim" class="btn btn-sm btn-primary">确2定</button>
         </div>
     </div>
+    <!-- 添加空间对象数据弹层 -->
     <div id="addSpaceLayer">
         <div>addSpaceLayer</div>
         <div class="dialogBtn">
@@ -869,6 +852,7 @@
             <button type="button" id="" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
+    <!-- 添加函数弹层 -->
     <div id="addFuncLayer">
         <div>
             <form class="layui-form" lay-filter="addFunc">

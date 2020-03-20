@@ -149,6 +149,11 @@
 .projectItem .layui-input {
     height: 30px;
 }
+.projectItem .form-group {
+    display: flex;
+}
+
+
 
 /* 源代码 */
 
@@ -231,7 +236,8 @@
 #conclusionLayer,
 #projectLayer,
 #addBusinessLayer,
-#addFuncLayer {
+#addFuncLayer,
+#setAttrName {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -338,4 +344,5 @@ code span {
 
 #projectLayer .layui-input-block {
     display: flex;
+    margin-left: 10px;
 }

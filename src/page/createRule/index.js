@@ -190,7 +190,7 @@ $(function () {
             fieldText = data.elem[data.elem.selectedIndex].text
         });
         $('#projectConfrim').on('click', function () {
-            if (+propertyRadioValue === 0) {
+            if (+propertyRadioValue === 0) { // 选项对象的字段
                 let ajaxData = [{
                     id: 0,
                     text: '等于'
@@ -198,7 +198,7 @@ $(function () {
                 let margin = tacticsSelection.innerWidth()
                 let result = `<div class="projectItem" data-type="${fieldValue}" style="margin-left: ${margin}px">
                     <form class="layui-form">
-                        <span><i>${fieldText}</i></span>
+                        <span class="attrTitle"><i>${fieldText}</i><em></em></span>
                         <select name="city" lay-verify="required" lay-filter="property">
                             ${ajaxData.map(e => {
                     return `<option value="${e.id}">${e.text}</option>`
@@ -206,27 +206,55 @@ $(function () {
                         </select>
                         <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
                         <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        <div class="property"></div>
                     </form>
                 </div>`
                 tacticsSelection.parent().append(result)
                 form.render('select');
                 layer.close(projectLayer)
-            } else if (+propertyRadioValue === 4) {
-                setObjecgName = layer.open({
-                    type: 1,
-                    title: `设置变量`,
-                    shadeClose: true, //点击遮罩关闭层
-                    area: ['800px', '520px'],
-                    content: $('#setObjectName')
-                });
+            } else if (+propertyRadioValue === 1) { // 选项多约束对象
+                let margin = tacticsSelection.innerWidth()
+                let typeValue = $('#projectLayer .constraintType select').find("option:selected").val()
+                let typeText = $('#projectLayer .constraintType select').find("option:selected").text()
+                if (+typeValue === 0) {
+                    let result = `
+                        <div class="projectItem constraint" data="${typeValue}" style="margin-left: ${margin}px">
+                            <form class="layui-form">
+                                <span class="">${typeText}</span>
+                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </form>
+                        </div>`
+                    tacticsSelection.parent().append(result)
+                    form.render('select');
+                    layer.close(projectLayer)
+                } else if (+typeValue === 1) { }
+            } else if (+propertyRadioValue === 2) { // 新建公式和函数
+                let margin = tacticsSelection.innerWidth()
+                let typeValue = $('#projectLayer .funcType select').find("option:selected").val()
+                let typeText = $('#projectLayer .funcType select').find("option:selected").text()
+                let params = JSON.parse($('#projectLayer .funcType select').find("option:selected").attr('data'))
+                let result = `
+                        <div class="projectItem function" data="${typeValue}" style="margin-left: ${margin}px">
+                            <form class="layui-form">
+                                <span class="">${typeText}</span>
+                                ${params.map(e => (`
+                                    <span>参数：${e}</span>
+                                    <input>
+                                `)).join('')}
+                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </form>
+                        </div>`
+                tacticsSelection.parent().append(result)
+                form.render('select');
+                layer.close(projectLayer)
+            } else if (+propertyRadioValue === 3) { // 选择使用表达式方式
+
+            } else if (+propertyRadioValue === 4) { // 设置变量名
+                let name = $('#objectName').val()
+                let result = `[<b>${name}</b>]`
+                tacticsSelection.find('em').html(result)
                 layer.close(projectLayer)
             }
-        })
-        $('#setProjrctNameConfrim').on('click', function () {
-            let name = $('#setObjectName input').val()
-            let result = `[<b>${name}</b>]`
-            tacticsSelection.find('em').html(result)
-            layer.close(setObjecgName)
         })
 
         let setPropertyValue = ''
@@ -238,21 +266,35 @@ $(function () {
             if (+setPropertyValue === 0) {
                 let html = `
                 <div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" placeholder="属性值">
+                    <input type="text" class="layui-input" id="" name="" placeholder="请输入属性值">
                     <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </div>
                 `
-                projectItem.find('form').append(html)
+                projectItem.find('form .property').html(html)
+            } else if (+setPropertyValue === 1) {
+                let html = `
+                <div class="form-group">
+                    <input type="text" class="layui-input" id="" name="" placeholder="请输入属性公式">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>
+                `
+                projectItem.find('form .property').html(html)
+            } else if (+setPropertyValue === 2) {
+                let html = `<div class="form-group">
+                    <input type="text" class="layui-input" id="" name="" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                </div>`
+                projectItem.find('form .property').html(html)
             }
             layer.close(projectItemEditLayer)
         })
 
         // 相关事件
         $('body').on('click', '.tactics .objectTitle', function () {
+            // 点击变量、规则条件、规则合集、自定义规则事件
             tacticsSelection = $(this)
             let type = $(this).parent().attr('data-type')
             let name = $(this).html()
-            console.log(type)
             if (type === 'project') {
                 projectLayer = layer.open({
                     type: 1,
@@ -263,7 +305,24 @@ $(function () {
                 });
             }
         })
-
+        $('body').on('click', '.tactics .attrTitle', function () {
+            // 点击属性名事件
+            tacticsSelection = $(this)
+            let attr = $(this).find('i').html()
+            setAttrNameLayer = layer.open({
+                type: 1,
+                title: `设置${attr}变量名`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#setAttrName')
+            });
+        })
+        $('#setAttrNameConfrim').on('click', function () {
+            // 设置属性的变量名
+            let objName = `[<b>${$('#objectAttrName').val()}</b>]`
+            tacticsSelection.find('em').html(objName)
+            layer.close(setAttrNameLayer)
+        })
         $('body').on('click', '.projectItemEdit', function (e) {
             e.preventDefault()
             let parentName = $(this).closest('.objectItem').find('.objectTitle').find('i').html()
@@ -275,6 +334,29 @@ $(function () {
                 area: ['800px', '520px'],
                 content: $('#objectItemEdit')
             });
+
+            // 查询全部变量名并渲染
+            let allVariable = []
+            let obj = $('.objectTitle')
+            let attr = $('.attrTitle')
+            obj.each(function (e) {
+                let item = $('.objectTitle').eq(e).find('b').html()
+                if (item) {
+                    allVariable.push(item)
+                }
+            })
+            attr.each(function (e) {
+                let item = $('.attrTitle').eq(e).find('b').html()
+                if (item) {
+                    allVariable.push(item)
+                }
+            })
+            let html = '<option value="">请选择变量</option>'
+            for (let i = 0; i < (allVariable && allVariable.length); i++) {
+                html += `<option value="${allVariable[i]}">${allVariable[i]}</option>`
+            }
+            $('#objectItemEdit .showVariable').html(html)
+            form.render('select', 'showAttrLayer')
         })
         // 提交 规则编辑器内容
         $('#submit').on('click', function () {
