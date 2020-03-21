@@ -44,43 +44,6 @@ $(function () {
             } else if (type === 'tab-code') {
                 $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
             } else if (type === 'tab-brief') {
-                // $.ajax({
-                //     url: './history.json',
-                //     success: function (data) {
-                //         if (data && +data.code === SUCCESS) {
-                //             let res = data.data
-                //             $('#summaryRuleName').val(res.NAME)
-                //             $('#summaryRuleType').val(res.TYPE)
-                //             $('#summaryRuleDesc').val(res.DESCRIPTION)
-                //             $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
-                //             $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
-                //             $('#summaryRuleMan').val(res.CREATOR)
-                //             $('#summaryRuleVersion').val(res.VERSION)
-
-                //             let { history } = res
-                //             let html = ''
-                //             history.map((e) => {
-                //                 html += `<tr>
-                //                     <td>${moment(e.CREATETIME).format('YYYY年MM月DD日')}</td>
-                //                     <td>${e.CREATOR}</td>
-                //                     <td>${e.VERSION}</td>
-                //                     <td>
-                //                         <button type="button" class="btn btn-xs btn-link historyEdit" data="${JSON.stringify(e)}">
-                //                             <i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑
-                //                         </button>
-                //                         <button type="button" class="btn btn-xs btn-link historyDownload" data-id="${e.OID}">
-                //                             <i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载
-                //                         </button>
-                //                     </td>
-                //                 </tr>`
-                //             })
-                //             $("#historyTable tbody").html(html)
-                //             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
-                //         } else {
-                //             alert(data.message)
-                //         }
-                //     }
-                // })
                 $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
                 loadFormData()
                 loadBriefTable()
@@ -134,14 +97,13 @@ $(function () {
         })
 
 
-        let tacticsNum = 0;
         $('#tacticsConfrim').on('click', function () {
             // 规则的策略定义弹出层确定事件
             let result = ''
             if (tacticsType === 'project') {
                 let val = $('.projectOptions input:radio:checked').val();
                 let name = $('.projectOptions input:radio:checked').next('span').html()
-                result = `<div data='${val}' class="objectItem objectItem-${tacticsNum}" data-type='${tacticsType}'>
+                result = `<div data='${val}' class="objectItem" data-type='${tacticsType}'>
                     <span class="objectTitle">
                         <i>${name}</i>
                         <em></em>
@@ -155,7 +117,6 @@ $(function () {
                 result = `<span data='custom' data-type='${tacticsType}'>${name}</span>`
             }
             $('.tactics').append(result)
-            tacticsNum++
             layer.close(tacticsAdd)
         })
 
@@ -196,7 +157,7 @@ $(function () {
                     text: '等于'
                 }]
                 let margin = tacticsSelection.innerWidth()
-                let result = `<div class="projectItem" data-type="${fieldValue}" style="margin-left: ${margin}px">
+                let result = `<div class="projectItem" data-type="attribute" field-name="${fieldValue}" style="margin-left: ${margin}px">
                     <form class="layui-form">
                         <span class="attrTitle"><i>${fieldText}</i><em></em></span>
                         <select name="city" lay-verify="required" lay-filter="property">
@@ -216,30 +177,27 @@ $(function () {
                 let margin = tacticsSelection.innerWidth()
                 let typeValue = $('#projectLayer .constraintType select').find("option:selected").val()
                 let typeText = $('#projectLayer .constraintType select').find("option:selected").text()
-                if (+typeValue === 0) {
-                    let result = `
-                        <div class="projectItem constraint" data="${typeValue}" style="margin-left: ${margin}px">
-                            <form class="layui-form">
-                                <span class="">${typeText}</span>
-                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </form>
+                // if (+typeValue === 0) {} else if (+typeValue === 1) { }
+                let result = `
+                        <div class="projectItem constraint" data-type="constraint" data="${typeValue}" style="margin-left: ${margin}px">
+                            <span class="constraintTitle">${typeText}</span>
+                            <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                         </div>`
-                    tacticsSelection.parent().append(result)
-                    form.render('select');
-                    layer.close(projectLayer)
-                } else if (+typeValue === 1) { }
+                tacticsSelection.parent().append(result)
+                form.render('select');
+                layer.close(projectLayer)
             } else if (+propertyRadioValue === 2) { // 新建公式和函数
                 let margin = tacticsSelection.innerWidth()
                 let typeValue = $('#projectLayer .funcType select').find("option:selected").val()
                 let typeText = $('#projectLayer .funcType select').find("option:selected").text()
                 let params = JSON.parse($('#projectLayer .funcType select').find("option:selected").attr('data'))
                 let result = `
-                        <div class="projectItem function" data="${typeValue}" style="margin-left: ${margin}px">
+                        <div class="projectItem function" data-type="function" data="${typeValue}" style="margin-left: ${margin}px">
                             <form class="layui-form">
-                                <span class="">${typeText}</span>
+                                <span class="attrTitle"><i>${typeText}</i><em></em></span>
                                 ${params.map(e => (`
                                     <span>参数：${e}</span>
-                                    <input>
+                                    <input param="${e}">
                                 `)).join('')}
                                 <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                             </form>
@@ -248,7 +206,16 @@ $(function () {
                 form.render('select');
                 layer.close(projectLayer)
             } else if (+propertyRadioValue === 3) { // 选择使用表达式方式
-
+                let margin = tacticsSelection.innerWidth()
+                let result = `
+                        <div class="projectItem function" data-type="formula" data="" style="margin-left: ${margin}px">
+                            <form class="layui-form">
+                                <span class="attrTitle"><em>【没有绑定变量】</em></span>
+                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            </form>
+                        </div>`
+                tacticsSelection.parent().append(result)
+                layer.close(projectLayer)
             } else if (+propertyRadioValue === 4) { // 设置变量名
                 let name = $('#objectName').val()
                 let result = `[<b>${name}</b>]`
@@ -266,7 +233,7 @@ $(function () {
             if (+setPropertyValue === 0) {
                 let html = `
                 <div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" placeholder="请输入属性值">
+                    <input type="text" class="layui-input" id="" name="" data-name="attribute" placeholder="请输入属性值">
                     <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </div>
                 `
@@ -274,14 +241,14 @@ $(function () {
             } else if (+setPropertyValue === 1) {
                 let html = `
                 <div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" placeholder="请输入属性公式">
+                    <input type="text" class="layui-input" id="" name="" data-name="formula" placeholder="请输入属性公式">
                     <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </div>
                 `
                 projectItem.find('form .property').html(html)
             } else if (+setPropertyValue === 2) {
                 let html = `<div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
+                    <input type="text" class="layui-input" id="" name="" data-name="variable" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
                     <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
                 </div>`
                 projectItem.find('form .property').html(html)
@@ -292,6 +259,8 @@ $(function () {
         // 相关事件
         $('body').on('click', '.tactics .objectTitle', function () {
             // 点击变量、规则条件、规则合集、自定义规则事件
+            $('#projectLayer .layui-input-block').eq(4).css({ "display": "flex" })
+            form.render()
             tacticsSelection = $(this)
             let type = $(this).parent().attr('data-type')
             let name = $(this).html()
@@ -316,6 +285,22 @@ $(function () {
                 area: ['800px', '520px'],
                 content: $('#setAttrName')
             });
+        })
+        $('body').on('click', '.tactics .constraintTitle', function () {
+            // 点击变量、规则条件、规则合集、自定义规则事件
+            $('#projectLayer .layui-input-block').eq(4).css({ "display": "none" })
+            tacticsSelection = $(this)
+            let type = $(this).closest('.objectItem').attr('data-type')
+            let name = $(this).html()
+            if (type === 'project') {
+                projectLayer = layer.open({
+                    type: 1,
+                    title: `修改（${name}）对象`,
+                    shadeClose: true, //点击遮罩关闭层
+                    area: ['800px', '520px'],
+                    content: $('#projectLayer')
+                });
+            }
         })
         $('#setAttrNameConfrim').on('click', function () {
             // 设置属性的变量名
@@ -369,25 +354,62 @@ $(function () {
                 // console.log('对象的名字', name)
                 // console.log('对象的值(id)', id)
                 // console.log('对象的类型', type)
-                let allItem = tactics.eq(e).find('.projectItem')
-                let attr_data = []
-                allItem.each(function (index) {
-                    let itemType = allItem.eq(index).attr('data-type')
-                    // console.log('对象子集属性的类型', itemType)
-                    // console.log('select选中的值的文本', allItem.eq(index).find('select').find("option:selected").text())
-                    // console.log('select选中的值', allItem.eq(index).find('select').find("option:selected").val())
-                    attr_data.push({
-                        type: itemType,
-                        name: allItem.eq(index).find('select').find("option:selected").text(),
-                        value: allItem.eq(index).find('select').find("option:selected").val()
+                let allItem = tactics.eq(e).children('.projectItem')
+
+                if (type === 'project') {
+                    let getData = function (allDom) {
+                        let data = []
+                        allDom.each(index => {
+                            let itemType = allDom.eq(index).attr('data-type')
+                            if (itemType === 'attribute') {
+                                data.push({
+                                    type: itemType,
+                                    factorName: allDom.eq(index).find('select').find("option:selected").text(),
+                                    factorValue: allDom.eq(index).find('select').find("option:selected").val(),
+                                    fieldName: allDom.eq(index).attr('field-name'),
+                                    name: allDom.eq(index).find('.property input').attr('data-name'),
+                                    value: allDom.eq(index).find('.property input').val(),
+                                    variable: allDom.eq(index).find('.attrTitle b').html()
+                                })
+                            } else if (itemType === 'function') {
+                                let funcData = {
+                                    type: itemType,
+                                    funcId: allDom.eq(index).attr('data'),
+                                    funcName: allDom.eq(index).find('.attrTitle > i').html(),
+                                    variable: allDom.eq(index).find('.attrTitle b').html()
+                                }
+                                let params = allDom.eq(index).find('input')
+                                params.each(index => {
+                                    let paramsName = params.eq(index).attr('param')
+                                    funcData[paramsName] = params.eq(index).val()
+                                })
+                                data.push(funcData)
+                            } else if (itemType === 'formula') {
+                                data.push({
+                                    type: itemType,
+                                    variable: allDom.eq(index).find('.attrTitle > em').html()
+                                })
+                            } else if (itemType === 'constraint') {
+                                let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
+                                data.push({
+                                    type: itemType,
+                                    value: allDom.eq(index).attr('data'),
+                                    attr_data: constraintAttrData
+                                })
+                            }
+                        })
+                        return data
+                    }
+                    let attr_data = getData(allItem)
+                    data.push({
+                        name,
+                        id,
+                        type,
+                        variable: tactics.eq(e).find('.objectTitle b').html(),
+                        attr_data
                     })
-                })
-                data.push({
-                    name,
-                    id,
-                    type,
-                    attr_data
-                })
+                }
+
             })
             console.log(data)
         })
@@ -430,7 +452,7 @@ $(function () {
                 content: $('#addDataLayer')
             });
         })
-        
+
         $('#spaceAdd').on('click', function () {
             // 空间对象添加事件
             $('#addDataLayer .form-control').eq(0).val('space')
@@ -637,7 +659,7 @@ $(function () {
                     param.pageSize = data.length;
                     param.draw = data.draw;
                     param.type = 'business',
-                    param.search = ''
+                        param.search = ''
                     return param;
                 }
             };

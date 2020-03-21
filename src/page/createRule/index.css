@@ -152,6 +152,9 @@
 .projectItem .form-group {
     display: flex;
 }
+.constraint > form {
+    display: block;
+}
 
 
 
