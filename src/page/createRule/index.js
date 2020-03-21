@@ -1,803 +1,788 @@
-$(function () {
-    layui.use('form', function () {
-        // layui相关插件定义
-        let form = layui.form;
+const SUCCESS = 200;
 
-        // 全局变量相关定义
-        const SUCCESS = 200;
+layui.use('form', function () {
+    // layui相关插件定义
+    let form = layui.form;
 
-        let tacticsSelection = null;
-        let projectItem = null;
+    // 全局变量相关定义
 
-        // $.ajax({
-        //     url: 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/',
-        //     type: 'POST',
-        //     data: JSON.stringify({
-        //         "type": 'SPACE',
-        //         "startIndex": 0,
-        //         "pageSize": 10
-        //     }),
-        //     contentType: 'application/json;charset=UTF-8',
-        //     success: function (data) {
-        //         console.log(data)
-        //     }
-        // })
+    let tacticsSelection = null;
+    let projectItem = null;
 
-
+    // $.ajax({
+    //     url: 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/',
+    //     type: 'POST',
+    //     data: JSON.stringify({
+    //         "type": 'SPACE',
+    //         "startIndex": 0,
+    //         "pageSize": 10
+    //     }),
+    //     contentType: 'application/json;charset=UTF-8',
+    //     success: function (data) {
+    //         console.log(data)
+    //     }
+    // })
 
 
 
 
 
 
-        let treeData = "index.json";
-        treeShow(treeData, $("#ruleTree"), true);
+
+
+    let treeData = "index.json";
+    treeShow(treeData, $("#ruleTree"), true);
 
 
 
 
-        $('.tabs a').on('click', function () {
-            let type = $(this).attr('href')
-            // console.log(type)
-            if (type === 'tab-edit') {
-                $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-code') {
-                $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-brief') {
-                $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
-                loadFormData()
-                loadBriefTable()
-            } else if (type === 'tab-data') {
-                loadSpaceTable()
-                loadBusinessTable()
-                $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-func') {
-                loadFuncTable()
-                $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-rely') {
-                $('.rely').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-service') {
-                $('.service').css({ "display": "block" }).siblings().css({ "display": "none" })
-            } else if (type === 'tab-work') {
-                $('.workTabs').css({ "display": "block" }).siblings().css({ "display": "none" })
-                $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
-                $('.workTabs li').removeClass('active')
-                $('.workTabs li').eq(0).addClass('active').siblings().removeCLass('active')
-            } else if (type === 'tab-set') {
-                $('.setTabs').css({ "display": "block" }).siblings().css({ "display": "none" })
-                $('.setUp').css({ "display": "block" }).siblings().css({ "display": "none" })
-            }
-        })
-        // 规则的策略定义弹出层触发
-        $('#tacticsAdd').on('click', function () {
-            tacticsAdd = layer.open({
-                type: 1,
-                title: '添加规则条件',
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#tacticsLayer')
-            });
-        })
-        let tacticsType = 'project'
-        $('#project').on('click', function () {
-            tacticsType = 'project'
-            $('.projectOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
-        })
-        $('#condition').on('click', function () {
-            tacticsType = 'condition'
-            $('.conditionOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
-        })
-        $('#gourp').on('click', function () {
-            tacticsType = 'gourp'
-            $('.gourpOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
-        })
-        $('#custom').on('click', function () {
-            tacticsType = 'custom'
-            $('.customInput').css({ "display": "block" }).siblings().css({ "display": "none" })
-        })
+    $('.tabs a').on('click', function () {
+        let type = $(this).attr('href')
+        // console.log(type)
+        if (type === 'tab-edit') {
+            $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-code') {
+            $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-brief') {
+            $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
+            loadFormData()
+            loadBriefTable()
+        } else if (type === 'tab-data') {
+            loadSpaceTable()
+            loadBusinessTable()
+            $('.data').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-func') {
+            loadFuncTable()
+            $('.func').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-rely') {
+            $('.rely').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-service') {
+            $('.service').css({ "display": "block" }).siblings().css({ "display": "none" })
+        } else if (type === 'tab-work') {
+            $('.workTabs').css({ "display": "block" }).siblings().css({ "display": "none" })
+            $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
+            $('.workTabs li').removeClass('active')
+            $('.workTabs li').eq(0).addClass('active').siblings().removeCLass('active')
+        } else if (type === 'tab-set') {
+            $('.setTabs').css({ "display": "block" }).siblings().css({ "display": "none" })
+            $('.setUp').css({ "display": "block" }).siblings().css({ "display": "none" })
+        }
+    })
+    // 规则的策略定义弹出层触发
+    $('#tacticsAdd').on('click', function () {
+        tacticsAdd = layer.open({
+            type: 1,
+            title: '添加规则条件',
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#tacticsLayer')
+        });
+    })
+    let tacticsType = 'project'
+    $('#project').on('click', function () {
+        tacticsType = 'project'
+        $('.projectOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
+    })
+    $('#condition').on('click', function () {
+        tacticsType = 'condition'
+        $('.conditionOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
+    })
+    $('#gourp').on('click', function () {
+        tacticsType = 'gourp'
+        $('.gourpOptions').css({ "display": "flex" }).siblings().css({ "display": "none" })
+    })
+    $('#custom').on('click', function () {
+        tacticsType = 'custom'
+        $('.customInput').css({ "display": "block" }).siblings().css({ "display": "none" })
+    })
 
 
-        $('#tacticsConfrim').on('click', function () {
-            // 规则的策略定义弹出层确定事件
-            let result = ''
-            if (tacticsType === 'project') {
-                let val = $('.projectOptions input:radio:checked').val();
-                let name = $('.projectOptions input:radio:checked').next('span').html()
-                result = `<div data='${val}' class="objectItem" data-type='${tacticsType}'>
-                    <span class="objectTitle">
-                        <i>${name}</i>
-                        <em></em>
-                    </span>
-                </div>`
-            } else if (tacticsType === 'condition') {
-                result = `<span data='condition' data-type='${tacticsType}'>存在条件/不存在/所有条件true(根据上页现在的条件显示)</span>`
-            } else if (tacticsType === 'gourp') {
-                result = `<span data='gourp' data-type='${tacticsType}'>普通集合\增强集合（根据上文选择的集合类型确定，普通集合与增强集合与存在条件的选择集合一致）</span>`
-            } else if (tacticsType === 'custom') {
-                result = `<span data='custom' data-type='${tacticsType}'>${name}</span>`
-            }
-            $('.tactics').append(result)
-            layer.close(tacticsAdd)
-        })
-
-        // 规的结论弹出层触发
-        $('#conclusionAdd').on('click', function () {
-            conclusionAdd = layer.open({
-                type: 1,
-                title: '选择结论的操作',
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#conclusionLayer')
-            });
-        })
-        $('#conclusionConfrim').on('click', function () {
-            // 规则的策略定义弹出层确定事件
-            let result = ''
+    $('#tacticsConfrim').on('click', function () {
+        // 规则的策略定义弹出层确定事件
+        let result = ''
+        if (tacticsType === 'project') {
             let val = $('.projectOptions input:radio:checked').val();
             let name = $('.projectOptions input:radio:checked').next('span').html()
-            result = `<span data='${val}' data-type='${tacticsType}'>${name}</span>`
-            $('.conclusion').append(result)
-            layer.close(conclusionAdd)
-        })
+            result = `<div data='${val}' class="objectItem" data-type='${tacticsType}'>
+                <span class="objectTitle">
+                    <i>${name}</i>
+                    <em></em>
+                </span>
+            </div>`
+        } else if (tacticsType === 'condition') {
+            result = `<span data='condition' data-type='${tacticsType}'>存在条件/不存在/所有条件true(根据上页现在的条件显示)</span>`
+        } else if (tacticsType === 'gourp') {
+            result = `<span data='gourp' data-type='${tacticsType}'>普通集合\增强集合（根据上文选择的集合类型确定，普通集合与增强集合与存在条件的选择集合一致）</span>`
+        } else if (tacticsType === 'custom') {
+            result = `<span data='custom' data-type='${tacticsType}'>${name}</span>`
+        }
+        $('.tactics').append(result)
+        layer.close(tacticsAdd)
+    })
 
-        let propertyRadioValue = ''
-        form.on('radio(property)', function (data) {
-            propertyRadioValue = data.value
+    // 规的结论弹出层触发
+    $('#conclusionAdd').on('click', function () {
+        conclusionAdd = layer.open({
+            type: 1,
+            title: '选择结论的操作',
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#conclusionLayer')
         });
-        let fieldValue = ''
-        let fieldText = ''
-        form.on('select(field)', function (data) {
-            fieldValue = data.value
-            fieldText = data.elem[data.elem.selectedIndex].text
-        });
-        $('#projectConfrim').on('click', function () {
-            if (+propertyRadioValue === 0) { // 选项对象的字段
-                let ajaxData = [{
-                    id: 0,
-                    text: '等于'
-                }]
-                let margin = tacticsSelection.innerWidth()
-                let result = `<div class="projectItem" data-type="attribute" field-name="${fieldValue}" style="margin-left: ${margin}px">
-                    <form class="layui-form">
-                        <span class="attrTitle"><i>${fieldText}</i><em></em></span>
-                        <select name="city" lay-verify="required" lay-filter="property">
-                            ${ajaxData.map(e => {
-                    return `<option value="${e.id}">${e.text}</option>`
-                })}
-                        </select>
-                        <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-                        <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        <div class="property"></div>
-                    </form>
-                </div>`
-                tacticsSelection.parent().append(result)
-                form.render('select');
-                layer.close(projectLayer)
-            } else if (+propertyRadioValue === 1) { // 选项多约束对象
-                let margin = tacticsSelection.innerWidth()
-                let typeValue = $('#projectLayer .constraintType select').find("option:selected").val()
-                let typeText = $('#projectLayer .constraintType select').find("option:selected").text()
-                // if (+typeValue === 0) {} else if (+typeValue === 1) { }
-                let result = `
-                        <div class="projectItem constraint" data-type="constraint" data="${typeValue}" style="margin-left: ${margin}px">
-                            <span class="constraintTitle">${typeText}</span>
-                            <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                        </div>`
-                tacticsSelection.parent().append(result)
-                form.render('select');
-                layer.close(projectLayer)
-            } else if (+propertyRadioValue === 2) { // 新建公式和函数
-                let margin = tacticsSelection.innerWidth()
-                let typeValue = $('#projectLayer .funcType select').find("option:selected").val()
-                let typeText = $('#projectLayer .funcType select').find("option:selected").text()
-                let params = JSON.parse($('#projectLayer .funcType select').find("option:selected").attr('data'))
-                let result = `
-                        <div class="projectItem function" data-type="function" data="${typeValue}" style="margin-left: ${margin}px">
-                            <form class="layui-form">
-                                <span class="attrTitle"><i>${typeText}</i><em></em></span>
-                                ${params.map(e => (`
-                                    <span>参数：${e}</span>
-                                    <input param="${e}">
-                                `)).join('')}
-                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </form>
-                        </div>`
-                tacticsSelection.parent().append(result)
-                form.render('select');
-                layer.close(projectLayer)
-            } else if (+propertyRadioValue === 3) { // 选择使用表达式方式
-                let margin = tacticsSelection.innerWidth()
-                let result = `
-                        <div class="projectItem function" data-type="formula" data="" style="margin-left: ${margin}px">
-                            <form class="layui-form">
-                                <span class="attrTitle"><em>【没有绑定变量】</em></span>
-                                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                            </form>
-                        </div>`
-                tacticsSelection.parent().append(result)
-                layer.close(projectLayer)
-            } else if (+propertyRadioValue === 4) { // 设置变量名
-                let name = $('#objectName').val()
-                let result = `[<b>${name}</b>]`
-                tacticsSelection.find('em').html(result)
-                layer.close(projectLayer)
-            }
-        })
+    })
+    $('#conclusionConfrim').on('click', function () {
+        // 规则的策略定义弹出层确定事件
+        let result = ''
+        let val = $('.projectOptions input:radio:checked').val();
+        let name = $('.projectOptions input:radio:checked').next('span').html()
+        result = `<span data='${val}' data-type='${tacticsType}'>${name}</span>`
+        $('.conclusion').append(result)
+        layer.close(conclusionAdd)
+    })
 
-        let setPropertyValue = ''
-        form.on('radio(setProperty)', function (data) {
-            console.log('setproperty', data.value)
-            setPropertyValue = data.value
-        });
-        $('#setPropertyConfrim').on('click', function () {
-            if (+setPropertyValue === 0) {
-                let html = `
-                <div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" data-name="attribute" placeholder="请输入属性值">
-                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                </div>
-                `
-                projectItem.find('form .property').html(html)
-            } else if (+setPropertyValue === 1) {
-                let html = `
-                <div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" data-name="formula" placeholder="请输入属性公式">
-                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                </div>
-                `
-                projectItem.find('form .property').html(html)
-            } else if (+setPropertyValue === 2) {
-                let html = `<div class="form-group">
-                    <input type="text" class="layui-input" id="" name="" data-name="variable" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
-                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
-                </div>`
-                projectItem.find('form .property').html(html)
-            }
-            layer.close(projectItemEditLayer)
-        })
-
-        // 相关事件
-        $('body').on('click', '.tactics .objectTitle', function () {
-            // 点击变量、规则条件、规则合集、自定义规则事件
-            $('#projectLayer .layui-input-block').eq(4).css({ "display": "flex" })
-            form.render()
-            tacticsSelection = $(this)
-            let type = $(this).parent().attr('data-type')
-            let name = $(this).html()
-            if (type === 'project') {
-                projectLayer = layer.open({
-                    type: 1,
-                    title: `修改（${name}）对象`,
-                    shadeClose: true, //点击遮罩关闭层
-                    area: ['800px', '520px'],
-                    content: $('#projectLayer')
-                });
-            }
-        })
-        $('body').on('click', '.tactics .attrTitle', function () {
-            // 点击属性名事件
-            tacticsSelection = $(this)
-            let attr = $(this).find('i').html()
-            setAttrNameLayer = layer.open({
-                type: 1,
-                title: `设置${attr}变量名`,
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#setAttrName')
-            });
-        })
-        $('body').on('click', '.tactics .constraintTitle', function () {
-            // 点击变量、规则条件、规则合集、自定义规则事件
-            $('#projectLayer .layui-input-block').eq(4).css({ "display": "none" })
-            tacticsSelection = $(this)
-            let type = $(this).closest('.objectItem').attr('data-type')
-            let name = $(this).html()
-            if (type === 'project') {
-                projectLayer = layer.open({
-                    type: 1,
-                    title: `修改（${name}）对象`,
-                    shadeClose: true, //点击遮罩关闭层
-                    area: ['800px', '520px'],
-                    content: $('#projectLayer')
-                });
-            }
-        })
-        $('#setAttrNameConfrim').on('click', function () {
-            // 设置属性的变量名
-            let objName = `[<b>${$('#objectAttrName').val()}</b>]`
-            tacticsSelection.find('em').html(objName)
-            layer.close(setAttrNameLayer)
-        })
-        $('body').on('click', '.projectItemEdit', function (e) {
-            e.preventDefault()
-            let parentName = $(this).closest('.objectItem').find('.objectTitle').find('i').html()
-            projectItem = $(this).closest('.projectItem')
-            projectItemEditLayer = layer.open({
-                type: 1,
-                title: `修改（${parentName}）字段属性`,
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#objectItemEdit')
-            });
-
-            // 查询全部变量名并渲染
-            let allVariable = []
-            let obj = $('.objectTitle')
-            let attr = $('.attrTitle')
-            obj.each(function (e) {
-                let item = $('.objectTitle').eq(e).find('b').html()
-                if (item) {
-                    allVariable.push(item)
-                }
-            })
-            attr.each(function (e) {
-                let item = $('.attrTitle').eq(e).find('b').html()
-                if (item) {
-                    allVariable.push(item)
-                }
-            })
-            let html = '<option value="">请选择变量</option>'
-            for (let i = 0; i < (allVariable && allVariable.length); i++) {
-                html += `<option value="${allVariable[i]}">${allVariable[i]}</option>`
-            }
-            $('#objectItemEdit .showVariable').html(html)
-            form.render('select', 'showAttrLayer')
-        })
-        // 提交 规则编辑器内容
-        $('#submit').on('click', function () {
-            let tactics = $('.objectItem')
-            let data = []
-            tactics.each(function (e) {
-                let name = tactics.eq(e).find('.objectTitle > i').html()
-                let id = tactics.eq(e).attr('data')
-                let type = tactics.eq(e).attr('data-type')
-                // console.log('对象的名字', name)
-                // console.log('对象的值(id)', id)
-                // console.log('对象的类型', type)
-                let allItem = tactics.eq(e).children('.projectItem')
-
-                if (type === 'project') {
-                    let getData = function (allDom) {
-                        let data = []
-                        allDom.each(index => {
-                            let itemType = allDom.eq(index).attr('data-type')
-                            if (itemType === 'attribute') {
-                                data.push({
-                                    type: itemType,
-                                    factorName: allDom.eq(index).find('select').find("option:selected").text(),
-                                    factorValue: allDom.eq(index).find('select').find("option:selected").val(),
-                                    fieldName: allDom.eq(index).attr('field-name'),
-                                    name: allDom.eq(index).find('.property input').attr('data-name'),
-                                    value: allDom.eq(index).find('.property input').val(),
-                                    variable: allDom.eq(index).find('.attrTitle b').html()
-                                })
-                            } else if (itemType === 'function') {
-                                let funcData = {
-                                    type: itemType,
-                                    funcId: allDom.eq(index).attr('data'),
-                                    funcName: allDom.eq(index).find('.attrTitle > i').html(),
-                                    variable: allDom.eq(index).find('.attrTitle b').html()
-                                }
-                                let params = allDom.eq(index).find('input')
-                                params.each(index => {
-                                    let paramsName = params.eq(index).attr('param')
-                                    funcData[paramsName] = params.eq(index).val()
-                                })
-                                data.push(funcData)
-                            } else if (itemType === 'formula') {
-                                data.push({
-                                    type: itemType,
-                                    variable: allDom.eq(index).find('.attrTitle > em').html()
-                                })
-                            } else if (itemType === 'constraint') {
-                                let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
-                                data.push({
-                                    type: itemType,
-                                    value: allDom.eq(index).attr('data'),
-                                    attr_data: constraintAttrData
-                                })
-                            }
-                        })
-                        return data
-                    }
-                    let attr_data = getData(allItem)
-                    data.push({
-                        name,
-                        id,
-                        type,
-                        variable: tactics.eq(e).find('.objectTitle b').html(),
-                        attr_data
-                    })
-                }
-
-            })
-            console.log(data)
-        })
-
-        // 添加事件
-        $('#addFunc').on('click', function () {
-            // 添加函数事件
-            addFuncLayer = layer.open({
-                type: 1,
-                title: `添加函数`,
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#addFuncLayer')
-            });
-        })
-        $('#addFuncConfirm').on('click', function () {
-            let data = form.val('addFunc')
-            // if (data.method_data.length) data.method_data = JSON.stringify(data.method_data)
-            $.ajax({
-                url: 'http://172.18.84.114:8081/ruleService/bean/addFunction/',
-                data,
-                type: 'POST',
-                success: function (data) {
-                    layer.msg(data.message);
-                    loadFuncTable()
-                    layer.close(addFuncLayer)
-                    // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
-                    // else layer.msg('添加失败');
-                }
-            })
-        })
-        $('#businessAdd').on('click', function () {
-            // 业务对象添加事件
-            $('#addDataLayer .form-control').eq(0).val('business')
-            addDataLayer = layer.open({
-                type: 1,
-                title: `添加业务数据对象`,
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#addDataLayer')
-            });
-        })
-
-        $('#spaceAdd').on('click', function () {
-            // 空间对象添加事件
-            $('#addDataLayer .form-control').eq(0).val('space')
-            addDataLayer = layer.open({
-                type: 1,
-                title: `添加空间数据对象`,
-                shadeClose: true, //点击遮罩关闭层
-                area: ['800px', '520px'],
-                content: $('#addDataLayer')
-            });
-        })
-        $('#addDataLayer #addDataConfrim').on('click', function () {
-            let data = form.val("addBusiness");
-            $.ajax({
-                url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
-                data,
-                type: 'POST',
-                success: function (data) {
-                    layer.msg(data.message);
-                    loadBusinessTable()
-                    loadSpaceTable()
-                    layer.close(addDataLayer)
-                    // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
-                    // else layer.msg('添加失败');
-                }
-            })
-        })
-
-        // 删除事件
-        $('body').on('click', '.spaceDelect', function (e) {
-            // 删除空间数据对象
-            let id = $(this).attr('data-id')
-            layer.confirm(`确认删除该空间数据对象`, {
-                btn: ['确认', '取消']
-            }, function () {
-                $.ajax({
-                    url: 'http://172.18.84.114:8081/ruleService/bean/deleteBean/',
-                    data: {
-                        id
-                    },
-                    type: 'POST',
-                    success: function (data) {
-                        layer.msg(data.message);
-                        loadSpaceTable()
-                        // if (data && data.code === 'SUCCESS') layer.msg('删除成功');
-                        // else layer.msg('删除失败');
-                    }
-                })
-            }, function () {
-                layer.msg('取消删除');
-            });
-        })
-        $('body').on('click', '.businessDelect', function (e) {
-            // 删除业务数据对象
-            let id = $(this).attr('data-id')
-            layer.confirm(`确认删除该业务数据对象`, {
-                btn: ['确认', '取消']
-            }, function () {
-                $.ajax({
-                    url: 'http://172.18.84.114:8081/ruleService/bean/deleteBean/',
-                    data: {
-                        id
-                    },
-                    type: 'POST',
-                    success: function (data) {
-                        if (data && data.code === SUCCESS) {
-                            layer.msg('删除成功');
-                            loadBusinessTable()
-                        } else layer.msg('删除失败');
-                    }
-                })
-            }, function () {
-                layer.msg('取消删除');
-            });
-        })
-        $('body').on('click', '.funcDelect', function (e) {
-            // 删除函数
-            let id = $(this).attr('data-id')
-            layer.confirm(`确认删除该函数吗？`, {
-                btn: ['确认', '取消']
-            }, function () {
-                $.ajax({
-                    url: 'http://172.18.84.114:8081/ruleService/bean/deleteFunction/',
-                    data: {
-                        id
-                    },
-                    type: 'POST',
-                    success: function (data) {
-                        if (data && data.code === SUCCESS) {
-                            layer.msg('删除成功');
-                            loadFuncTable()
-                        } else layer.msg('删除失败');
-                    }
-                })
-            }, function () {
-                layer.msg('取消删除');
-            });
-        })
-        $('body').on('click', '.historyDownload', function (e) {
-            // 下载规则
-            layer.confirm(`下载，id为：${$(this).attr('data-id')}`, {
-                btn: ['确认', '取消']
-            }, function () {
-                layer.msg('下载成功');
-            }, function () {
-                layer.msg('取消下载');
-            });
-        })
-
-        // 相关事件提取为函数
-        function loadSpaceTable() {
-            let datatable_columns = [
-                {
-                    data: "name",
-                    orderable: false
-                },
-                {
-                    data: "desc",
-                    orderable: false
-                },
-                {
-                    data: "path",
-                    orderable: false
-                },
-                {
-                    data: "id",
-                    render: function (data, type, row) {
-                        return `
-                    <button class="btn btn-xs btn-primary spaceDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
-                    `;
-                    },
-                    orderable: false
-                },
-            ];
-            let datatable_ele = null;
-            let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
-            let delete_ele = "undefined";
-            let data_manage = {
-                getQueryCondition: function (data) {
-                    let param = {};
-                    //组装排序参数
-                    if (data.order && data.order.length && data.order[0]) {
-                        let sqlName = data.columns[data.order[0].column].data;
-                        param.orderColumn = sqlName;
-                        //排序方式asc或者desc
-                        param.orderDir = data.order[0].dir;
-                    }
-
-                    //组装分页参数
-                    param.startIndex = data.start;
-                    param.pageSize = data.length;
-                    param.draw = data.draw;
-                    param.type = 'space'
-                    param.search = ''
-                    return param;
-                }
-            };
-            let del_url = "undefined";
-
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#spaceTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
-        }
-        function loadBusinessTable() {
-            let datatable_columns = [
-                {
-                    data: "name",
-                    orderable: false
-                },
-                {
-                    data: "desc",
-                    orderable: false
-                },
-                {
-                    data: "path",
-                    orderable: false
-                },
-                {
-                    data: "id",
-                    render: function (data, type, row) {
-                        return `
-                    <button class="btn btn-xs btn-primary businessDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
-                    `;
-                    },
-                    orderable: false
-                },
-            ];
-            let datatable_ele = null;
-            let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
-            let delete_ele = "undefined";
-            let data_manage = {
-                getQueryCondition: function (data) {
-                    let param = {};
-                    //组装排序参数
-                    if (data.order && data.order.length && data.order[0]) {
-                        let sqlName = data.columns[data.order[0].column].data;
-                        param.orderColumn = sqlName;
-                        //排序方式asc或者desc
-                        param.orderDir = data.order[0].dir;
-                    }
-
-                    //组装分页参数
-                    param.startIndex = data.start;
-                    param.pageSize = data.length;
-                    param.draw = data.draw;
-                    param.type = 'business',
-                        param.search = ''
-                    return param;
-                }
-            };
-            let del_url = "undefined";
-
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#businessTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
-        }
-        function loadFuncTable() {
-            let datatable_columns = [
-                {
-                    data: "methodnickname",
-                    orderable: false
-                },
-                {
-                    data: "methodtype",
-                    orderable: false
-                },
-                {
-                    data: "methodcontent",
-                    orderable: false
-                },
-                {
-                    data: "methodid",
-                    render: function (data, type, row) {
-                        return `
-                    <button class="btn btn-xs btn-primary funcDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
-                    `;
-                    },
-                    orderable: false
-                },
-            ];
-            let datatable_ele = null;
-            let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryMethod/';
-            let delete_ele = "undefined";
-            let data_manage = {
-                getQueryCondition: function (data) {
-                    let param = {};
-                    //组装排序参数
-                    if (data.order && data.order.length && data.order[0]) {
-                        let sqlName = data.columns[data.order[0].column].data;
-                        param.orderColumn = sqlName;
-                        //排序方式asc或者desc
-                        param.orderDir = data.order[0].dir;
-                    }
-
-                    //组装分页参数
-                    param.startIndex = data.start;
-                    param.pageSize = data.length;
-                    param.draw = data.draw;
-                    param.type = 'FUNCTION_SPACE'
-                    param.search = ''
-                    return param;
-                }
-            };
-            let del_url = "undefined";
-
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#funcTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
-        }
-        function loadFormData() {
-            $.ajax({
-                url: 'http://172.18.84.114:8081/ruleService/rule/ruleOverview',
-                data: {
-                    ruleId: 3
-                },
-                type: 'POST',
-                success: function (data) {
-                    if (data && +data.code === SUCCESS) {
-                        let res = data.data
-                        $('#summaryRuleName').val(res.NAME)
-                        $('#summaryRuleType').val(res.TYPE)
-                        $('#summaryRuleDesc').val(res.DESCRIPTION)
-                        $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
-                        $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
-                        $('#summaryRuleMan').val(res.CREATOR)
-                        $('#summaryRuleVersion').val(res.VERSION)
-                    }
-                }
-            })
-        }
-        function loadBriefTable() {
-            let datatable_columns = [
-                {
-                    data: "CREATETIME",
-                    render: function (data) {
-                        return `${moment(data).format('YYYY年MM月DD日')}`
-                    },
-                    orderable: false
-                },
-                {
-                    data: "CREATOR",
-                    orderable: false
-                },
-                {
-                    data: "VERSION",
-                    orderable: false
-                },
-                {
-                    data: "OID",
-                    render: function (data, type, row) {
-                        return `
-                    <button class="btn btn-xs btn-primary briefEdit" data-id=${data}><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑</button>
-                    <button class="btn btn-xs btn-primary briefDownload" data-id=${data}><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载</button>
-                    `;
-                    },
-                    orderable: false
-                },
-            ];
-            let datatable_ele = null;
-            let dataurl = 'http://172.18.84.114:8081/ruleService/rule/getRuleHistoryById';
-            let delete_ele = "undefined";
-            let data_manage = {
-                getQueryCondition: function (data) {
-                    let param = {};
-                    //组装排序参数
-                    if (data.order && data.order.length && data.order[0]) {
-                        let sqlName = data.columns[data.order[0].column].data;
-                        param.orderColumn = sqlName;
-                        //排序方式asc或者desc
-                        param.orderDir = data.order[0].dir;
-                    }
-
-                    //组装分页参数
-                    param.startIndex = data.start;
-                    param.pageSize = data.length;
-                    param.draw = data.draw;
-                    param.ruleId = 3
-                    return param;
-                }
-            };
-            let del_url = "undefined";
-
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-            // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-            tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
-        }
+    let propertyRadioValue = ''
+    form.on('radio(property)', function (data) {
+        propertyRadioValue = data.value
     });
-})
+    let fieldValue = ''
+    let fieldText = ''
+    form.on('select(field)', function (data) {
+        fieldValue = data.value
+        fieldText = data.elem[data.elem.selectedIndex].text
+    });
+    $('#projectConfrim').on('click', function () {
+        if (+propertyRadioValue === 0) { // 选项对象的字段
+            let ajaxData = [{
+                id: 0,
+                text: '等于'
+            }]
+            let margin = tacticsSelection.innerWidth()
+            let result = `<div class="projectItem" data-type="attribute" field-name="${fieldValue}" style="margin-left: ${margin}px">
+                <form class="layui-form">
+                    <span class="attrTitle"><i>${fieldText}</i><em></em></span>
+                    <select name="city" lay-verify="required" lay-filter="property">
+                        ${ajaxData.map(e => {
+                return `<option value="${e.id}">${e.text}</option>`
+            })}
+                    </select>
+                    <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                    <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    <div class="property"></div>
+                </form>
+            </div>`
+            tacticsSelection.parent().append(result)
+            form.render('select');
+            layer.close(projectLayer)
+        } else if (+propertyRadioValue === 1) { // 选项多约束对象
+            let margin = tacticsSelection.innerWidth()
+            let typeValue = $('#projectLayer .constraintType select').find("option:selected").val()
+            let typeText = $('#projectLayer .constraintType select').find("option:selected").text()
+            // if (+typeValue === 0) {} else if (+typeValue === 1) { }
+            let result = `
+                    <div class="projectItem constraint" data-type="constraint" data="${typeValue}" style="margin-left: ${margin}px">
+                        <span class="constraintTitle">${typeText}</span>
+                        <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                    </div>`
+            tacticsSelection.parent().append(result)
+            form.render('select');
+            layer.close(projectLayer)
+        } else if (+propertyRadioValue === 2) { // 新建公式和函数
+            let margin = tacticsSelection.innerWidth()
+            let typeValue = $('#projectLayer .funcType select').find("option:selected").val()
+            let typeText = $('#projectLayer .funcType select').find("option:selected").text()
+            let params = JSON.parse($('#projectLayer .funcType select').find("option:selected").attr('data'))
+            let result = `
+                    <div class="projectItem function" data-type="function" data="${typeValue}" style="margin-left: ${margin}px">
+                        <form class="layui-form">
+                            <span class="attrTitle"><i>${typeText}</i><em></em></span>
+                            ${params.map(e => (`
+                                <span>参数：${e}</span>
+                                <input param="${e}">
+                            `)).join('')}
+                            <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </form>
+                    </div>`
+            tacticsSelection.parent().append(result)
+            form.render('select');
+            layer.close(projectLayer)
+        } else if (+propertyRadioValue === 3) { // 选择使用表达式方式
+            let margin = tacticsSelection.innerWidth()
+            let result = `
+                    <div class="projectItem function" data-type="formula" data="" style="margin-left: ${margin}px">
+                        <form class="layui-form">
+                            <span class="attrTitle"><em>【没有绑定变量】</em></span>
+                            <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                        </form>
+                    </div>`
+            tacticsSelection.parent().append(result)
+            layer.close(projectLayer)
+        } else if (+propertyRadioValue === 4) { // 设置变量名
+            let name = $('#objectName').val()
+            let result = `[<b>${name}</b>]`
+            tacticsSelection.find('em').html(result)
+            layer.close(projectLayer)
+        }
+    })
+
+    let setPropertyValue = ''
+    form.on('radio(setProperty)', function (data) {
+        console.log('setproperty', data.value)
+        setPropertyValue = data.value
+    });
+    $('#setPropertyConfrim').on('click', function () {
+        if (+setPropertyValue === 0) {
+            let html = `
+            <div class="form-group">
+                <input type="text" class="layui-input" id="" name="" data-name="attribute" placeholder="请输入属性值">
+                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>
+            `
+            projectItem.find('form .property').html(html)
+        } else if (+setPropertyValue === 1) {
+            let html = `
+            <div class="form-group">
+                <input type="text" class="layui-input" id="" name="" data-name="formula" placeholder="请输入属性公式">
+                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>
+            `
+            projectItem.find('form .property').html(html)
+        } else if (+setPropertyValue === 2) {
+            let html = `<div class="form-group">
+                <input type="text" class="layui-input" id="" name="" data-name="variable" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
+                <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+            </div>`
+            projectItem.find('form .property').html(html)
+        }
+        layer.close(projectItemEditLayer)
+    })
+
+    // 相关事件
+    $('body').on('click', '.tactics .objectTitle', function () {
+        // 点击变量、规则条件、规则合集、自定义规则事件
+        $('#projectLayer .layui-input-block').eq(4).css({ "display": "flex" })
+        form.render()
+        tacticsSelection = $(this)
+        let type = $(this).parent().attr('data-type')
+        let name = $(this).html()
+        if (type === 'project') {
+            projectLayer = layer.open({
+                type: 1,
+                title: `修改（${name}）对象`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#projectLayer')
+            });
+        }
+    })
+    $('body').on('click', '.tactics .attrTitle', function () {
+        // 点击属性名事件
+        tacticsSelection = $(this)
+        let attr = $(this).find('i').html()
+        setAttrNameLayer = layer.open({
+            type: 1,
+            title: `设置${attr}变量名`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#setAttrName')
+        });
+    })
+    $('body').on('click', '.tactics .constraintTitle', function () {
+        // 点击变量、规则条件、规则合集、自定义规则事件
+        $('#projectLayer .layui-input-block').eq(4).css({ "display": "none" })
+        tacticsSelection = $(this)
+        let type = $(this).closest('.objectItem').attr('data-type')
+        let name = $(this).html()
+        if (type === 'project') {
+            projectLayer = layer.open({
+                type: 1,
+                title: `修改（${name}）对象`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#projectLayer')
+            });
+        }
+    })
+    $('#setAttrNameConfrim').on('click', function () {
+        // 设置属性的变量名
+        let objName = `[<b>${$('#objectAttrName').val()}</b>]`
+        tacticsSelection.find('em').html(objName)
+        layer.close(setAttrNameLayer)
+    })
+    $('body').on('click', '.projectItemEdit', function (e) {
+        e.preventDefault()
+        let parentName = $(this).closest('.objectItem').find('.objectTitle').find('i').html()
+        projectItem = $(this).closest('.projectItem')
+        projectItemEditLayer = layer.open({
+            type: 1,
+            title: `修改（${parentName}）字段属性`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#objectItemEdit')
+        });
+
+        // 查询全部变量名并渲染
+        let allVariable = []
+        let obj = $('.objectTitle')
+        let attr = $('.attrTitle')
+        obj.each(function (e) {
+            let item = $('.objectTitle').eq(e).find('b').html()
+            if (item) {
+                allVariable.push(item)
+            }
+        })
+        attr.each(function (e) {
+            let item = $('.attrTitle').eq(e).find('b').html()
+            if (item) {
+                allVariable.push(item)
+            }
+        })
+        let html = '<option value="">请选择变量</option>'
+        for (let i = 0; i < (allVariable && allVariable.length); i++) {
+            html += `<option value="${allVariable[i]}">${allVariable[i]}</option>`
+        }
+        $('#objectItemEdit .showVariable').html(html)
+        form.render('select', 'showAttrLayer')
+    })
+    // 提交 规则编辑器内容
+    $('#submit').on('click', function () {
+        let tactics = $('.objectItem')
+        let data = []
+        tactics.each(function (e) {
+            let name = tactics.eq(e).find('.objectTitle > i').html()
+            let id = tactics.eq(e).attr('data')
+            let type = tactics.eq(e).attr('data-type')
+            // console.log('对象的名字', name)
+            // console.log('对象的值(id)', id)
+            // console.log('对象的类型', type)
+            let allItem = tactics.eq(e).children('.projectItem')
+
+            if (type === 'project') {
+                let getData = function (allDom) {
+                    let data = []
+                    allDom.each(index => {
+                        let itemType = allDom.eq(index).attr('data-type')
+                        if (itemType === 'attribute') {
+                            data.push({
+                                type: itemType,
+                                factorName: allDom.eq(index).find('select').find("option:selected").text(),
+                                factorValue: allDom.eq(index).find('select').find("option:selected").val(),
+                                fieldName: allDom.eq(index).attr('field-name'),
+                                name: allDom.eq(index).find('.property input').attr('data-name'),
+                                value: allDom.eq(index).find('.property input').val(),
+                                variable: allDom.eq(index).find('.attrTitle b').html()
+                            })
+                        } else if (itemType === 'function') {
+                            let funcData = {
+                                type: itemType,
+                                funcId: allDom.eq(index).attr('data'),
+                                funcName: allDom.eq(index).find('.attrTitle > i').html(),
+                                variable: allDom.eq(index).find('.attrTitle b').html()
+                            }
+                            let params = allDom.eq(index).find('input')
+                            params.each(index => {
+                                let paramsName = params.eq(index).attr('param')
+                                funcData[paramsName] = params.eq(index).val()
+                            })
+                            data.push(funcData)
+                        } else if (itemType === 'formula') {
+                            data.push({
+                                type: itemType,
+                                variable: allDom.eq(index).find('.attrTitle > em').html()
+                            })
+                        } else if (itemType === 'constraint') {
+                            let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
+                            data.push({
+                                type: itemType,
+                                value: allDom.eq(index).attr('data'),
+                                attr_data: constraintAttrData
+                            })
+                        }
+                    })
+                    return data
+                }
+                let attr_data = getData(allItem)
+                data.push({
+                    name,
+                    id,
+                    type,
+                    variable: tactics.eq(e).find('.objectTitle b').html(),
+                    attr_data
+                })
+            }
+
+        })
+        console.log(data)
+    })
+
+    // 添加事件
+    $('#addFunc').on('click', function () {
+        // 添加函数事件
+        addFuncLayer = layer.open({
+            type: 1,
+            title: `添加函数`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#addFuncLayer')
+        });
+    })
+    $('#addFuncConfirm').on('click', function () {
+        let data = form.val('addFunc')
+        // if (data.method_data.length) data.method_data = JSON.stringify(data.method_data)
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/bean/addFunction/',
+            data,
+            type: 'POST',
+            success: function (data) {
+                layer.msg(data.message);
+                loadFuncTable()
+                layer.close(addFuncLayer)
+                // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
+                // else layer.msg('添加失败');
+            }
+        })
+    })
+    $('#businessAdd').on('click', function () {
+        // 业务对象添加事件
+        $('#addDataLayer .form-control').eq(0).val('business')
+        addDataLayer = layer.open({
+            type: 1,
+            title: `添加业务数据对象`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#addDataLayer')
+        });
+    })
+
+    $('#spaceAdd').on('click', function () {
+        // 空间对象添加事件
+        $('#addDataLayer .form-control').eq(0).val('space')
+        addDataLayer = layer.open({
+            type: 1,
+            title: `添加空间数据对象`,
+            shadeClose: true, //点击遮罩关闭层
+            area: ['800px', '520px'],
+            content: $('#addDataLayer')
+        });
+    })
+    $('#addDataLayer #addDataConfrim').on('click', function () {
+        let data = form.val("addBusiness");
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/bean/addBean',
+            data,
+            type: 'POST',
+            success: function (data) {
+                layer.msg(data.message);
+                loadBusinessTable()
+                loadSpaceTable()
+                layer.close(addDataLayer)
+                // if (data && data.code === 'SUCCESS') layer.msg('添加成功');
+                // else layer.msg('添加失败');
+            }
+        })
+    })
+
+    
+
+    
+});
+// 相关事件提取为函数
+function loadSpaceTable() {
+    let datatable_columns = [
+        {
+            data: "name",
+            orderable: false
+        },
+        {
+            data: "desc",
+            orderable: false
+        },
+        {
+            data: "path",
+            orderable: false
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+                return `
+            <button class="btn btn-xs btn-primary spaceDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+            `;
+            },
+            orderable: false
+        },
+    ];
+    let datatable_ele = null;
+    let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
+    let delete_ele = "undefined";
+    let data_manage = {
+        getQueryCondition: function (data) {
+            let param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                let sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            param.type = 'space'
+            param.search = ''
+            return param;
+        }
+    };
+    let del_url = "undefined";
+
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    tableshow($("#spaceTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function loadBusinessTable() {
+    let datatable_columns = [
+        {
+            data: "name",
+            orderable: false
+        },
+        {
+            data: "desc",
+            orderable: false
+        },
+        {
+            data: "path",
+            orderable: false
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+                return `
+            <button class="btn btn-xs btn-primary businessDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+            `;
+            },
+            orderable: false
+        },
+    ];
+    let datatable_ele = null;
+    let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/';
+    let delete_ele = "undefined";
+    let data_manage = {
+        getQueryCondition: function (data) {
+            let param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                let sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            param.type = 'business',
+            param.search = ''
+            return param;
+        }
+    };
+    let del_url = "undefined";
+
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    tableshow($("#businessTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function loadFuncTable() {
+    let datatable_columns = [
+        {
+            data: "methodnickname",
+            orderable: false
+        },
+        {
+            data: "methodtype",
+            orderable: false
+        },
+        {
+            data: "methodcontent",
+            orderable: false
+        },
+        {
+            data: "methodid",
+            render: function (data, type, row) {
+                return `
+            <button class="btn btn-xs btn-primary funcDelect" data-id=${data}><i class="fa fa-trash-o"></i> 删除</button>
+            `;
+            },
+            orderable: false
+        },
+    ];
+    let datatable_ele = null;
+    let dataurl = 'http://172.18.84.114:8081/ruleService/bean/queryMethod/';
+    let delete_ele = "undefined";
+    let data_manage = {
+        getQueryCondition: function (data) {
+            let param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                let sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            param.type = 'FUNCTION_SPACE'
+            param.search = ''
+            return param;
+        }
+    };
+    let del_url = "undefined";
+
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    tableshow($("#funcTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function loadFormData() {
+    $.ajax({
+        url: 'http://172.18.84.114:8081/ruleService/rule/ruleOverview',
+        data: {
+            ruleId: 3
+        },
+        type: 'POST',
+        success: function (data) {
+            if (data && +data.code === SUCCESS) {
+                let res = data.data
+                $('#summaryRuleName').val(res.NAME)
+                $('#summaryRuleType').val(res.TYPE)
+                $('#summaryRuleDesc').val(res.DESCRIPTION)
+                $('#summaryRuleCreate').val(moment(res.CREATETIME).format('YYYY年MM月DD日'))
+                $('#summaryRuleEdit').val(moment(res.LASTMODIFYTIME).format('YYYY年MM月DD日'))
+                $('#summaryRuleMan').val(res.CREATOR)
+                $('#summaryRuleVersion').val(res.VERSION)
+            }
+        }
+    })
+}
+function loadBriefTable() {
+    let datatable_columns = [
+        {
+            data: "CREATETIME",
+            render: function (data) {
+                return `${moment(data).format('YYYY年MM月DD日')}`
+            },
+            orderable: false
+        },
+        {
+            data: "CREATOR",
+            orderable: false
+        },
+        {
+            data: "VERSION",
+            orderable: false
+        },
+        {
+            data: "OID",
+            render: function (data, type, row) {
+                return `
+            <button class="btn btn-xs btn-primary briefEdit" data-id=${data}><i class="fa fa-pencil-square-o" aria-hidden="true"></i> 编辑</button>
+            <button class="btn btn-xs btn-primary briefDownload" data-id=${data}><i class="fa fa-arrow-circle-down" aria-hidden="true"></i> 下载</button>
+            `;
+            },
+            orderable: false
+        },
+    ];
+    let datatable_ele = null;
+    let dataurl = 'http://172.18.84.114:8081/ruleService/rule/getRuleHistoryById';
+    let delete_ele = "undefined";
+    let data_manage = {
+        getQueryCondition: function (data) {
+            let param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                let sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            param.ruleId = 3
+            return param;
+        }
+    };
+    let del_url = "undefined";
+
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function callbackBtn(ele, tableele) {
+    let id = ele.attr('data-id')
+    if (ele.hasClass('spaceDelect') || ele.hasClass('businessDelect')) {
+        layer.confirm(`确认删除该业务数据对象`, {
+            btn: ['确认', '取消']
+        }, function () {
+            $.ajax({
+                url: 'http://172.18.84.114:8081/ruleService/bean/deleteBean/',
+                data: {
+                    id
+                },
+                type: 'POST',
+                success: function (data) {
+                    if (data && data.code === SUCCESS) {
+                        layer.msg('删除成功');
+                        if (ele.hasClass('businessDelect')) loadBusinessTable()
+                        if (ele.hasClass('spaceDelect')) loadSpaceTable()
+                    } else layer.msg('删除失败');
+                }
+            })
+        }, function () {
+            layer.msg('取消删除');
+        });
+    }
+
+    if (ele.hasClass('funcDelect')) {
+        layer.confirm(`确认删除该函数吗？`, {
+            btn: ['确认', '取消']
+        }, function () {
+            $.ajax({
+                url: 'http://172.18.84.114:8081/ruleService/bean/deleteFunction/',
+                data: {
+                    id
+                },
+                type: 'POST',
+                success: function (data) {
+                    if (data && data.code === SUCCESS) {
+                        layer.msg('删除成功');
+                        loadFuncTable()
+                    } else layer.msg('删除失败');
+                }
+            })
+        }, function () {
+            layer.msg('取消删除');
+        });
+    }
+
+    if (ele.hasClass('briefDownload')) {
+        layer.confirm(`下载，id为：${id}`, {
+            btn: ['确认', '取消']
+        }, function () {
+            layer.msg('下载成功');
+        }, function () {
+            layer.msg('取消下载');
+        });
+    }
+
+}
+
+
+
+
+
+
