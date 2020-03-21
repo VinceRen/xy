@@ -1,8 +1,10 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
-
-function tableshowFun1() {
+const ajaxType = 'JAVA';
+function tableshowFun1(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -57,7 +59,7 @@ function tableshowFun1() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            // var param = {};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -79,7 +81,9 @@ function tableshowFun1() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($(".table-datatable1"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
 }
-function tableshowFun2() {
+function tableshowFun2(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {type: ajaxType, search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -132,7 +136,6 @@ function tableshowFun2() {
     var datatable_ele = null;
     var dataurl = ajaxdatatable2;
     var delete_ele = "undefined";
-    var param = {type: 'JAVA'};
     var data_manage = {
         getQueryCondition: function (data) {
             // var param = {};
@@ -166,7 +169,20 @@ function drawcallback(ele, tableele) {
 
 tableshowFun1();
 tableshowFun2();
+//表格搜索清空
+$('.main-box').on('click','.input-delete',function () {
+    $(this).siblings('.input-search').val('').blur();
 
+});
+//表格搜索清空
+$('.main-box').on('click','.btn-search',function () {
+    let search = $(this).siblings('.input-search').val();
+    if($(this).closest('table').hasClass('table-datatable1')){
+        tableshowFun1(search);
+    }else if($(this).closest('table').hasClass('table-datatable2')){
+        tableshowFun2(search);
+    }
+});
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     if($(this).closest('table').hasClass('table-datatable1')){
