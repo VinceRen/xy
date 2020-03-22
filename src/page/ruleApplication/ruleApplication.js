@@ -199,7 +199,7 @@ function tableFun(ajaxUrl, ajaxData) {
         {
             data: "id",
             render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+                return '<input value="'+ row.relatedId +'" data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
             },
             orderable: false
         },
@@ -326,13 +326,18 @@ function callbackBtn(ele, tableele){
 
 let layType = null;//弹层类型
 let ruleEnginIdArr = [];//关联规则工程ID
+let deleteRuleIdArr = [];//规则ID
 layui.use('form', function(){
     var form = layui.form;
     form.on('checkbox', function(data){
-        if(data.elem.checked){
+        if(data.elem.checked  && $(data.elem).closest('table').hasClass('layer-table')){
             ruleEnginIdArr.push(data.value);
-        }else{
+        }else if(!data.elem.checked && $(data.elem).closest('table').hasClass('layer-table')){
             ruleEnginIdArr.splice(ruleEnginIdArr.indexOf(data.value), 1);
+        }else if(data.elem.checked  && $(data.elem).closest('table').hasClass('table-datatable')){
+            deleteRuleIdArr.push(data.value);
+        }else if(data.elem.checked  && $(data.elem).closest('table').hasClass('table-datatable')){
+            deleteRuleIdArr.push(data.value);
         }
 
     });
@@ -340,23 +345,42 @@ layui.use('form', function(){
 // 关联规则添加-弹层
 $('.main-box').on('click','.table-add',function () {
     layType = 'add';
+    ruleEnginIdArr.length = 0;//关联规则工程ID清空
     ruleEnginTableFun();
     layershow("关联规则添加",["780px","480px"],$(".layer-table-box"));
 });
 // 关联规则编辑-弹层
 $('.main-box').on('click','.table-edit',function () {
     layType = 'edit';
+    ruleEnginIdArr.length = 0;//关联规则工程ID清空
     ruleEnginTableFun();
     layershow("关联规则编辑",["780px","480px"],$(".layer-table-box"));
 });
-// 关联规则删除-弹层
+// 关联规则删除
 $('.main-box').on('click','.table-delete',function () {
-    layType = 'delete';
-    ruleEnginTableFun();
-    layershow("关联规则删除",["780px","480px"],$(".layer-table-box"));
+    if(!deleteRuleIdArr.length){layer.msg('请选择操作对象'); return false;}
+    $.ajax({
+        url: ajaxdataruleengindelete,
+        type: 'POST',
+        data: {
+            ids: deleteRuleIdArr.toString(),
+        },
+        success: function (rlt) {
+            if(rlt.code == 200){
+                deleteRuleIdArr.length = 0;//清空规则选择ID;
+                tableFun(dataurl, {classId: singleTreeId});
+            }
+            layer.msg(rlt.message);
+        },
+        error: function (r) {
+            console.log(r);
+            layer.msg('服务错误，操作失败');
+        }
+    });
 });
 // 关联规则-弹层确定
 $('body').on('click','.layer-table-save',function () {
+    if(!ruleEnginIdArr.length){layer.msg('请选择操作对象'); return false;}
     switch (layType) {
         case 'add':
             $.ajax({
@@ -400,26 +424,8 @@ $('body').on('click','.layer-table-save',function () {
                 }
             });
             break;
-        case 'delete':
-            $.ajax({
-                url: ajaxdataruleengindelete,
-                type: 'POST',
-                data: {
-                    ids: ruleEnginIdArr.toString(),
-                },
-                success: function (rlt) {
-                    if(rlt.code == 200){
-                        $('.layer-table-save').siblings().trigger('click');
-                        tableFun(dataurl, {classId: singleTreeId});
-                    }
-                    layer.msg(rlt.message);
-                },
-                error: function (r) {
-                    console.log(r);
-                    layer.msg('服务错误，操作失败');
-                }
-            });
-            break;
+        // case 'delete':
+        //     break;
         default: break;
     }
 });
