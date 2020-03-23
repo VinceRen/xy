@@ -282,7 +282,7 @@ layui.use('form', function () {
             type: 1,
             title: `设置${attr}变量名`,
             shadeClose: true, //点击遮罩关闭层
-            area: ['800px', '520px'],
+            area: ['800px', '200px'],
             content: $('#setAttrName')
         });
     })
@@ -316,7 +316,7 @@ layui.use('form', function () {
             type: 1,
             title: `修改（${parentName}）字段属性`,
             shadeClose: true, //点击遮罩关闭层
-            area: ['800px', '520px'],
+            area: ['800px', '300px'],
             content: $('#objectItemEdit')
         });
 

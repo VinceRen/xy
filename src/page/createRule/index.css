@@ -283,6 +283,23 @@
     align-items: center;
 }
 
+#objectItemEdit {
+    padding: 10px;
+}
+#objectItemEdit .layui-input-block {
+    margin-left:10px;
+    display: flex;
+}
+
+#setAttrName .form-group {
+    display: flex;
+    align-items: center;
+}
+
+#setAttrName .form-group .control-label {
+    width: 80px;
+}
+
 /* 复写框架相关 */
 
 .form-horizontal .form-group {
