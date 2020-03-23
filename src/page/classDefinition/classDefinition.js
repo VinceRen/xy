@@ -99,7 +99,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
 
 function tableFun(id, search) {
     var ajaxSearch = search ? search : null;
-    var param = {id: id, search: ajaxSearch};
+    var param = {id: id, param: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",

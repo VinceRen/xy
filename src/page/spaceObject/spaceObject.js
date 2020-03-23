@@ -347,7 +347,7 @@ $('.main-box').on('click','.table-upload',function () {
 });
 
 //表格2详细
-$('.main-box').on('click','.table-info',function () {
+$('.main-box').on('click','.table-info',function (event) {
     let id = $(this).closest('div').attr('data-id');
     $.ajax({
         url: ajaxdatatableinfo2,
@@ -357,6 +357,8 @@ $('.main-box').on('click','.table-info',function () {
         success: function (rlt) {
             if(rlt.code == 200){
                 console.log(rlt);
+                $(event.target).siblings('.table-edit').trigger('click');
+                $('.layer-form2 ').find('input').prop('readonly', true);
             }
         },
         error: function (r) {
