@@ -3,7 +3,9 @@
  */
 const paramType = "FUNCTION_SPACE_COMPUTE";//空间计算函数
 
-function tableFun1() {
+function tableFun1(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {type: paramType, search: ajaxSearch};
     var datatable_columns = [
         {
             data: "methodid",
@@ -55,7 +57,6 @@ function tableFun1() {
         }
     };
     var del_url = "undefined";
-    var param = {type: paramType, search: ''};
     table = tableshow($(".table-datatable"),
       datatable_columns,
       datatable_ele,
@@ -64,8 +65,6 @@ function tableFun1() {
       data_manage,
       del_url,
       "POST");
-    return table;
-
 }
 
 function tableFun2(tableId) {
@@ -190,6 +189,15 @@ $('.main-box').on( 'click', '.table-datatable td', function (e) {
     let tr = this.parentNode;
     let id = table1.row(tr).data().methodid;
     tableFun2(id);
+});
+//表格搜索清空
+$('.main-box').on('click','.input-delete',function(){
+    $(this).siblings('.input-search').val('').focus();
+});
+//表格搜索
+$('.main-box').on('click','.btn-search',function () {
+    let search = $(this).siblings('.input-search').val();
+    tableFun1(search);
 });
 //表格添加
 $('.main-box').on('click','.table-add',function () {

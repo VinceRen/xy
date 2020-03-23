@@ -1,113 +1,292 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
+//初始化tree再加数据
+let treeData = {
+    projectId: "A001023fsf34f34",//项目编号ID
+}
+//tree加载
+treeFun();
+function isAdd(treeId, treeNode) {
+    return true;
+}
 
-treeShow(ajaxdataztree,$("#treeDemo"), true);
+function showRenameBtn(treeId, treeNode) {
+    if(treeNode.level == 0){
+        return false;
+    }else{
+        return true;
+    }
+}
+
+function showRemoveBtn(treeId, treeNode) {
+    if(treeNode.level == 0){
+        return false;
+    }else{
+        return true;
+    }
+}
 
 
-var datatable_columns = [
-    {
-        data: "id",
-        render: function (data, type, row) {
-            return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+let addTreeData = {};//tree添加数据
+function addTree(zTree, treeNode) {
+    $(".tree-form  .tree-save").attr('data-id', '');
+    layershow('节点名称添加', ["480px", "auto"], $(".tree-form"));
+    addTreeData = {
+        projectId: treeData.projectId,
+        parentId: treeNode.id,
+        level: treeNode.lvs,
+    }
+}
+function zTreeBeforeEditName(treeId, treeNode) {
+    $(".tree-form  .tree-save").attr('data-id', treeNode.id);
+    $(".tree-form [name='tree-name']").val(treeNode.name);
+    layershow('节点名称添加', ["480px", "auto"], $(".tree-form"), $(".tree-form div"));
+    return false;
+}
+function zTreeBeforeRemove(treeId, treeNode) {
+    $.ajax({
+        url: ajaxdataztreedelet,
+        type: 'POST',
+        data: {id: treeNode.id},
+        dataType: 'json',
+        success:function (rlt) {
+            if(rlt.code == 200){
+                treeFun();
+            }
+            layer.msg(rlt.message);
         },
-        orderable: false
-    },
-    {
-        data: "name",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "description",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "conversationName",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "groupId",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "artifactId",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "version",
-        render: function (data, type, row) {
-            return '<a  class="pointer tdn data-name">' + data + '</a>';
-        },
-        orderable: false
-    },
-    {
-        data: "id",
-        render: function (data, type, row) {
-
-            return `<div class="data-name" data-id=${data}>
-                        <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
-                        <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
-                    </div>`;
-        },
-        orderable: false
-    },
-];
-var datatable_ele = null;
-var dataurl = ajaxdatatable;
-var delete_ele = "undefined";
-var data_manage = {
-    getQueryCondition: function (data) {
-        var param = {};
-        //组装排序参数
-        if (data.order && data.order.length && data.order[0]) {
-            var sqlName = data.columns[data.order[0].column].data;
-            param.orderColumn = sqlName;
-            //排序方式asc或者desc
-            param.orderDir = data.order[0].dir;
+        error: function (r) {
+            console.log(r);
+            layer.msg('服务错误，删除失败');
         }
+    });
+}
 
-        //组装分页参数
-        param.startIndex = data.start;
-        param.pageSize = data.length;
-        param.draw = data.draw;
-        return param;
+//tree节点名称添加/提交
+$('body').on('click', '.tree-form .tree-save', function () {
+    let id = $(this).attr('data-id');
+    let name = $(".tree-form [name='tree-name']").val();
+    let desc = $(".tree-form [name='tree-desc']").val();
+    let ajaxurl = id ? ajaxdataztreeedit : ajaxdataztreeadd;
+    let ajaxdata = {};
+    if(!id){
+        ajaxdata = addTreeData;
     }
-};
-var del_url = "undefined";
-// tableshow($(".table-datatable"),
-//     datatable_columns,
-//     datatable_ele,
-//     dataurl,
-//     delete_ele,
-//     data_manage,
-//     del_url);
+    ajaxdata.id = id;
+    ajaxdata.name = name;
+    ajaxdata.desc = desc;
+    $.ajax({
+        url: ajaxurl,
+        type: "POST",
+        data: ajaxdata,
+        dataType: 'json',
+        success: function(rlt){
+            if(rlt.code == 200){
+                $('.tree-form .tree-save').siblings('.btn').trigger('click');
+                treeFun();
+            }
+            layer.msg(rlt.message);
+        },
+        error: function (r) {
+            console.log(r);
+            layer.msg('服务错误，操作失败');
+        },
+    });
+});
+
+function treeFun(){
+    treeShow(ajaxdataztree,$("#treeDemo"), true, "POST",treeData);
+}
+
+var singleTreeId = null;
+let dataurl = ajaxdatatable;
 function singaltree_click(id, treeId, treeNode) {
-    if(!treeNode.isParent){
-        dataurl = dataurl + '?name=' + treeNode.name;
-        tableshow($(".table-datatable"),
-            datatable_columns,
-            datatable_ele,
-            dataurl,
-            delete_ele,
-            data_manage,
-            del_url);
-        $('.tab-content').removeClass('d-hidden');
+    // if(!treeNode.isParent){
+    //     dataurl = ajaxdatatable + '?name=' + treeNode.name;
+    //     tableFun(dataurl);
+    //     $('.tab-content').removeClass('d-hidden');
+    // }
+    //     let dataurl = ajaxdatatable + '?name=' + treeNode.name;
+    singleTreeId = id;
+
+    tableFun(dataurl, {classId: singleTreeId});
+    $('.tab-content').removeClass('d-hidden');
+}
+
+//规则工程table
+function ruleEnginTableFun(search) {
+    let searchWord = search ? search : null;
+    var param = {"search": searchWord};
+    // var param = {param: search};
+    var datatable_columns = [
+        {
+            data: "id",
+            render: function (data, type, row) {
+                return '<input value="'+ data +'" type="checkbox" name="select" title="" lay-skin="primary">'
+            },
+            orderable: false
+        },
+        {
+            data: "name",
+            render: function (data, type, row) {
+
+                return '<a  class="pointer tdn data-name">'+ data +'</a>';
+            },
+            orderable: false
+        },
+        // {   data: "founder" , orderable: false  },
+        // {   data: "time" , orderable: false },
+        {   data: "description" , orderable: false },
+        {   data: "conversationName" , orderable: false },
+        {   data: "groupId" , orderable: false },
+        {   data: "artifactId" , orderable: false },
+        {   data: "version" , orderable: false },
+    ];
+    var datatable_ele = null;
+    var dataurl = ajaxdataruleengintable;
+    var delete_ele = "undefined";
+    var data_manage = {
+        getQueryCondition: function (data) {
+            // var param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                var sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            return param;
+        }
+    };
+    var del_url = "undefined";
+    tableshow(
+      $(".layer-table"),
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
+}
+
+//规则工程关联规则table
+function tableFun(ajaxUrl, ajaxData) {
+    var param = {};
+    if(!ajaxData){
+        param = { search: null}
+    }else if(typeof(ajaxData) === 'string' ){
+        param = { search: ajaxData}
+    }else if(
+      Object.prototype.toString.call(ajaxData) === "[object Object]" &&
+      ajaxData.hasOwnProperty('search')
+    ){
+        param = ajaxData;
+    }else if(
+      Object.prototype.toString.call(ajaxData) === "[object Object]" &&
+      !ajaxData.hasOwnProperty('search')
+    ){
+        param = ajaxData;
+        param.search = null;
     }
+    var datatable_columns = [
+        {
+            data: "id",
+            render: function (data, type, row) {
+                return '<input value="'+ row.relatedId +'" data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+            },
+            orderable: false
+        },
+        {
+            data: "name",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        {
+            data: "description",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        {
+            data: "conversationName",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        {
+            data: "groupId",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        {
+            data: "artifactId",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        {
+            data: "version",
+            render: function (data, type, row) {
+                return '<a  class="pointer tdn data-name">' + data + '</a>';
+            },
+            orderable: false
+        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //
+        //         return `<div class="data-name" data-id=${data}>
+        //                 <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
+        //                 <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
+        //             </div>`;
+        //     },
+        //     orderable: false
+        // },
+    ];
+    var datatable_ele = null;
+    var dataurl = ajaxUrl;
+    var delete_ele = "undefined";
+    var data_manage = {
+        getQueryCondition: function (data) {
+            // var param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                var sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            return param;
+        }
+    };
+    var del_url = "undefined";
+    tableshow($(".table-datatable"),
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
 }
 function drawcallback(ele, tableele) {
     layui.use('form', function(){
@@ -115,74 +294,141 @@ function drawcallback(ele, tableele) {
         form.render();
     });
 }
-//表格添加
-$('.main-box').on('click','.table-add',function () {
-    layershow("表格添加",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', null);
-});
-
-//表格编辑-弹层
-$('.main-box').on('click','.table-edit',function () {
-    layershow("表格编辑",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
-    $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
-    $('#table-form1 #founder').val($(this).closest('tr').find('td:nth-child(3)').text());
-    $('#table-form1 #time').val($(this).closest('tr').find('td:nth-child(4)').text());
-    $('#table-form1 #groupId').val($(this).closest('tr').find('td:nth-child(5)').text());
-    $('#table-form1 #artifactId').val($(this).closest('tr').find('td:nth-child(6)').text());
-    $('#table-form1 #version').val($(this).closest('tr').find('td:nth-child(7)').text());
-});
-
-//表格弹层表单-保存
-$('.layer-form1').on('click','#form-save',function () {
-    let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null;
-    let formdata = {
-        id : id,
-        name : $('#table-form1 #name').val(),
-        founder : $('#table-form1 #founder').val(),
-        time : $('#table-form1 #time').val(),
-        groupId : $('#table-form1 #groupId').val(),
-        artifactId : $('#table-form1 #artifactId').val(),
-        version : $('#table-form1 #version').val()
+function callbackBtn(ele, tableele){
+    if($(ele).hasClass('.table-edit')){
+        //表格编辑-弹层
+        // layershow("表格编辑",["500px","300px"],$(".layer-form1"));
+        // $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
+        // $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
+        // $('#table-form1 #founder').val($(this).closest('tr').find('td:nth-child(3)').text());
+        // $('#table-form1 #time').val($(this).closest('tr').find('td:nth-child(4)').text());
+        // $('#table-form1 #groupId').val($(this).closest('tr').find('td:nth-child(5)').text());
+        // $('#table-form1 #artifactId').val($(this).closest('tr').find('td:nth-child(6)').text());
+        // $('#table-form1 #version').val($(this).closest('tr').find('td:nth-child(7)').text());
+    }else if($(ele).hasClass('.table-delete')){
+        //表格删除
+        $.ajax({
+            url: ajaxdatatabledelete,
+            data:{},
+            dataType: 'json',
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    $(ele).closest('tr').remove();
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                layer.msg('服务错误，删除失败');
+            }
+        });
     }
+}
 
-    $.ajax({
-        url: ajaxdatatableupdate,
-        data: formdata,
-        dataType: 'json',
-        success: function(rlt){
-            if(!id){
-                layer.msg('添加成功');
-            }else{
-                layer.msg('修改完成');
-            }
-            $('#form-save').siblings('button').trigger('click');
-            $('#example').DataTable().draw();;
-        },
-        error: function (r) {
-            if(!id){
-                layer.msg('添加失败');
-            }else{
-                layer.msg('修改失败');
-            }
+let layType = null;//弹层类型
+let ruleEnginIdArr = [];//关联规则工程ID
+let deleteRuleIdArr = [];//规则ID
+layui.use('form', function(){
+    var form = layui.form;
+    form.on('checkbox', function(data){
+        if(data.elem.checked  && $(data.elem).closest('table').hasClass('layer-table')){
+            ruleEnginIdArr.push(data.value);
+        }else if(!data.elem.checked && $(data.elem).closest('table').hasClass('layer-table')){
+            ruleEnginIdArr.splice(ruleEnginIdArr.indexOf(data.value), 1);
+        }else if(data.elem.checked  && $(data.elem).closest('table').hasClass('table-datatable')){
+            deleteRuleIdArr.push(data.value);
+        }else if(data.elem.checked  && $(data.elem).closest('table').hasClass('table-datatable')){
+            deleteRuleIdArr.push(data.value);
         }
+
     });
-    tableshow($(".table-datatable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
 });
-//表格删除
+// 关联规则添加-弹层
+$('.main-box').on('click','.table-add',function () {
+    layType = 'add';
+    ruleEnginIdArr.length = 0;//关联规则工程ID清空
+    ruleEnginTableFun();
+    layershow("关联规则添加",["780px","480px"],$(".layer-table-box"));
+});
+// 关联规则编辑-弹层
+$('.main-box').on('click','.table-edit',function () {
+    layType = 'edit';
+    ruleEnginIdArr.length = 0;//关联规则工程ID清空
+    ruleEnginTableFun();
+    layershow("关联规则编辑",["780px","480px"],$(".layer-table-box"));
+});
+// 关联规则删除
 $('.main-box').on('click','.table-delete',function () {
-    let that = $(this);
+    if(!deleteRuleIdArr.length){layer.msg('请选择操作对象'); return false;}
     $.ajax({
-        url: ajaxdatatabledelete,
-        data:{},
-        dataType: 'json',
+        url: ajaxdataruleengindelete,
+        type: 'POST',
+        data: {
+            ids: deleteRuleIdArr.toString(),
+        },
         success: function (rlt) {
-            that.closest('tr').remove();
-            layer.msg('删除成功');
+            if(rlt.code == 200){
+                deleteRuleIdArr.length = 0;//清空规则选择ID;
+                tableFun(dataurl, {classId: singleTreeId});
+            }
+            layer.msg(rlt.message);
         },
         error: function (r) {
-            layer.msg('服务错误，删除失败');
+            console.log(r);
+            layer.msg('服务错误，操作失败');
         }
     });
 });
+// 关联规则-弹层确定
+$('body').on('click','.layer-table-save',function () {
+    if(!ruleEnginIdArr.length){layer.msg('请选择操作对象'); return false;}
+    switch (layType) {
+        case 'add':
+            $.ajax({
+                url: ajaxdataruleenginadd,
+                type: 'POST',
+                data: {
+                    classId: singleTreeId,
+                    projectIds:	ruleEnginIdArr.toString(),
+                },
+                success: function (rlt) {
+                    if(rlt.code == 200){
+                        $('.layer-table-save').siblings().trigger('click');
+                        tableFun(dataurl, {classId: singleTreeId});
+                    }
+                    layer.msg(rlt.message);
+                },
+                error: function (r) {
+                    console.log(r);
+                    layer.msg('服务错误，操作失败');
+                }
+            });
+            break;
+        case 'edit':
+            $.ajax({
+                url: ajaxdataruleenginedit,
+                type: 'POST',
+                data: {
+                    classId: singleTreeId,
+                    projectIds:	ruleEnginIdArr.toString(),
+                },
+                success: function (rlt) {
+                    if(rlt.code == 200){
+                        $('.layer-table-save').siblings().trigger('click');
+                        tableFun(dataurl, {classId: singleTreeId});
+                    }
+                    layer.msg(rlt.message);
+                },
+                error: function (r) {
+                    console.log(r);
+                    layer.msg('服务错误，操作失败');
+                }
+            });
+            break;
+        // case 'delete':
+        //     break;
+        default: break;
+    }
+});
+
+
 

@@ -1,8 +1,10 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
-
-function tableshowFun1() {
+const ajaxType = 'JAVA';
+function tableshowFun1(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -50,7 +52,7 @@ function tableshowFun1() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            // var param = {};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -72,7 +74,8 @@ function tableshowFun1() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($(".table-datatable1"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
 }
-function tableshowFun2() {
+function tableshowFun2(search) {
+    var ajaxSearch = search ? search : null;
     var datatable_columns = [
         {
             data: "id",
@@ -125,7 +128,7 @@ function tableshowFun2() {
     var datatable_ele = null;
     var dataurl = ajaxdatatable2;
     var delete_ele = "undefined";
-    var param = {type: 'JAVA'};//SPACE
+    var param = {type: ajaxType, search: ajaxSearch};//type = SPACE
     var data_manage = {
         getQueryCondition: function (data) {
             //var param = {type: 'JAVA'};
@@ -139,18 +142,18 @@ function tableshowFun2() {
 
             //组装分页参数
             param.startIndex = data.start;
-            param.pageSize = data.length;
+            param.pageSize = data.length > 0 ? data.length : 10;
             param.draw = data.draw;
             return param;
         }
     };
     var del_url = "undefined";
 
-    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($(".table-datatable2"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url,"POST");
 }
-function drawcallback(ele, tableele) {
+function drawcallback() {
     layui.use('form', function(){
         var form = layui.form;
         form.render();
@@ -159,52 +162,33 @@ function drawcallback(ele, tableele) {
 
 tableshowFun1();
 tableshowFun2();
+//表格搜索清空
+$('body').on('click','.input-delete',function(){
+    $(this).siblings('.input-search').val('').focus();
+});
+//表格搜索
+$('.main-box').on('click','.btn-search',function () {
+    let search = $(this).siblings('.input-search').val();
+    if($(this).closest('table').hasClass('table-datatable1')){
+        tableshowFun1(search);
+    }else if($(this).closest('table').hasClass('table-datatable2')){
+        tableshowFun2(search);
+    }
+});
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     if($(this).closest('table').hasClass('table-datatable1')){
         layershow("表格添加",["500px","300px"],$(".layer-form1"));
         $('#table-form1 .form-save').attr('data-id', null);
     }else if($(this).closest('table').hasClass('table-datatable2')){
-        layershow("表格添加",["500px","300px"],$(".layer-form2"));
+        $('#table-form2 input[name="name1"]').val("nickname");
+        $('#table-form2 input[name="name2"]').val("name");
+        $('#table-form2 input[name="name3"]').val("desc");
+        $('#table-form2 input[name="name4"]').val("com.vci.ruleservice.entity");
+        layershow("表格添加",["500px","300px"],$(".layer-form2"),$(".layer-form2 div"));
         $('#table-form2 .form-save').attr('data-id', null);
     }
 });
-
-//表格编辑-弹层
-$('.main-box').on('click','.table-edit',function () {
-    let id = $(this).closest('div').attr('data-id');
-    if($(this).closest('table').hasClass('table-datatable1')){
-        layershow("表格编辑",["500px","300px"],$(".layer-form1"));
-        $('#table-form1 .form-save').attr('data-id', id);
-        $('#table-form1 input[name="name1"]').val($(this).closest('tr').find('td:nth-child(2)').text());
-        $('#table-form1 input[name="name2"]').val($(this).closest('tr').find('td:nth-child(3)').text());
-        $('#table-form1 input[name="name3"]').val($(this).closest('tr').find('td:nth-child(4)').text());
-    }else if($(this).closest('table').hasClass('table-datatable2')){
-        $.ajax({
-            url: ajaxformdata2,
-            data:{id: id},
-            type: 'POST',
-            success:function (rlt) {
-                if(rlt.code == 200){
-                    $('#table-form2 input[name="name1"]').val(rlt.data.nickname);
-                    $('#table-form2 input[name="name2"]').val(rlt.data.name);
-                    $('#table-form2 input[name="name3"]').val(rlt.data.desc);
-                    $('#table-form2 input[name="name4"]').val(rlt.data.path);
-                    $('#table-form2 .form-save').attr('data-id', id);
-                    layershow("表格编辑",["500px","300px"],$(".layer-form2"),$(".layer-form2 div"));
-                }else {
-                    layer.msg(rlt.message);
-                }
-            },
-            error: function (rlt) {
-                layer.msg('服务错误');
-            }
-
-        });
-
-    }
-});
-
 //表格弹层表单-保存
 $('body').on('click','.form-save',function () {
     let saveurl = null,id = null;
@@ -227,9 +211,9 @@ $('body').on('click','.form-save',function () {
         var tableFormType = 'JAVA';
         saveurl = !id ? ajaxdatatableupdateadd2:ajaxdatatableupdateedit2;
         var attr_data = [
-          {"type": 'int',
-            "name": 'age',
-            "nickName": '年龄'}
+            {"type": 'int',
+                "name": 'age',
+                "nickName": '年龄'}
         ];
         var method_data = [
             {
@@ -238,9 +222,9 @@ $('body').on('click','.form-save',function () {
                 "content": "",
                 "type": "String",
                 "param_data": [
-                  {
-                    "name": 'number',
-                    'type':'int'
+                    {
+                        "name": 'number',
+                        'type':'int'
                     }
                 ]
             }
@@ -279,6 +263,41 @@ $('body').on('click','.form-save',function () {
             layer.msg('服务错误，操作失败');
         }
     });
+});
+
+//表格编辑-弹层
+$('.main-box').on('click','.table-edit',function () {
+    let id = $(this).closest('div').attr('data-id');
+    if($(this).closest('table').hasClass('table-datatable1')){
+        layershow("表格编辑",["500px","300px"],$(".layer-form1"));
+        $('#table-form1 .form-save').attr('data-id', id);
+        $('#table-form1 input[name="name1"]').val($(this).closest('tr').find('td:nth-child(2)').text());
+        $('#table-form1 input[name="name2"]').val($(this).closest('tr').find('td:nth-child(3)').text());
+        $('#table-form1 input[name="name3"]').val($(this).closest('tr').find('td:nth-child(4)').text());
+    }else if($(this).closest('table').hasClass('table-datatable2')){
+        $.ajax({
+            url: ajaxformdata2,
+            data:{id: id},
+            type: 'POST',
+            success:function (rlt) {
+                if(rlt.code == 200){
+                    $('#table-form2 input[name="name1"]').val(rlt.data.nickname);
+                    $('#table-form2 input[name="name2"]').val(rlt.data.name);
+                    $('#table-form2 input[name="name3"]').val(rlt.data.desc);
+                    $('#table-form2 input[name="name4"]').val(rlt.data.path);
+                    $('#table-form2 .form-save').attr('data-id', id);
+                    layershow("表格编辑",["500px","300px"],$(".layer-form2"),$(".layer-form2 div"));
+                }else {
+                    layer.msg(rlt.message);
+                }
+            },
+            error: function (rlt) {
+                layer.msg('服务错误');
+            }
+
+        });
+
+    }
 });
 
 //表格2删除
@@ -328,7 +347,7 @@ $('.main-box').on('click','.table-upload',function () {
 });
 
 //表格2详细
-$('.main-box').on('click','.table-info',function () {
+$('.main-box').on('click','.table-info',function (event) {
     let id = $(this).closest('div').attr('data-id');
     $.ajax({
         url: ajaxdatatableinfo2,
@@ -338,6 +357,8 @@ $('.main-box').on('click','.table-info',function () {
         success: function (rlt) {
             if(rlt.code == 200){
                 console.log(rlt);
+                $(event.target).siblings('.table-edit').trigger('click');
+                $('.layer-form2 ').find('input').prop('readonly', true);
             }
         },
         error: function (r) {
@@ -345,4 +366,3 @@ $('.main-box').on('click','.table-info',function () {
         }
     });
 });
-

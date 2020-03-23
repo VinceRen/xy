@@ -214,7 +214,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 			//封装请求参数
 			var param = userManage.getQueryCondition(data);
 			//ajax请求判断
-			if( typeof(ajaxType) == "string" && ajaxType.toLocaleUpperCase() != "POST"){
+			if( typeof(ajaxType) !== "string" || ajaxType.toLocaleUpperCase() != "POST"){
 				ajaxType = "GET"
 			}
 			$.ajax({
@@ -227,7 +227,8 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 				success: function(result) {
 					//异常判断与处理
 					if(result.code == 400) {
-						alert("查询失败");
+						console.log(result);
+						layer.msg("查询失败");
 						return;
 					}
 					//封装返回数据
@@ -243,7 +244,8 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 
 				},
 				error: function(XMLHttpRequest, textStatus, errorThrown) {
-					layer.msg("查询失败");
+					console.log(textStatus);
+					layer.msg("服务错误，查询失败");
 				}
 			});
 		},
@@ -272,7 +274,6 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 			});
 			ele.find("td .btn").unbind("click");
 			ele.find("td .btn").click(function(event) {
-				event.stopPropagation();
 				callbackBtn($(this), tableele);
 			})
 		}
@@ -421,9 +422,8 @@ function treeTable(treeDom, url, tableurl, tableDom, msg, table, delDom, userMan
 				$(".curSelectedNode").prev().addClass("selectnode");
 
 			},
-
-			beforeRemove: beforeRemove,
 			//beforeRename: beforeRename,
+			beforeRemove: zTreeBeforeRemove,
 			beforeEditName: zTreeBeforeEditName,
 			onClick: function(event, treeId, treeNode, clickFlag) {
 
@@ -473,10 +473,14 @@ function treeTable(treeDom, url, tableurl, tableDom, msg, table, delDom, userMan
 	//	});
 
 }
-
-function treeShow(url, treele, flag) {
-	var view = null;
-	var enable;
+var treedele = null;
+function treeShow(url, treele, flag, ajaxType, ajaxData) {
+	var view = null,
+			enable;
+	ajaxType = ajaxType == "POST" ? "POST" : "GET";
+	ajaxData = Object.prototype.toString.call(ajaxData) === '[object Object]' ? ajaxData : {};
+	ajaxData.otherParam = "zTreeAsyncTest";
+	// ajaxData.parentId = 0;
 	if(flag) {
 		view = {
 			expandSpeed: "",
@@ -507,18 +511,15 @@ function treeShow(url, treele, flag) {
 		},
 		async: {
 			enable: true,
-			type: 'GET',
+			type: ajaxType,
 			url: url,
 			//autoParam: ["id", "name=n", "level=lv"],
-			autoParam: ["id","level=lv","lvs","marked=md"],
-			
-			otherParam: {
-				"otherParam": "zTreeAsyncTest"
-			},
+			autoParam: ["id", "name=n", "lvs=lv", "id=parentId"],
+			otherParam: ajaxData,
 			dataFilter: filter
 		},
 		callback: {
-			beforeRemove: beforeRemove,
+			beforeRemove: zTreeBeforeRemove,
 			beforeEditName: zTreeBeforeEditName,
 			onClick: function(event, treeId, treeNode, clickFlag) {
 				singaltree_click(treeNode.id, treeId, treeNode);
@@ -529,14 +530,54 @@ function treeShow(url, treele, flag) {
 
 	function filter(treeId, parentNode, childNodes) {
 		if(!childNodes) return null;
+		if(childNodes.hasOwnProperty('pageData') &&
+			childNodes.code == 200 &&
+			childNodes.pageData.length){
+			childNodes = childNodes.pageData;
+		}
 		for(var i = 0, l = childNodes.length; i < l; i++) {
-		
 			childNodes[i].name = childNodes[i].name.replace(/\.n/g,'.');
 		}
 		return childNodes;
 	}
 	$.fn.zTree.init(treele, setting);
 }
+
+function addHoverDom(treeId, treeNode) {
+	/*判断是否有增加图标*/
+	var isadd = isAdd(treeId, treeNode);
+	if(!isadd) {
+		return isadd;
+	}
+	var sObj = $("#" + treeNode.tId + "_span");
+	if(treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
+	var addStr = "<span class='button add' id='addBtn_" + treeNode.tId + "' title='增加' onfocus='this.blur();'></span>";
+	sObj.after(addStr);
+	var btn = $("#addBtn_" + treeNode.tId);
+
+	if(btn) btn.bind("click", function() {
+		var zTree = $.fn.zTree.getZTreeObj(treeId);
+		addTree(zTree, treeNode);
+		return false;
+	});
+}
+function removeHoverDom(treeId, treeNode) {
+	$("#addBtn_" + treeNode.tId).unbind().remove();
+}
+
+function isAdd(treeId, treeNode) {
+	return true
+}
+function showRemoveBtn(treeId, treeNode) {
+	return true
+}
+function showRenameBtn(treeId, treeNode) {
+	return true
+}
+
+function addTree(zTree, treeNode) {}
+function zTreeBeforeEditName(treeId, treeNode) {}
+function zTreeBeforeRemove(treeId, treeNode) {}
 
 Array.prototype.indexOf = function(val) {
 	for(var i = 0; i < this.length; i++) {
@@ -564,52 +605,6 @@ function ajaxSub(form2, url) {
 	return false;
 }
 
-function isAdd(treeId, treeNode) {
-	return true
-}
-
-function showRemoveBtn(treeId, treeNode) {
-	return true
-}
-
-function showRenameBtn(treeId, treeNode) {
-	return true
-}
-
-function treeRmove(treeId, treeNode) {}
-
-function addTree(zTree, treeNode) {}
-
-var treedele = null;
-
-function beforeRemove(treeId, treeNode) {}
-
-function addHoverDom(treeId, treeNode) {
-	/*判断是否有增加图标*/
-	var isadd = isAdd(treeId, treeNode);
-	if(!isadd) {
-		return isadd;
-	}
-	var sObj = $("#" + treeNode.tId + "_span");
-	if(treeNode.editNameFlag || $("#addBtn_" + treeNode.tId).length > 0) return;
-	var addStr = "<span class='button add' id='addBtn_" + treeNode.tId +
-		"' title='增加' onfocus='this.blur();'></span>";
-	sObj.after(addStr);
-	var btn = $("#addBtn_" + treeNode.tId);
-
-	if(btn) btn.bind("click", function() {
-		var zTree = $.fn.zTree.getZTreeObj(treeId);
-		addTree(zTree, treeNode);
-		return false;
-	});
-};
-
-function removeHoverDom(treeId, treeNode) {
-	$("#addBtn_" + treeNode.tId).unbind().remove();
-};
-
-function zTreeBeforeEditName(treeId, treeNode) {}
-
 function setselect(ele, data) {
 	if(ele.size() > 0) {
 		for(i = 0; i < ele.size(); i++) {
@@ -633,6 +628,7 @@ function nosortall(obj) {
 		obj[i].orderable = false;
 	}
 }
+
 //滚动条
 function scroll(dom) {
 	dom.niceScroll({
@@ -654,78 +650,6 @@ function scroll(dom) {
 		horizrailenabled: false
 	});
 }
-
-// 时间格式化 start
-function Format(now, mask) {
-	var d = now;
-	var zeroize = function(value, length) {
-		if(!length) length = 2;
-		value = String(value);
-		for(var i = 0,
-				zeros = ''; i < (length - value.length); i++) {
-			zeros += '0';
-		}
-		return zeros + value;
-	};
-
-	return mask.replace(/"[^"]*"|'[^']*'|\b(?:d{1,4}|m{1,4}|yy(?:yy)?|([hHMstT])\1?|[lLZ])\b/g,
-		function($0) {
-			switch($0) {
-				case 'd':
-					return d.getDate();
-				case 'dd':
-					return zeroize(d.getDate());
-				case 'ddd':
-					return ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'][d.getDate()];
-				case 'dddd':
-					return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDate()];
-				case 'M':
-					return d.getMonth() + 1;
-				case 'MM':
-					return zeroize(d.getMonth() + 1);
-				case 'MMM':
-					return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
-				case 'MMMM':
-					return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
-				case 'yy':
-					return String(d.getFullYear()).substr(2);
-				case 'yyyy':
-					return d.getFullYear();
-				case 'h':
-					return d.getHours() % 12 || 12;
-				case 'hh':
-					return zeroize(d.getHours() % 12 || 12);
-				case 'H':
-					return d.getHours();
-				case 'HH':
-					return zeroize(d.getHours());
-				case 'm':
-					return d.getMinutes();
-				case 'mm':
-					return zeroize(d.getMinutes());
-				case 's':
-					return d.getSeconds();
-				case 'ss':
-					return zeroize(d.getSeconds());
-				case 'l':
-					return zeroize(d.getSeconds(), 3);
-				case 'L':
-					var m = d.getMilliseconds();
-					if(m > 99) m = Math.round(m / 10);
-					return zeroize(m);
-				case 'tt':
-					return d.getHours() < 12 ? 'am' : 'pm';
-				case 'TT':
-					return d.getHours() < 12 ? 'AM' : 'PM';
-				case 'Z':
-					return d.toString().match(/[A-Z]+$/);
-					// Return quoted strings with the surrounding quotes removed
-				default:
-					return $0.substr(1, $0.length - 2);
-			}
-		});
-};
-// 时间格式化 end
 
 function layershow(title, w, dom, formDom) {
 	if(typeof w == 'string') {
@@ -771,37 +695,21 @@ function layershow(title, w, dom, formDom) {
 	}
 }
 
-function layerMsg(title) {
+function layermsg(title) {
 	layer.msg(title, {
 		time: 800
 	});
 }
 
-//左侧导航跟随滚动条的滑动 start
-window.onscroll = function() {
-	$(".main_head").css({
-		"left": $(document).scrollLeft() * -1
-	});
-	var scrolltop = $(this).scrollTop();
-	if(scrolltop > 0) {
-		$(".returnBox").show();
-	} else {
-		$(".returnBox").hide();
-	}
-
-};
-//左侧导航跟随滚动条的滑动 end
-
-
 // 表单信息的序列化获取
-function getformval(formId){
+function getFormVal(formId){
     var values = {};
     formId.find("input,select,textarea").each(function(){
         var name = $(this).attr("name");
            values[name] = $(this).val();   
     });
     return(values);
-        }
+}
 
 function closeLayer(){
 	$(".layui-layer-close").trigger("click");
@@ -915,16 +823,104 @@ function uploadFile(pathsrc, ele,socketport) {
 	});
 }
 
-
 function loading(){
 	$("body").append("<div class='loading'></div>")
 }
+
 function closeloading(){
 	$("body .loading").remove();
 }
 
-//nav 选择
+// 时间格式化 start
+function format(now, mask) {
+	var d = now;
+	var zeroize = function(value, length) {
+		if(!length) length = 2;
+		value = String(value);
+		for(var i = 0,
+					zeros = ''; i < (length - value.length); i++) {
+			zeros += '0';
+		}
+		return zeros + value;
+	};
+
+	return mask.replace(/"[^"]*"|'[^']*'|\b(?:d{1,4}|m{1,4}|yy(?:yy)?|([hHMstT])\1?|[lLZ])\b/g,
+		function($0) {
+			switch($0) {
+				case 'd':
+					return d.getDate();
+				case 'dd':
+					return zeroize(d.getDate());
+				case 'ddd':
+					return ['Sun', 'Mon', 'Tue', 'Wed', 'Thr', 'Fri', 'Sat'][d.getDate()];
+				case 'dddd':
+					return ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][d.getDate()];
+				case 'M':
+					return d.getMonth() + 1;
+				case 'MM':
+					return zeroize(d.getMonth() + 1);
+				case 'MMM':
+					return ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'][d.getMonth()];
+				case 'MMMM':
+					return ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][d.getMonth()];
+				case 'yy':
+					return String(d.getFullYear()).substr(2);
+				case 'yyyy':
+					return d.getFullYear();
+				case 'h':
+					return d.getHours() % 12 || 12;
+				case 'hh':
+					return zeroize(d.getHours() % 12 || 12);
+				case 'H':
+					return d.getHours();
+				case 'HH':
+					return zeroize(d.getHours());
+				case 'm':
+					return d.getMinutes();
+				case 'mm':
+					return zeroize(d.getMinutes());
+				case 's':
+					return d.getSeconds();
+				case 'ss':
+					return zeroize(d.getSeconds());
+				case 'l':
+					return zeroize(d.getSeconds(), 3);
+				case 'L':
+					var m = d.getMilliseconds();
+					if(m > 99) m = Math.round(m / 10);
+					return zeroize(m);
+				case 'tt':
+					return d.getHours() < 12 ? 'am' : 'pm';
+				case 'TT':
+					return d.getHours() < 12 ? 'AM' : 'PM';
+				case 'Z':
+					return d.toString().match(/[A-Z]+$/);
+				// Return quoted strings with the surrounding quotes removed
+				default:
+					return $0.substr(1, $0.length - 2);
+			}
+		});
+};
+// 时间格式化 end
+
+//左侧导航跟随滚动条的滑动 start
+window.onscroll = function() {
+	$(".main_head").css({
+		"left": $(document).scrollLeft() * -1
+	});
+	var scrolltop = $(this).scrollTop();
+	if(scrolltop > 0) {
+		$(".returnBox").show();
+	} else {
+		$(".returnBox").hide();
+	}
+
+};
+//左侧导航跟随滚动条的滑动 end
+
+//nav 选择 s
 $('body').on('click', '.nav-pills > li', function () {
 	$(this).addClass('active').siblings('li').removeClass('active');
 	$('.main-box').css({'marginLeft': '220px'});
 });
+//nav 选择 e

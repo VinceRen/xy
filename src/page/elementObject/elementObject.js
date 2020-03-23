@@ -10,7 +10,9 @@ function drawcallback(ele, tableele) {
         form.render();
     });
 }
-function tableFun1(dataurl) {
+function tableFun1(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -28,11 +30,10 @@ function tableFun1(dataurl) {
         }
     ];
     var datatable_ele = null;
-    // var dataurl = ajaxdatatable1;
+    var dataurl = ajaxdatatable1;
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -58,7 +59,9 @@ function tableFun1(dataurl) {
         del_url);
 }
 
-function tableFun2(dataurl) {
+function tableFun2(search) {
+    var ajaxSearch = search ? search : null;
+    var param = {search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -90,11 +93,11 @@ function tableFun2(dataurl) {
         }
     ];
     var datatable_ele = null;
-    // var dataurl = ajaxdatatable2;
+    var dataurl = ajaxdatatable2;
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            // var param = {};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -120,14 +123,28 @@ function tableFun2(dataurl) {
         del_url);
 }
 
+let singleTreeId = null;
 function singaltree_click(id, treeId, treeNode) {
+    singleTreeId = treeNode.id;
     if(!treeNode.isParent){
         tableFun1(ajaxdatatable1 + '?name=' + treeNode.name);
         tableFun2(ajaxdatatable2);
         $('.tab-content').removeClass('d-hidden');
     }
 }
-
+//表格搜索清空
+$('.main-box').on('click','.input-delete',function(){
+    $(this).siblings('.input-search').val('').focus();
+});
+//表格搜索
+$('.main-box').on('click','.btn-search',function () {
+    let search = $(this).siblings('.input-search').val();
+    if($(this).closest('table').hasClass('table-datatable')){
+        tableFun1(search);
+    }else if($(this).closest('table').hasClass('table-datatable2')){
+        tableFun2(search);
+    }
+});
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     layershow("表格添加",["500px","300px"],$(".layer-form1"));

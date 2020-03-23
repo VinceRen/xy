@@ -194,6 +194,25 @@
 				</table>
 			</section>
 		</main>
+		<!--	tree 编辑&&添加 弹窗 s	-->
+		<div class="d-hidden tree-form">
+			<form class="form-horizontal" id="tree-form">
+				<div class="form-group">
+					<label for="name" class="control-label" title="名称">名称</label>
+					<input type="text" class="form-control" name="tree-name">
+				</div>
+				<div class="form-group">
+					<label for="name" class="control-label" title="描述">描述</label>
+					<input type="text" class="form-control" name="tree-desc" placeholder="请输入描述内容">
+				</div>
+				<div class="form-group">
+					<label for="name" class="control-label" title=""></label>
+					<button type="button" class="btn btn-sm btn-primary tree-save">确定</button>
+					<button type="button" class="btn btn-sm btn-default layui-layer-close">取消</button>
+				</div>
+			</form>
+		</div>
+		<!--	tree 编辑&&添加 弹窗 e	-->
 		<!--form 弹窗 s-->
 		<div class="d-hidden layer-form1">
 			<form class="form-horizontal" id="table-form1">
@@ -207,7 +226,7 @@
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title="创建时间">创建时间</label>
-					<input type="text" class="form-control" id="time" name="time">
+					<input type="date" class="form-control" id="time" name="time" value="2020-02-02">
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title="groupId">groupId</label>
@@ -245,15 +264,31 @@
 		<!--public js e-->
 		<script>
 			//tree数据获取
-			var ajaxdataztree = "../../json/dataztree.json";
+			// var ajaxdataztree = "../../json/dataztree.json";
+			var ajaxdataztree = basePath + "ruleService/rule/getRuleClassTree";
+			//tree数据添加
+			// var ajaxdataztreeadd = "../../json/success-data.json";
+			var ajaxdataztreeadd = basePath + "ruleService/rule/saveRuleClass";
+			//tree数据编辑
+			// var ajaxdataztreeedit = "../../json/success-data.json";
+			var ajaxdataztreeedit = basePath + "ruleService/rule/editRuleClass";
+			//tree数据删除
+			// var ajaxdataztreedelet = "../../json/success-data.json";
+			var ajaxdataztreedelet = basePath + "ruleService/rule/delRuleClass";
+			
+			
 			//table数据获取
 			var ajaxdatatable = "../../json/datatable.json";
+			var ajaxdatatable = basePath +  "ruleService/rule/ruleProjectList";
 			//table数据添加
 			var ajaxdatatableadd = "../../json/datatable.json";
+			var ajaxdatatableadd = basePath +  "ruleService/rule/saveRuleProject";
 			//table数据添加/编辑
 			var ajaxdatatableupdate = "../../json/datatable.json";
+			var ajaxdatatableupdate = basePath +  "ruleService/rule/editRuleProject";
 			//table数据删除
 			var ajaxdatatabledelete = "../../json/datatable.json";
+			var ajaxdatatabledelete = basePath +  "ruleService/rule/delRuleProject";
 		</script>
 		<script src="classDefinition.js"></script>
 	</body>
