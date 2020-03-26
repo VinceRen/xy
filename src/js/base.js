@@ -514,7 +514,7 @@ function treeShow(url, treele, flag, ajaxType, ajaxData) {
 			type: ajaxType,
 			url: url,
 			//autoParam: ["id", "name=n", "level=lv"],
-			autoParam: ["id", "name=n", "lvs=lv", "id=parentId"],
+			autoParam: ["id", "name=n", "lvs=lv"],
 			otherParam: ajaxData,
 			dataFilter: filter
 		},

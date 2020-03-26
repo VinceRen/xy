@@ -28,7 +28,7 @@ function tableshowFun1(search) {
             orderable: false
         },
         {
-            data: "URL",
+            data: "url",
             render: function (data, type, row) {
                 return '<a  class="tdn">'+ data +'</a>';
             },
@@ -72,7 +72,15 @@ function tableshowFun1(search) {
 
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
-    tableshow($(".table-datatable1"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
+    tableshow(
+      $(".table-datatable1"),
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
 }
 function tableshowFun2(search) {
     var ajaxSearch = search ? search : null;
@@ -99,7 +107,7 @@ function tableshowFun2(search) {
             orderable: false
         },
         {
-            data: "desc",
+            data: "type",
             render: function (data, type, row) {
                 return '<a  class="pointer tdn data-name">'+ data +'</a>';
             },
@@ -112,18 +120,18 @@ function tableshowFun2(search) {
             },
             orderable: false
         },
-        {
-            data: "id",
-            render: function (data, type, row) {
-
-                return `<div class="data-name" data-id=${data}>
-                        <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
-                        <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
-                        <button class="btn btn-xs btn-primary table-info"><i class="fa fa-th"></i> 详细</button>
-                    </div>`;
-            },
-            orderable: false
-        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //
+        //         return `<div class="data-name" data-id=${data}>
+        //                 <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
+        //                 <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
+        //                 <button class="btn btn-xs btn-primary table-info"><i class="fa fa-th"></i> 详细</button>
+        //             </div>`;
+        //     },
+        //     orderable: false
+        // },
     ];
     var datatable_ele = null;
     var dataurl = ajaxdatatable2;
@@ -149,8 +157,8 @@ function tableshowFun2(search) {
     };
     var del_url = "undefined";
 
-    CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
-    CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
+    // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($(".table-datatable2"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url,"POST");
 }
 function drawcallback() {
@@ -160,8 +168,13 @@ function drawcallback() {
     });
 }
 
+//空间对象服务table表格加载
 tableshowFun1();
-tableshowFun2();
+//空间对象table表格加载
+let spaceObjId = null;
+$('.table-datatable1').on('click', 'tbody tr', function () {
+    tableshowFun2();
+});
 //表格搜索清空
 $('body').on('click','.input-delete',function(){
     $(this).siblings('.input-search').val('').focus();

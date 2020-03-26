@@ -205,9 +205,14 @@
 							<th>对象关键字</th>
 							<th>对象描述</th>
 							<th>对象路径</th>
-							<th>操作</th>
+<!--							<th>操作</th>-->
 						</tr>
 					</thead>
+					<tbody>
+					<tr>
+						<td colspan="5">暂无数据</td>
+					</tr>
+					</tbody>
 				</table>
 			</section>
 		</main>
@@ -281,9 +286,11 @@
 		<!--public js e-->
 		<script>
 			//table数据获取
-			var ajaxdatatable1 = "../../json/spaceobject-datatable1.json";
+			// var ajaxdatatable1 = "../../json/spaceobject-datatable1.json";
+			var ajaxdatatable1 = basePath + "ruleService/bean/querySpaceElementServer";
     // var ajaxdatatable2 = "../../json/spaceobject-datatable2.json";
-    var ajaxdatatable2 = basePath + 'ruleService/bean/queryElementByType';
+    // var ajaxdatatable2 = basePath + 'ruleService/bean/queryElementByType';
+    var ajaxdatatable2 = basePath + 'ruleService/bean/querySpaceElement';
     //table1-form1数据获取
     var ajaxformdata1 = "../../json/spaceobject-datatable1.json";
     //table2-form2数据获取

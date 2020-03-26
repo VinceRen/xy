@@ -1,8 +1,10 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
-
-treeShow(ajaxdataztree,$("#treeDemo"), true);
+const treeData = {
+    projectId: "3E10B807-7354-C151-D75A-C950FEC6C681"
+}
+treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
 
 function drawcallback(ele, tableele) {
     layui.use('form', function(){
@@ -10,9 +12,9 @@ function drawcallback(ele, tableele) {
         form.render();
     });
 }
-function tableFun1(search) {
+function tableFun1(treeId, search) {
     var ajaxSearch = search ? search : null;
-    var param = {search: ajaxSearch};
+    var param = {id: treeId,search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -56,12 +58,13 @@ function tableFun1(search) {
         dataurl,
         delete_ele,
         data_manage,
-        del_url);
+        del_url,
+        "POST");
 }
 
-function tableFun2(search) {
+function tableFun2(tableTrId, search) {
     var ajaxSearch = search ? search : null;
-    var param = {search: ajaxSearch};
+    var param = {id: tableTrId, search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -120,18 +123,24 @@ function tableFun2(search) {
         dataurl,
         delete_ele,
         data_manage,
-        del_url);
+        del_url,
+        "POST");
 }
-
 let singleTreeId = null;
 function singaltree_click(id, treeId, treeNode) {
-    singleTreeId = treeNode.id;
-    if(!treeNode.isParent){
-        tableFun1(ajaxdatatable1 + '?name=' + treeNode.name);
-        tableFun2(ajaxdatatable2);
-        $('.tab-content').removeClass('d-hidden');
-    }
+    singleTreeId = "367C0C36-251F-4D65-AADF-C89E6BAFEE11";
+    // singleTreeId = treeNode.id;
+    tableFun1(singleTreeId);
+    $('.tab-content').removeClass('d-hidden');
 }
+
+//点击table1-tr事件--table2加载
+let trId = null;
+$('.table-datatable').on('click', 'tbody tr', function (event) {
+    trId = $(this).find('input[type="checkbox"]').attr('data-id');
+    tableFun2(trId)
+});
+
 //表格搜索清空
 $('.main-box').on('click','.input-delete',function(){
     $(this).siblings('.input-search').val('').focus();
@@ -140,79 +149,10 @@ $('.main-box').on('click','.input-delete',function(){
 $('.main-box').on('click','.btn-search',function () {
     let search = $(this).siblings('.input-search').val();
     if($(this).closest('table').hasClass('table-datatable')){
-        tableFun1(search);
+        tableFun1(singleTreeId, search);
     }else if($(this).closest('table').hasClass('table-datatable2')){
-        tableFun2(search);
+        tableFun2(trId, search);
     }
 });
-//表格添加
-$('.main-box').on('click','.table-add',function () {
-    layershow("表格添加",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', null);
-});
 
-//表格编辑-弹层
-$('.main-box').on('click','.table-edit',function () {
-    layershow("表格编辑",["500px","300px"],$(".layer-form1"));
-    $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
-    $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
-    $('#table-form1 #founder').val($(this).closest('tr').find('td:nth-child(3)').text());
-    $('#table-form1 #time').val($(this).closest('tr').find('td:nth-child(4)').text());
-    $('#table-form1 #groupId').val($(this).closest('tr').find('td:nth-child(5)').text());
-    $('#table-form1 #artifactId').val($(this).closest('tr').find('td:nth-child(6)').text());
-    $('#table-form1 #version').val($(this).closest('tr').find('td:nth-child(7)').text());
-});
-
-//表格弹层表单-保存
-$('.layer-form1').on('click','#form-save',function () {
-    let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null;
-    let formdata = {
-        id : id,
-        name : $('#table-form1 #name').val(),
-        founder : $('#table-form1 #founder').val(),
-        time : $('#table-form1 #time').val(),
-        groupId : $('#table-form1 #groupId').val(),
-        artifactId : $('#table-form1 #artifactId').val(),
-        version : $('#table-form1 #version').val()
-    }
-
-    $.ajax({
-        url: ajaxdatatableupdate,
-        data: formdata,
-        dataType: 'json',
-        success: function(rlt){
-            if(!id){
-                layer.msg('添加成功');
-            }else{
-                layer.msg('修改完成');
-            }
-            $('#form-save').siblings('button').trigger('click');
-            $('#example').DataTable().draw();;
-        },
-        error: function (r) {
-            if(!id){
-                layer.msg('添加失败');
-            }else{
-                layer.msg('修改失败');
-            }
-        }
-    });
-    tableshow($(".table-datatable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
-});
-//表格删除
-$('.main-box').on('click','.table-delete',function () {
-    let that = $(this);
-    $.ajax({
-        url: ajaxdatatabledelete,
-        data:{},
-        dataType: 'json',
-        success: function (rlt) {
-            that.closest('tr').remove();
-            layer.msg('删除成功');
-        },
-        error: function (r) {
-            layer.msg('服务错误，删除失败');
-        }
-    });
-});
 
