@@ -236,7 +236,12 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 					returnData.draw = data.draw; //这里直接自行返回了draw计数器,应该由后台返回
 					returnData.recordsTotal = result.total; //总记录数
 					returnData.recordsFiltered = result.total; //后台不实现过滤功能，每次查询均视作全部结果
-					returnData.data = result.pageData;
+					if(Object.prototype.toString.call(result.pageData) === '[object Object]'){
+						returnData.data = result.pageData.params;
+					}else{
+						returnData.data = result.pageData;
+					}
+
 					//调用DataTables提供的callback方法，代表数据已封装完成并传回DataTables进行渲染
 					//此时的数据需确保正确无误，异常判断应在执行此回调前自行处理完毕
 
@@ -514,7 +519,7 @@ function treeShow(url, treele, flag, ajaxType, ajaxData) {
 			type: ajaxType,
 			url: url,
 			//autoParam: ["id", "name=n", "level=lv"],
-			autoParam: ["id", "name=n", "lvs=lv"],
+			autoParam: ["id", "name=n", "lvs=lv", "lvs=level"],
 			otherParam: ajaxData,
 			dataFilter: filter
 		},

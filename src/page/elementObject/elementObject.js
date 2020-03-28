@@ -2,7 +2,9 @@
  * Created by Administrator on 2020/3/2 0002.
  */
 const treeData = {
-    projectId: "3E10B807-7354-C151-D75A-C950FEC6C681"
+    projectId: "3E10B807-7354-C151-D75A-C950FEC6C681",
+    id: null,
+    level: null
 }
 treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
 
@@ -128,8 +130,8 @@ function tableFun2(tableTrId, search) {
 }
 let singleTreeId = null;
 function singaltree_click(id, treeId, treeNode) {
-    singleTreeId = "367C0C36-251F-4D65-AADF-C89E6BAFEE11";
-    // singleTreeId = treeNode.id;
+    // singleTreeId = "367C0C36-251F-4D65-AADF-C89E6BAFEE11";
+    singleTreeId = treeNode.id;
     tableFun1(singleTreeId);
     $('.tab-content').removeClass('d-hidden');
 }

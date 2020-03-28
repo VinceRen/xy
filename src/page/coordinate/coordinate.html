@@ -172,7 +172,7 @@
 						<p class="b mb15 f16 space-object-title">
 							<span>坐标转换函数列表</span>
 						</p>
-						<p class="pb15">
+						<p class="pb15 hidden">
 							<button type="button" class="btn btn-sm btn-primary table-add"><i class="fa fa-plus"></i> 添加</button>
 							<span class="r">
                         <input class="input-search" type="text" placeholder="搜索对象名称" />
@@ -187,7 +187,7 @@
 							<th>坐标转换函数名称</th>
 							<th>坐标转换函数描述</th>
 							<th>URL地址</th>
-							<th>操作</th>
+<!--							<th>操作</th>-->
 						</tr>
 					</thead>
 				</table>
@@ -207,13 +207,13 @@
 							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
 							<th>函数参数名称</th>
 							<th>函数描述</th>
-							<th>参数类型</th>
+<!--							<th>参数类型</th>-->
 <!--							<th>操作</th>-->
 						</tr>
 					</thead>
 					<tbody>
 					<tr>
-						<td colspan="4">暂无数据</td>
+						<td colspan="3">暂无数据</td>
 					</tr>
 					</tbody>
 				</table>
@@ -273,9 +273,11 @@
 		<script>
 			//table数据获取
 			// var ajaxdatatable1 = "../../json/spacedataobject-datatable1.json";
-			var ajaxdatatable1 = basePath + "ruleService/bean/queryFunctionByType";
+			// var ajaxdatatable1 = basePath + "ruleService/bean/queryFunctionByType";
+			var ajaxdatatable1 = basePath + "ruleService/functionLib/cordinateTransform";
 			// var ajaxdatatable2 = "../../json/spacedataobject-datatable2.json";
-			var ajaxdatatable2 = basePath + "ruleService/bean/queryParamByMethodId";
+			// var ajaxdatatable2 = basePath + "ruleService/bean/queryParamByMethodId";
+			var ajaxdatatable2 = basePath + "ruleService/functionLib/cordinateTransfucAttr";
 			//table数据添加/编辑
 			// var ajaxdatatableadd = "success-data.json";
 			var ajaxdatatableadd = basePath + "ruleService/bean/addFunction";

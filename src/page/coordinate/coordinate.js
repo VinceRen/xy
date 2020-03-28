@@ -8,32 +8,32 @@ function tableFun1(search) {
     var param = {type: paramType, search: ajaxSearch};
     var datatable_columns = [
         {
-            data: "methodid",
+            data: "id",
             render: function (data, type, row) {
                 return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
             },
             orderable: false
         },
         {
-            data: "methodname",
+            data: "name",
             render: function (data, type, row) {
                 return '<div class="pointer function-name"><a  class="bl tdn">' + data + '</a></div>';
             },
             orderable: false
         },
-        {   data: "methoddesc",  orderable: false },
-        {   data: "methodcontent",  orderable: false },
-        {
-            data: "methodid",
-            render: function (data, type, row) {
-
-                return `<div class="data-name" data-id=${data}>
-                        <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
-                        <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
-                    </div>`;
-            },
-            orderable: false
-        },
+        {   data: "desc",  orderable: false },
+        {   data: "url",  orderable: false },
+        // {
+        //         //     data: "methodid",
+        //         //     render: function (data, type, row) {
+        //         //
+        //         //         return `<div class="data-name" data-id=${data}>
+        //         //                 <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
+        //         //                 <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
+        //         //             </div>`;
+        //         //     },
+        //         //     orderable: false
+        //         // },
     ];
     var datatable_ele = null;
     var dataurl = ajaxdatatable1;
@@ -64,10 +64,10 @@ function tableFun1(search) {
       delete_ele,
       data_manage,
       del_url,
-      "POST");
+      "GET");
 }
 
-function tableFun2(tableId) {
+function tableFun2(n) {
     var datatable_columns = [
         {
             data: "id",
@@ -83,16 +83,16 @@ function tableFun2(tableId) {
             },
             orderable: false
         },
-        // {   data: "description", orderable: false   },
-        {   data: "nickname", orderable: false   },
-        {   data: "type", orderable: false   },
+        {   data: "desc", orderable: false   },
+        // {   data: "nickname", orderable: false   },
+        // {   data: "type", orderable: false   },
     ];
     var datatable_ele = null;
     var dataurl = ajaxdatatable2;
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {id: tableId, search: ''};
+            var param = {name: n, search: ''};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -116,7 +116,7 @@ function tableFun2(tableId) {
       delete_ele,
       data_manage,
       del_url,
-      "POST");
+      "GET");
 }
 
 function drawcallback(ele, tableele) {
@@ -183,12 +183,10 @@ tableFun1();
 //函数属性table加载
 // tableFun2();
 $('.main-box').on( 'click', '.table-datatable td', function (e) {
-    if($(this).index() == $(this).siblings().length){return false}
-    // var table1 = $('.table-datatable').dataTable();
     let table1 = $(".table-datatable").DataTable();
     let tr = this.parentNode;
-    let id = table1.row(tr).data().methodid;
-    tableFun2(id);
+    let name = table1.row(tr).data().name;
+    tableFun2(name);
 });
 //表格搜索清空
 $('.main-box').on('click','.input-delete',function(){
