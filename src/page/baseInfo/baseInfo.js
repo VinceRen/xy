@@ -83,9 +83,9 @@ function tableFun2(n) {
             },
             orderable: false
         },
-        // {   data: "description", orderable: false   },
-        {   data: "nickname", orderable: false   },
-        {   data: "type", orderable: false   },
+        {   data: "desc", orderable: false   },
+        // {   data: "nickname", orderable: false   },
+        // {   data: "type", orderable: false   },
     ];
     var datatable_ele = null;
     var dataurl = ajaxdatatable2;
