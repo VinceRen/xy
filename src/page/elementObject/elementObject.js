@@ -138,7 +138,7 @@ function singaltree_click(id, treeId, treeNode) {
 
 //点击table1-tr事件--table2加载
 let trId = null;
-$('.table-datatable').on('click', 'tbody tr', function (event) {
+$('body').on('click', '.table-datatable tbody tr', function (event) {
     trId = $(this).find('input[type="checkbox"]').attr('data-id');
     tableFun2(trId)
 });
