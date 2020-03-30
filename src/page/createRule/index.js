@@ -454,9 +454,9 @@ layui.use('form', function () {
         } else if (+val === 1) {
             //从增强合集选择
             let result = `
-            <div class="projectItem" data-type="enhance" data="" style="margin-left: ${margin}px">
+            <div class="projectItem" data-type="enhance" data="${val}" style="margin-left: ${margin}px">
                 <span class="conditiontTitle">
-                    增强合集
+                    <i>增强合集</i>
                     <div class="fa fa-times" aria-hidden="true"></div>
                 </span>
             </div>`
@@ -465,9 +465,9 @@ layui.use('form', function () {
         } else if (+val === 2) {
             // 从普通集合选择
             let result = `
-            <div class="projectItem" data-type="common" data="" style="margin-left: ${margin}px">
+            <div class="projectItem" data-type="common" data="${val}" style="margin-left: ${margin}px">
                 <span class="conditiontTitle">
-                    普通合集
+                    <i>普通合集</i>
                     <div class="fa fa-times" aria-hidden="true"></div>
                 </span>
             </div>`
@@ -504,7 +504,7 @@ layui.use('form', function () {
             // console.log('对象的值(id)', id)
             // console.log('对象的类型', type)
             let allItem = tactics.eq(e).children('.projectItem')
-
+    
             if (type === 'project') {
                 let getData = function (allDom) {
                     let data = []
@@ -562,11 +562,100 @@ layui.use('form', function () {
                     name,
                     id,
                     type,
-                    variable: tactics.eq(e).find('.objectTitle b').html(),
+                    variable: tactics.eq(e).children('.objectTitle b').html(),
+                    attr_data
+                })
+            } else if (type === 'condition') {
+                let getData = function (allDom) {
+                    let data = []
+                    allDom.each(index => {
+                        let itemType = allDom.eq(index).attr('data-type')
+                        let name = allDom.eq(index).find('.objectTitle > i').html()
+                        let id = allDom.eq(index).attr('data')
+                        let variable = allDom.eq(index).find('.objectTitle > em b').html()
+                        if (itemType === 'project') {
+                            let getData = function (allDom) {
+                                let data = []
+                                allDom.each(index => {
+                                    let itemType = allDom.eq(index).attr('data-type')
+                                    if (itemType === 'attribute') {
+                                        data.push({
+                                            type: itemType,
+                                            factorName: allDom.eq(index).find('select').find("option:selected").text(),
+                                            factorValue: allDom.eq(index).find('select').find("option:selected").val(),
+                                            fieldName: allDom.eq(index).attr('field-name'),
+                                            name: allDom.eq(index).find('.property input').attr('data-name'),
+                                            value: allDom.eq(index).find('.property input').val(),
+                                            variable: allDom.eq(index).find('.attrTitle b').html()
+                                        })
+                                    } else if (itemType === 'function') {
+                                        let funcData = {
+                                            type: itemType,
+                                            funcId: allDom.eq(index).attr('data'),
+                                            funcName: allDom.eq(index).find('.attrTitle > i').html(),
+                                            variable: allDom.eq(index).find('.attrTitle b').html()
+                                        }
+                                        let params = allDom.eq(index).find('input')
+                                        params.each(index => {
+                                            let paramsName = params.eq(index).attr('param')
+                                            funcData[paramsName] = params.eq(index).val()
+                                        })
+                                        data.push(funcData)
+                                    } else if (itemType === 'formula') {
+                                        data.push({
+                                            type: itemType,
+                                            variable: allDom.eq(index).find('.attrTitle > em > b').html(),
+                                            attrName: allDom.eq(index).find('.expressionSelect').find("option:selected").text(),
+                                            attrId: allDom.eq(index).find('.expressionSelect').find("option:selected").val(),
+                                            funcName: allDom.eq(index).find('.funcSelect').find("option:selected").text(),
+                                            funcId: allDom.eq(index).find('.funcSelect').find("option:selected").val(),
+                                            factorName: allDom.eq(index).find('.factor').find("option:selected").text(),
+                                            factorValue: allDom.eq(index).find('.factor').find("option:selected").val(),
+                                            name: allDom.eq(index).find('.property input').attr('data-name'),
+                                            value: allDom.eq(index).find('.property input').val()
+                                        })
+                                    } else if (itemType === 'constraint') {
+                                        let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
+                                        data.push({
+                                            type: itemType,
+                                            value: allDom.eq(index).attr('data'),
+                                            attr_data: constraintAttrData
+                                        })
+                                    }
+                                })
+                                return data
+                            }
+                            let attr_data = getData(allDom.eq(index).children('.projectItem'))
+                            data.push({
+                                name,
+                                id,
+                                type: itemType,
+                                variable,
+                                attr_data
+                            })
+                        } else if (itemType === 'enhance' || itemType === 'common') {
+                            let attr_data = getData(allDom.eq(index).children('.projectItem'))
+                            data.push({
+                                name: allDom.eq(index).find('.conditiontTitle > i').html(),
+                                id,
+                                type: itemType,
+                                attr_data
+                            })
+                        }
+                        
+                    })
+                    return data
+                }
+                let attr_data = getData(allItem)
+                data.push({
+                    name,
+                    id,
+                    type,
+                    variable: tactics.eq(e).children('.objectTitle b').html(),
                     attr_data
                 })
             }
-
+    
         })
         console.log(data)
     })
