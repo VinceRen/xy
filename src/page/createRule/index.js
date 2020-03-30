@@ -33,7 +33,21 @@ layui.use('form', function () {
     let treeData = "index.json";
     treeShow(treeData, $("#ruleTree"), true);
 
-
+    $('.code button').on('click', function () {
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
+            data: {
+                id: 123,
+                content: $('.code code').text()
+            },
+            type: 'POST',
+            success: function (data) {
+                if (data && data.code === SUCCESS) {
+                   loadCode()
+                } else layer.msg('删除失败');
+            }
+        })
+    })
 
 
     $('.tabs a').on('click', function () {
@@ -42,6 +56,8 @@ layui.use('form', function () {
         if (type === 'tab-edit') {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
+            loadCode()
+
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
@@ -967,6 +983,20 @@ function loadBriefTable() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function loadCode() {
+    $.ajax({
+        url: 'http://172.18.84.114:8081/ruleService/rule/getRuleInfoById',
+        data: {
+            id: 123
+        },
+        type: 'POST',
+        success: function (data) {
+            if (data && data.code === SUCCESS) {
+                $('.code code').html(data.pageData[0].definition)
+            } else layer.msg('删除失败');
+        }
+    })
 }
 function callbackBtn(ele, tableele) {
     let id = ele.attr('data-id')
