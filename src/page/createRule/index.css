@@ -156,6 +156,9 @@
     display: block;
 }
 
+.expression section {
+    display: flex;
+}
 
 
 /* 源代码 */
@@ -240,7 +243,8 @@
 #projectLayer,
 #addDataLayer,
 #addFuncLayer,
-#setAttrName {
+#setAttrName,
+#selectObjectLayer {
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -362,7 +366,7 @@ code span {
     width: 100%;
 }
 
-#projectLayer .layui-input-block {
+#projectLayer .layui-input-block, #selectObjectLayer .layui-input-block {
     display: flex;
     margin-left: 10px;
 }

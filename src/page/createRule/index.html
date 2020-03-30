@@ -606,25 +606,25 @@
         <div>
             <div class="projectOptions">
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios3" value="option1" checked> <span>居住建筑对象</span>
+                    <input type="radio" name="project" id="" value="option1" checked> <span>居住建筑对象</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios4" value="option2"> <span>自来水厂对象</span>
+                    <input type="radio" name="project" id="" value="option2"> <span>自来水厂对象</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios4" value="option2"> <span>人对象</span>
+                    <input type="radio" name="project" id="" value="option2"> <span>人对象</span>
                 </label>
             </div>
             <div class="conditionOptions">
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios3" value="option1" checked>
+                    <input type="radio" name="condition" id="" value="option1" checked>
                     <span>使用存在条件</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios4" value="option2"> <span>使用不存在条件</span>
+                    <input type="radio" name="condition" id="" value="option2"> <span>使用不存在条件</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios4" value="option2"> <span>使用如下条件为正确结果</span>
+                    <input type="radio" name="condition" id="" value="option2"> <span>使用如下条件为正确结果</span>
                 </label>
             </div>
             <div class="gourpOptions">
@@ -855,6 +855,31 @@
         <div class="dialogBtn">
             <button type="button" id="" class="btn btn-sm btn-default">取消</button>
             <button type="button" id="addFuncConfirm" class="btn btn-sm btn-primary">确定</button>
+        </div>
+    </div>
+
+    <!-- 选择对象模型 -->
+    <div id="selectObjectLayer">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="0" title="选择已有的对象" lay-filter="selectObject" checked>
+                    <select name="" lay-verify="required" lay-filter="field" id="existsObject">
+                        <option value=""></option>
+                        <option value="2222">居住建筑</option>
+                    </select>
+                </div>
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="1" title="从增强集合选择（可以使用内置函数）" lay-filter="selectObject">
+                </div>
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="2" title="从普通集合选择" lay-filter="selectObject">
+                </div>
+            </div>
+        </form>
+        <div class="dialogBtn">
+            <button type="button" id="" class="btn btn-sm btn-default">取消</button>
+            <button type="button" id="selectObjectConfirm" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
     <!--public js s-->
