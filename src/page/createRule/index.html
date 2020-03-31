@@ -21,6 +21,9 @@
     <!--public css e-->
     <link rel="stylesheet" href="../home/home.css">
     <link rel="stylesheet" href="./index.css">
+    <link href="https://cdn.bootcss.com/highlight.js/9.18.1/styles/railscasts.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/highlight.js/9.18.1/highlight.min.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
 </head>
 
 <body>
@@ -350,7 +353,7 @@
                     </div>
                 </div>
                 <div class="code">
-                    <div>
+                    <!-- <div>
                         <button type="button" id="" class="btn btn-sm btn-default"><span
                                 class="glyphicon glyphicon-plus" aria-hidden="true"></span>Package</button>
                         <button type="button" id="" class="btn btn-sm btn-default"><span
@@ -365,7 +368,12 @@
                     <code>
                         <span class="linenum hljs-number"> 1</span><span class="hljs-keyword">public</span>&nbsp;<span class="hljs-keyword">class</span>&nbsp;<span class="hljs-title">HelloJvm</span>&nbsp;{<br><span  class="linenum hljs-number"> 2</span><br><span  class="linenum hljs-number"> 3</span>&nbsp;&nbsp;&nbsp;&nbsp;<span  class="hljs-keyword">private</span>&nbsp;String&nbsp;a;<br><span  class="linenum hljs-number"> 4</span>&nbsp;&nbsp;&nbsp;&nbsp;<span  class="hljs-keyword">private</span>&nbsp;String&nbsp;b;<br><span  class="linenum hljs-number"> 5</span><br><span  class="linenum hljs-number"> 6</span>&nbsp;&nbsp;&nbsp;&nbsp;<span  class="hljs-function"><span  class="hljs-keyword">public</span>&nbsp;<span  class="hljs-keyword">static</span>&nbsp;<span  class="hljs-keyword">void</span>&nbsp;<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(131, 165, 152); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-title">main</span>(<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(250, 189, 47); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-params">String[]&nbsp;args</span>)&nbsp;</span>{<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number"> 7</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(251, 73, 52); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-keyword">int</span>&nbsp;c&nbsp;=&nbsp;<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-number">1</span>+<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-number">2</span>;<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number"> 8</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;System.<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(251, 73, 52); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-keyword">out</span>.println(c);<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number"> 9</span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;print();<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">10</span>&nbsp;&nbsp;&nbsp;&nbsp;}<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">11</span><br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">12</span>&nbsp;&nbsp;&nbsp;&nbsp;<span  class="hljs-function"><span  class="hljs-keyword">private</span>&nbsp;<span  class="hljs-keyword">static</span>&nbsp;<span  class="hljs-keyword">void</span>&nbsp;<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(131, 165, 152); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-title">print</span>(<span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(250, 189, 47); word-wrap: inherit !important; word-break: inherit !important;" class="hljs-params"></span>)</span>{<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">13</span><br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">14</span>&nbsp;&nbsp;&nbsp;&nbsp;}<br><span style="font-size: inherit; line-height: inherit; margin: 0px; padding: 0px; color: rgb(211, 134, 155); padding-right: 20px; word-spacing: 0px; word-wrap: inherit !important; word-break: inherit !important;" class="linenum hljs-number">15</span>}
                     </code>
-                </pre>
+                    </pre> -->
+                    <pre>
+                        <code class="javascript" contenteditable="true">
+                        </code>
+                    </pre>
+                    <button>保存</button>
                 </div>
                 <div class="summary">
                     <div class="summaryTitle">
@@ -606,25 +614,25 @@
         <div>
             <div class="projectOptions">
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios3" value="option1" checked> <span>居住建筑对象</span>
+                    <input type="radio" name="project" id="" value="option1" checked> <span>居住建筑对象</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios4" value="option2"> <span>自来水厂对象</span>
+                    <input type="radio" name="project" id="" value="option2"> <span>自来水厂对象</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="project" id="optionsRadios4" value="option2"> <span>人对象</span>
+                    <input type="radio" name="project" id="" value="option2"> <span>人对象</span>
                 </label>
             </div>
             <div class="conditionOptions">
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios3" value="option1" checked>
+                    <input type="radio" name="condition" id="" value="option1" checked>
                     <span>使用存在条件</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios4" value="option2"> <span>使用不存在条件</span>
+                    <input type="radio" name="condition" id="" value="option2"> <span>使用不存在条件</span>
                 </label>
                 <label class="radio-inline">
-                    <input type="radio" name="condition" id="optionsRadios4" value="option2"> <span>使用如下条件为正确结果</span>
+                    <input type="radio" name="condition" id="" value="option2"> <span>使用如下条件为正确结果</span>
                 </label>
             </div>
             <div class="gourpOptions">
@@ -855,6 +863,31 @@
         <div class="dialogBtn">
             <button type="button" id="" class="btn btn-sm btn-default">取消</button>
             <button type="button" id="addFuncConfirm" class="btn btn-sm btn-primary">确定</button>
+        </div>
+    </div>
+
+    <!-- 选择对象模型 -->
+    <div id="selectObjectLayer">
+        <form class="layui-form">
+            <div class="layui-form-item">
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="0" title="选择已有的对象" lay-filter="selectObject" checked>
+                    <select name="" lay-verify="required" lay-filter="field" id="existsObject">
+                        <option value=""></option>
+                        <option value="2222">居住建筑</option>
+                    </select>
+                </div>
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="1" title="从增强集合选择（可以使用内置函数）" lay-filter="selectObject">
+                </div>
+                <div class="layui-input-block">
+                    <input type="radio" name="selectObject" value="2" title="从普通集合选择" lay-filter="selectObject">
+                </div>
+            </div>
+        </form>
+        <div class="dialogBtn">
+            <button type="button" id="" class="btn btn-sm btn-default">取消</button>
+            <button type="button" id="selectObjectConfirm" class="btn btn-sm btn-primary">确定</button>
         </div>
     </div>
     <!--public js s-->

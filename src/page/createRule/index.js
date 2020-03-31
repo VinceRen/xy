@@ -33,7 +33,21 @@ layui.use('form', function () {
     let treeData = "index.json";
     treeShow(treeData, $("#ruleTree"), true);
 
-
+    $('.code button').on('click', function () {
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
+            data: {
+                id: 123,
+                content: $('.code code').text()
+            },
+            type: 'POST',
+            success: function (data) {
+                if (data && data.code === SUCCESS) {
+                   loadCode()
+                } else layer.msg('删除失败');
+            }
+        })
+    })
 
 
     $('.tabs a').on('click', function () {
@@ -42,6 +56,8 @@ layui.use('form', function () {
         if (type === 'tab-edit') {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
+            loadCode()
+
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
@@ -104,13 +120,22 @@ layui.use('form', function () {
             let val = $('.projectOptions input:radio:checked').val();
             let name = $('.projectOptions input:radio:checked').next('span').html()
             result = `<div data='${val}' class="objectItem" data-type='${tacticsType}'>
-                <span class="objectTitle">
+                <span class="objectTitle" data-type='${tacticsType}'>
                     <i>${name}</i>
                     <em></em>
                 </span>
             </div>`
         } else if (tacticsType === 'condition') {
-            result = `<span data='condition' data-type='${tacticsType}'>存在条件/不存在/所有条件true(根据上页现在的条件显示)</span>`
+            let val = $('.conditionOptions input:radio:checked').val();
+            console.log(val)
+            let name = $('.conditionOptions input:radio:checked').next('span').html()
+            // result = `<span data='condition' data-type='${tacticsType}'>存在条件/不存在/所有条件true(根据上页现在的条件显示)</span>`
+            result = `<div data='${val}' class="objectItem" data-type='${tacticsType}'>
+                <span class="objectTitle">
+                    <i>${name}</i>
+                    <em></em>
+                </span>
+            </div>`
         } else if (tacticsType === 'gourp') {
             result = `<span data='gourp' data-type='${tacticsType}'>普通集合\增强集合（根据上文选择的集合类型确定，普通集合与增强集合与存在条件的选择集合一致）</span>`
         } else if (tacticsType === 'custom') {
@@ -207,14 +232,40 @@ layui.use('form', function () {
             layer.close(projectLayer)
         } else if (+propertyRadioValue === 3) { // 选择使用表达式方式
             let margin = tacticsSelection.innerWidth()
+            let ajaxData = [{
+                id: 0,
+                text: '01表达式(高度)'
+            }]
+            let ajaxData2 = [{
+                id: 0,
+                text: '等于'
+            }]
             let result = `
-                    <div class="projectItem function" data-type="formula" data="" style="margin-left: ${margin}px">
+                    <div class="projectItem expression" data-type="formula" data="" style="margin-left: ${margin}px">
                         <form class="layui-form">
                             <span class="attrTitle"><em>【没有绑定变量】</em></span>
-                            <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
+                            <select name="expressionSelect" lay-verify="required" lay-filter="expressionSelect" class="expressionSelect">
+                                <option value="text" checked>文本输入</option>
+                                ${ajaxData.map(e => {
+                                    return `<option value="${e.id}">${e.text}</option>`
+                                })}
+                            </select>
+                            <section>
+                                <div class="form-group">
+                                    <input type="text" class="form-control layui-input" placeholder="输入搜索关键词">
+                                </div>
+                                <select name="" lay-verify="required" lay-filter="" class="factor">
+                                    ${ajaxData2.map(e => {
+                                        return `<option value="${e.id}">${e.text}</option>`
+                                    })}
+                                </select>
+                                <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                                <div class="property"></div>
+                            </section>
                         </form>
                     </div>`
             tacticsSelection.parent().append(result)
+            form.render('select');
             layer.close(projectLayer)
         } else if (+propertyRadioValue === 4) { // 设置变量名
             let name = $('#objectName').val()
@@ -223,6 +274,51 @@ layui.use('form', function () {
             layer.close(projectLayer)
         }
     })
+
+
+    form.on('select(expressionSelect)', function (data) {
+        let box = $(this).closest(".layui-form").find('section')
+        let ajaxData2 = [{
+            id: 0,
+            text: '等于'
+        }]
+        if (data.value === 'text') {
+            let html = `
+                <div class="form-group">
+                    <input type="text" class="form-control layui-input" placeholder="输入搜索关键词">
+                </div>
+                <select name="" lay-verify="required" lay-filter="" class="factor">
+                    ${ajaxData2.map(e => {
+                        return `<option value="${e.id}">${e.text}</option>`
+                    })}
+                </select>
+                <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <div class="property"></div>
+            `
+            box.html(html)
+        } else {
+            let ajaxData = [{
+                name: 'codePointBefore(int)',
+                id: 22
+            }]
+            let html = `
+                <select class="funcSelect">
+                    ${ajaxData.map(e => {
+                        return `<option value="${e.id}">${e.name}</option>`
+                    })}
+                </select>
+                <select name="" lay-verify="required" lay-filter="" class="factor">
+                    ${ajaxData2.map(e => {
+                        return `<option value="${e.id}">${e.text}</option>`
+                    })}
+                </select>
+                <button class="btn btn-sm btn-default projectItemEdit"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+                <div class="property"></div>
+            `
+            box.html(html)
+        }
+        form.render('select');
+    });
 
     let setPropertyValue = ''
     form.on('radio(setProperty)', function (data) {
@@ -248,6 +344,7 @@ layui.use('form', function () {
             projectItem.find('form .property').html(html)
         } else if (+setPropertyValue === 2) {
             let html = `<div class="form-group">
+                变量：
                 <input type="text" class="layui-input" id="" name="" data-name="variable" value="${$('#objectItemEdit select').find("option:selected").text()}" disabled>
                 <button class="btn btn-sm btn-default"><i class="fa fa-trash" aria-hidden="true"></i></button>
             </div>`
@@ -272,6 +369,15 @@ layui.use('form', function () {
                 area: ['800px', '520px'],
                 content: $('#projectLayer')
             });
+        } else if (type === 'condition') {
+            $('#selectObjectLayer .layui-input-block').css({"display":"flex"})
+            selectObjectLayer = layer.open({
+                type: 1,
+                title: `选择对象模型`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#selectObjectLayer')
+            });
         }
     })
     $('body').on('click', '.tactics .attrTitle', function () {
@@ -290,7 +396,8 @@ layui.use('form', function () {
         // 点击变量、规则条件、规则合集、自定义规则事件
         $('#projectLayer .layui-input-block').eq(4).css({ "display": "none" })
         tacticsSelection = $(this)
-        let type = $(this).closest('.objectItem').attr('data-type')
+        // let type = $(this).closest('.objectItem').attr('data-type')
+        let type = $(this).parent().siblings('.objectTitle').attr('data-type')
         let name = $(this).html()
         if (type === 'project') {
             projectLayer = layer.open({
@@ -343,6 +450,64 @@ layui.use('form', function () {
         $('#objectItemEdit .showVariable').html(html)
         form.render('select', 'showAttrLayer')
     })
+    $('#selectObjectConfirm').on('click', function () {
+        let val = $('#selectObjectLayer input:radio:checked').val();
+        let margin = tacticsSelection.innerWidth()
+        if (+val === 0) {
+            //选择已有对象
+            let objName = $('#existsObject').find("option:selected").text()
+            let objValue = $('#existsObject').find("option:selected").val()
+            let result = `
+                    <div class="projectItem" data-type="project" data="${objValue}" style="margin-left: ${margin}px">
+                        <span class="objectTitle" data-type="project">
+                            <i>${objName}</i>
+                            <em></em>
+                            <div class="fa fa-times" aria-hidden="true"></div>
+                        </span>
+                    </div>`
+            tacticsSelection.parent().append(result)
+            layer.close(selectObjectLayer)
+        } else if (+val === 1) {
+            //从增强合集选择
+            let result = `
+            <div class="projectItem" data-type="enhance" data="${val}" style="margin-left: ${margin}px">
+                <span class="conditiontTitle">
+                    <i>增强合集</i>
+                    <div class="fa fa-times" aria-hidden="true"></div>
+                </span>
+            </div>`
+            tacticsSelection.parent().append(result)
+            layer.close(selectObjectLayer)
+        } else if (+val === 2) {
+            // 从普通集合选择
+            let result = `
+            <div class="projectItem" data-type="common" data="${val}" style="margin-left: ${margin}px">
+                <span class="conditiontTitle">
+                    <i>普通合集</i>
+                    <div class="fa fa-times" aria-hidden="true"></div>
+                </span>
+            </div>`
+            tacticsSelection.parent().append(result)
+            layer.close(selectObjectLayer)
+        }
+    })
+    $('body').on('click', '.conditiontTitle', function () {
+        let type = $(this).parent().attr('data-type')
+        tacticsSelection = $(this)
+        if (type !== 'object') {
+            $('#selectObjectLayer .layui-input-block').eq(0).css({"display":"flex"}).siblings().css({"display":"none"})
+            // 增强、普通合集
+            selectObjectLayer = layer.open({
+                type: 1,
+                title: `选择对象模型`,
+                shadeClose: true, //点击遮罩关闭层
+                area: ['800px', '520px'],
+                content: $('#selectObjectLayer')
+            });
+        } else {
+            // 已有对象,目前走的对象添加
+        }
+    })
     // 提交 规则编辑器内容
     $('#submit').on('click', function () {
         let tactics = $('.objectItem')
@@ -355,7 +520,7 @@ layui.use('form', function () {
             // console.log('对象的值(id)', id)
             // console.log('对象的类型', type)
             let allItem = tactics.eq(e).children('.projectItem')
-
+    
             if (type === 'project') {
                 let getData = function (allDom) {
                     let data = []
@@ -387,7 +552,15 @@ layui.use('form', function () {
                         } else if (itemType === 'formula') {
                             data.push({
                                 type: itemType,
-                                variable: allDom.eq(index).find('.attrTitle > em').html()
+                                variable: allDom.eq(index).find('.attrTitle > em > b').html(),
+                                attrName: allDom.eq(index).find('.expressionSelect').find("option:selected").text(),
+                                attrId: allDom.eq(index).find('.expressionSelect').find("option:selected").val(),
+                                funcName: allDom.eq(index).find('.funcSelect').find("option:selected").text(),
+                                funcId: allDom.eq(index).find('.funcSelect').find("option:selected").val(),
+                                factorName: allDom.eq(index).find('.factor').find("option:selected").text(),
+                                factorValue: allDom.eq(index).find('.factor').find("option:selected").val(),
+                                name: allDom.eq(index).find('.property input').attr('data-name'),
+                                value: allDom.eq(index).find('.property input').val()
                             })
                         } else if (itemType === 'constraint') {
                             let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
@@ -405,11 +578,100 @@ layui.use('form', function () {
                     name,
                     id,
                     type,
-                    variable: tactics.eq(e).find('.objectTitle b').html(),
+                    variable: tactics.eq(e).children('.objectTitle b').html(),
+                    attr_data
+                })
+            } else if (type === 'condition') {
+                let getData = function (allDom) {
+                    let data = []
+                    allDom.each(index => {
+                        let itemType = allDom.eq(index).attr('data-type')
+                        let name = allDom.eq(index).find('.objectTitle > i').html()
+                        let id = allDom.eq(index).attr('data')
+                        let variable = allDom.eq(index).find('.objectTitle > em b').html()
+                        if (itemType === 'project') {
+                            let getData = function (allDom) {
+                                let data = []
+                                allDom.each(index => {
+                                    let itemType = allDom.eq(index).attr('data-type')
+                                    if (itemType === 'attribute') {
+                                        data.push({
+                                            type: itemType,
+                                            factorName: allDom.eq(index).find('select').find("option:selected").text(),
+                                            factorValue: allDom.eq(index).find('select').find("option:selected").val(),
+                                            fieldName: allDom.eq(index).attr('field-name'),
+                                            name: allDom.eq(index).find('.property input').attr('data-name'),
+                                            value: allDom.eq(index).find('.property input').val(),
+                                            variable: allDom.eq(index).find('.attrTitle b').html()
+                                        })
+                                    } else if (itemType === 'function') {
+                                        let funcData = {
+                                            type: itemType,
+                                            funcId: allDom.eq(index).attr('data'),
+                                            funcName: allDom.eq(index).find('.attrTitle > i').html(),
+                                            variable: allDom.eq(index).find('.attrTitle b').html()
+                                        }
+                                        let params = allDom.eq(index).find('input')
+                                        params.each(index => {
+                                            let paramsName = params.eq(index).attr('param')
+                                            funcData[paramsName] = params.eq(index).val()
+                                        })
+                                        data.push(funcData)
+                                    } else if (itemType === 'formula') {
+                                        data.push({
+                                            type: itemType,
+                                            variable: allDom.eq(index).find('.attrTitle > em > b').html(),
+                                            attrName: allDom.eq(index).find('.expressionSelect').find("option:selected").text(),
+                                            attrId: allDom.eq(index).find('.expressionSelect').find("option:selected").val(),
+                                            funcName: allDom.eq(index).find('.funcSelect').find("option:selected").text(),
+                                            funcId: allDom.eq(index).find('.funcSelect').find("option:selected").val(),
+                                            factorName: allDom.eq(index).find('.factor').find("option:selected").text(),
+                                            factorValue: allDom.eq(index).find('.factor').find("option:selected").val(),
+                                            name: allDom.eq(index).find('.property input').attr('data-name'),
+                                            value: allDom.eq(index).find('.property input').val()
+                                        })
+                                    } else if (itemType === 'constraint') {
+                                        let constraintAttrData = getData(allDom.eq(index).children('.projectItem'))
+                                        data.push({
+                                            type: itemType,
+                                            value: allDom.eq(index).attr('data'),
+                                            attr_data: constraintAttrData
+                                        })
+                                    }
+                                })
+                                return data
+                            }
+                            let attr_data = getData(allDom.eq(index).children('.projectItem'))
+                            data.push({
+                                name,
+                                id,
+                                type: itemType,
+                                variable,
+                                attr_data
+                            })
+                        } else if (itemType === 'enhance' || itemType === 'common') {
+                            let attr_data = getData(allDom.eq(index).children('.projectItem'))
+                            data.push({
+                                name: allDom.eq(index).find('.conditiontTitle > i').html(),
+                                id,
+                                type: itemType,
+                                attr_data
+                            })
+                        }
+                        
+                    })
+                    return data
+                }
+                let attr_data = getData(allItem)
+                data.push({
+                    name,
+                    id,
+                    type,
+                    variable: tactics.eq(e).children('.objectTitle b').html(),
                     attr_data
                 })
             }
-
+    
         })
         console.log(data)
     })
@@ -721,6 +983,20 @@ function loadBriefTable() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.paging = false;
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
+}
+function loadCode() {
+    $.ajax({
+        url: 'http://172.18.84.114:8081/ruleService/rule/getRuleInfoById',
+        data: {
+            id: 123
+        },
+        type: 'POST',
+        success: function (data) {
+            if (data && data.code === SUCCESS) {
+                $('.code code').html(data.pageData[0].definition)
+            } else layer.msg('删除失败');
+        }
+    })
 }
 function callbackBtn(ele, tableele) {
     let id = ele.attr('data-id')
