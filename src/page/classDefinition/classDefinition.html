@@ -182,11 +182,12 @@
 					<thead>
 						<tr>
 							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
-							<th>工程规则名称</th>
+							<th>名称</th>
 							<th>创建人</th>
 							<th>创建时间</th>
-							<th>groupId</th>
-							<th>artifactId</th>
+<!--							<th>groupId</th>-->
+<!--							<th>artifactId</th>-->
+							<th>desc</th>
 							<th>version</th>
 							<th>操作</th>
 						</tr>
@@ -217,24 +218,24 @@
 		<div class="d-hidden layer-form1">
 			<form class="form-horizontal" id="table-form1">
 				<div class="form-group">
-					<label for="name" class="control-label" title="工程规则名称">工程规则名称</label>
+					<label for="name" class="control-label" title="工程规则名称">名称</label>
 					<input type="text" class="form-control" id="name" name="name">
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title="创建人">创建人</label>
 					<input type="text" class="form-control" id="founder" name="founder">
 				</div>
+<!--				<div class="form-group">-->
+<!--					<label for="name" class="control-label" title="创建时间">创建时间</label>-->
+<!--					<input type="date" class="form-control" id="time" name="time" value="2020-02-02">-->
+<!--				</div>-->
+<!--				<div class="form-group">-->
+<!--					<label for="name" class="control-label" title="groupId">groupId</label>-->
+<!--					<input type="text" class="form-control" id="groupId" name="groupId">-->
+<!--				</div>-->
 				<div class="form-group">
-					<label for="name" class="control-label" title="创建时间">创建时间</label>
-					<input type="date" class="form-control" id="time" name="time" value="2020-02-02">
-				</div>
-				<div class="form-group">
-					<label for="name" class="control-label" title="groupId">groupId</label>
-					<input type="text" class="form-control" id="groupId" name="groupId">
-				</div>
-				<div class="form-group">
-					<label for="name" class="control-label" title="artifactId">artifactId</label>
-					<input type="text" class="form-control" id="artifactId" name="artifactId">
+					<label for="name" class="control-label" title="描述">描述</label>
+					<input type="text" class="form-control" name="desc" id="desc">
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title="version">version</label>
@@ -278,17 +279,17 @@
 			
 			
 			//table数据获取
-			var ajaxdatatable = "../../json/datatable.json";
-			var ajaxdatatable = basePath +  "ruleService/rule/ruleProjectList";
+			// var ajaxdatatable = "../../json/datatable.json";
+			var ajaxdatatable = basePath +  "ruleService/rule/loadRuleInfoList";
 			//table数据添加
-			var ajaxdatatableadd = "../../json/datatable.json";
-			var ajaxdatatableadd = basePath +  "ruleService/rule/saveRuleProject";
+			// var ajaxdatatableadd = "../../json/datatable.json";
+			var ajaxdatatableadd = basePath +  "ruleService/rule/addRuleInfo";
 			//table数据添加/编辑
-			var ajaxdatatableupdate = "../../json/datatable.json";
-			var ajaxdatatableupdate = basePath +  "ruleService/rule/editRuleProject";
+			// var ajaxdatatableupdate = "../../json/datatable.json";
+			var ajaxdatatableupdate = basePath +  "ruleService/rule/updateRuleInfo";
 			//table数据删除
-			var ajaxdatatabledelete = "../../json/datatable.json";
-			var ajaxdatatabledelete = basePath +  "ruleService/rule/delRuleProject";
+			// var ajaxdatatabledelete = "../../json/datatable.json";
+			var ajaxdatatabledelete = basePath +  "ruleService/rule/deletRuleInfo";
 		</script>
 		<script src="classDefinition.js"></script>
 	</body>

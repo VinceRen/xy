@@ -99,7 +99,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
 
 function tableFun(id, search) {
     var ajaxSearch = search ? search : null;
-    var param = {id: id, param: ajaxSearch};
+    var param = {classId: id, search: ajaxSearch};
     var datatable_columns = [
         {
             data: "id",
@@ -116,10 +116,11 @@ function tableFun(id, search) {
             },
             orderable: false
         },
-        { data: "founder", orderable: false },
-        { data: "time", orderable: false },
-        { data: "groupId", orderable: false },
-        { data: "artifactId", orderable: false },
+        { data: "creator", orderable: false },
+        { data: "createtime", orderable: false },
+        // { data: "groupId", orderable: false },
+        // { data: "artifactId", orderable: false },
+        { data: "desc", orderable: false },
         { data: "version", orderable: false },
         {
             data: "id",
@@ -173,20 +174,21 @@ function drawcallback(ele, tableele) {
 }
 
 function callbackBtn(ele, tableele){
-    if($(ele).hasClass('table-edit')){
+    if($(ele).hasClass('table-edit')){//编辑
         layershow("表格编辑", ["500px", "300px"], $(".layer-form1"));
         $('#table-form1 #form-save').attr('data-id', $(ele).closest('div').attr('data-id'));
         $('#table-form1 #name').val($(ele).closest('tr').find('td:nth-child(2)').text());
         $('#table-form1 #founder').val($(ele).closest('tr').find('td:nth-child(3)').text());
-        $('#table-form1 #time').val($(ele).closest('tr').find('td:nth-child(4)').text().slice(0, 10));
-        $('#table-form1 #groupId').val($(ele).closest('tr').find('td:nth-child(5)').text());
-        $('#table-form1 #artifactId').val($(ele).closest('tr').find('td:nth-child(6)').text());
-        $('#table-form1 #version').val($(ele).closest('tr').find('td:nth-child(7)').text());
-    }else if($(ele).hasClass('table-delete')){
+        // $('#table-form1 #time').val($(ele).closest('tr').find('td:nth-child(4)').text().slice(0, 10));
+        // $('#table-form1 #groupId').val($(ele).closest('tr').find('td:nth-child(5)').text());
+        // $('#table-form1 #artifactId').val($(ele).closest('tr').find('td:nth-child(6)').text());
+        $('#table-form1 #desc').val($(ele).closest('tr').find('td:nth-child(5)').text());
+        $('#table-form1 #version').val($(ele).closest('tr').find('td:nth-child(6)').text());
+    }else if($(ele).hasClass('table-delete')){//删除
         $.ajax({
             url: ajaxdatatabledelete,
             type: 'POST',
-            data: {id: $(ele).closest('div').attr('data-id')},
+            data: {ids: $(ele).closest('div').attr('data-id')},
             dataType: 'json',
             success: function (rlt) {
                 if(rlt.code == 200){
@@ -217,11 +219,11 @@ $('.main-box').on('click','.btn-search',function () {
 //表格添加
 $('.main-box').on('click', '.table-add', function () {
     $('#table-form1 #form-save').attr('data-id', null);
-    $('#table-form1 #name').val("工程规则名称");
+    $('#table-form1 #name').val("名称");
     $('#table-form1 #founder').val("admin");
-    $('#table-form1 #time').val('2020-02-02');
-    $('#table-form1 #groupId').val("groupId-01");
-    $('#table-form1 #artifactId').val("artifactId-01");
+    // $('#table-form1 #time').val('2020-02-02');
+    // $('#table-form1 #groupId').val("groupId-01");
+    $('#table-form1 #desc').val("描述内容");
     $('#table-form1 #version').val("version-1.0.0");
     layershow("表格添加", ["500px", "300px"], $(".layer-form1"), $(".layer-form1 div"));
 });
@@ -233,13 +235,15 @@ $('.layer-form1').on('click', '#form-save', function () {
     let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null;
     let formdata = {
         id: id,
+        classId: singleTreeId,
         name: $('#table-form1 #name').val(),
-        founder: $('#table-form1 #founder').val(),
-        time: $('#table-form1 #time').val(),
-        groupId: $('#table-form1 #groupId').val(),
-        artifactId: $('#table-form1 #artifactId').val(),
+        creator: $('#table-form1 #founder').val(),
+        // time: $('#table-form1 #time').val(),
+        // groupId: $('#table-form1 #groupId').val(),
+        // artifactId: $('#table-form1 #artifactId').val(),
+        desc: $('#table-form1 #desc').val(),
         version: $('#table-form1 #version').val(),
-        strArray: '[]'
+        // strArray: '[]'
     }
     let ajaxUrl = id ? ajaxdatatableupdate : ajaxdatatableadd;
 
@@ -254,7 +258,7 @@ $('.layer-form1').on('click', '#form-save', function () {
                 // $('#example').DataTable().draw();
                 tableFun(singleTreeId);
             }
-            layer.msg(rlt.msg);
+            layer.msg(rlt.message);
         },
         error: function (r) {
             console.log(r);

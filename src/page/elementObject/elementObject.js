@@ -7,7 +7,15 @@ const treeData = {
     level: null
 }
 treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
-
+function isAdd(treeId, treeNode) {
+    return false
+}
+function showRemoveBtn(treeId, treeNode) {
+    return false
+}
+function showRenameBtn(treeId, treeNode) {
+    return false
+}
 function drawcallback(ele, tableele) {
     layui.use('form', function(){
         var form = layui.form;
