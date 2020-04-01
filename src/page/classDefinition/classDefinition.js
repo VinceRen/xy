@@ -112,7 +112,7 @@ function tableFun(id, search) {
             data: "name",
             render: function (data, type, row) {
 
-                return '<a  class="pointer tdn data-name" href="../createRule/index.html">' + data + '</a>';
+                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ row.id +'">' + data + '</a>';
             },
             orderable: false
         },

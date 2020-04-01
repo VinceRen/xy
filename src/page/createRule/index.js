@@ -1,54 +1,16 @@
 const SUCCESS = 200;
-
+let urlId = getUrlParam('id')
+console.log(urlId)
 layui.use('form', function () {
     // layui相关插件定义
     let form = layui.form;
 
     // 全局变量相关定义
-
     let tacticsSelection = null;
     let projectItem = null;
 
-    // $.ajax({
-    //     url: 'http://172.18.84.114:8081/ruleService/bean/queryElementByType/',
-    //     type: 'POST',
-    //     data: JSON.stringify({
-    //         "type": 'SPACE',
-    //         "startIndex": 0,
-    //         "pageSize": 10
-    //     }),
-    //     contentType: 'application/json;charset=UTF-8',
-    //     success: function (data) {
-    //         console.log(data)
-    //     }
-    // })
-
-
-
-
-
-
-
-
     let treeData = "index.json";
     treeShow(treeData, $("#ruleTree"), true);
-
-    $('.code button').on('click', function () {
-        $.ajax({
-            url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
-            data: {
-                id: 123,
-                content: $('.code code').text()
-            },
-            type: 'POST',
-            success: function (data) {
-                if (data && data.code === SUCCESS) {
-                   loadCode()
-                } else layer.msg('删除失败');
-            }
-        })
-    })
-
 
     $('.tabs a').on('click', function () {
         let type = $(this).attr('href')
@@ -56,12 +18,13 @@ layui.use('form', function () {
         if (type === 'tab-edit') {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
-            loadCode()
+            loadCode('code')
 
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
-            loadFormData()
+            // loadFormData()
+            loadCode('brief')
             loadBriefTable()
         } else if (type === 'tab-data') {
             loadSpaceTable()
@@ -507,6 +470,23 @@ layui.use('form', function () {
         } else {
             // 已有对象,目前走的对象添加
         }
+    })
+    // 源代码编辑后保存事件
+    $('.code button').on('click', function () {
+        $.ajax({
+            url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
+            data: {
+                id: urlId,
+                content: $('.code code').text()
+            },
+            type: 'POST',
+            success: function (data) {
+                if (data && data.code === SUCCESS) {
+                   loadCode('code')
+                   layer.msg(data.message);
+                } else layer.msg(data.message);
+            }
+        })
     })
     // 提交 规则编辑器内容
     $('#submit').on('click', function () {
@@ -984,16 +964,25 @@ function loadBriefTable() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
 }
-function loadCode() {
+function loadCode(type) {
     $.ajax({
         url: 'http://172.18.84.114:8081/ruleService/rule/getRuleInfoById',
         data: {
-            id: 123
+            id: urlId
         },
         type: 'POST',
         success: function (data) {
             if (data && data.code === SUCCESS) {
-                $('.code code').html(data.pageData[0].definition)
+                if (type === 'code') $('.code code').html(data.pageData[0].definition)
+                else {
+                    $('#summaryRuleName').val(data.pageData[0].name)
+                    $('#summaryRuleType').val(data.pageData[0].type)
+                    $('#summaryRuleDesc').val(data.pageData[0].desc)
+                    $('#summaryRuleCreate').val(data.pageData[0].createtime)
+                    $('#summaryRuleEdit').val(data.pageData[0].edittime)
+                    $('#summaryRuleMan').val(data.pageData[0].creator)
+                    $('#summaryRuleVersion').val(data.pageData[0].version)
+                }
             } else layer.msg('删除失败');
         }
     })
@@ -1056,6 +1045,13 @@ function callbackBtn(ele, tableele) {
     }
 
 }
+
+// 获取url参数
+function getUrlParam(name) {   
+    var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+    var r = window.location.search.substr(1).match(reg);
+    if (r != null) return unescape(r[2]); return null;
+} 
 
 
 
