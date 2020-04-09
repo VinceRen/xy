@@ -162,7 +162,10 @@
 
 
 /* 源代码 */
-
+#codeTextArea {
+    width: 100%;
+    resize:none;
+}
 .code {
     display: none;
 }

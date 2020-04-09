@@ -477,7 +477,7 @@ layui.use('form', function () {
             url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
             data: {
                 id: urlId,
-                content: $('.code code').text()
+                content: $('#codeTextArea').val()
             },
             type: 'POST',
             success: function (data) {
@@ -973,7 +973,8 @@ function loadCode(type) {
         type: 'POST',
         success: function (data) {
             if (data && data.code === SUCCESS) {
-                if (type === 'code') $('.code code').html(data.pageData[0].definition)
+                // if (type === 'code') $('.code code').html(data.pageData[0].definition)
+                if (type === 'code')$('#codeTextArea').val(data.pageData[0].definition)
                 else {
                     $('#summaryRuleName').val(data.pageData[0].name)
                     $('#summaryRuleType').val(data.pageData[0].type)
