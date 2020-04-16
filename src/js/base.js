@@ -536,9 +536,13 @@ function treeShow(url, treele, flag, ajaxType, ajaxData) {
 	function filter(treeId, parentNode, childNodes) {
 		if(!childNodes) return null;
 		if(childNodes.hasOwnProperty('pageData') &&
-			childNodes.code == 200 &&
-			childNodes.pageData.length){
-			childNodes = childNodes.pageData;
+				childNodes.code == 200 &&
+					childNodes.pageData.length){
+				childNodes = childNodes.pageData;
+		}else if(childNodes.hasOwnProperty('pageData') &&
+			childNodes.code == 400 &&
+			!childNodes.pageData.length){
+				alert(childNodes.msg);
 		}
 		for(var i = 0, l = childNodes.length; i < l; i++) {
 			childNodes[i].name = childNodes[i].name.replace(/\.n/g,'.');

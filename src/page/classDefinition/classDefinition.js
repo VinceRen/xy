@@ -61,14 +61,14 @@ function zTreeBeforeRemove(treeId, treeNode) {
     });
 }
 let singleTreeId = null;
-function singaltree_click(id, treeId, treeNode) {
+/*function singaltree_click(id, treeId, treeNode) {
     // if (!treeNode.isParent) {
         // dataurl = dataurl + '?id=' + treeNode.id;
         singleTreeId = treeNode.id;
         tableFun(singleTreeId);
         $('.tab-content').removeClass('d-hidden');
     // }
-}
+}*/
 
 //tree节点名称添加/提交
 $('body').on('click', '.tree-form .tree-save', function () {
