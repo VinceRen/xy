@@ -363,7 +363,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 	});
 }
 
-function singaltree_click(id, treeId, name) {}
+function singaltree_click(id, treeId, treeNode) {}
 
 function hiddenValue(treeNode, treeId) {}
 
