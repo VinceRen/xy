@@ -24,6 +24,7 @@ function tableFun1() {
             },
             orderable: false
         },
+        { data: "desc", orderable: false },
         {
             data: "id",
             render: function (data, type, row) {
@@ -41,7 +42,7 @@ function tableFun1() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {};
+            var param = {search: null};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -71,47 +72,38 @@ tableFun1();
 
 //表格添加
 $('.main-box').on('click','.table-add',function () {
-    layershow("表格添加",["500px","300px"],$(".layer-form1"));
+    layershow("标签添加",["500px","auto"],$(".layer-form1"));
     $('#table-form1 #form-save').attr('data-id', null);
 });
 
 //表格编辑-弹层
 $('.main-box').on('click','.table-edit',function () {
-    layershow("表格编辑",["500px","300px"],$(".layer-form1"));
+    layershow("表格编辑",["500px","auto"],$(".layer-form1"));
     $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
     $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
-    $('#table-form1 #founder').val($(this).closest('tr').find('td:nth-child(3)').text());
-    $('#table-form1 #time').val($(this).closest('tr').find('td:nth-child(4)').text());
-    $('#table-form1 #groupId').val($(this).closest('tr').find('td:nth-child(5)').text());
-    $('#table-form1 #artifactId').val($(this).closest('tr').find('td:nth-child(6)').text());
-    $('#table-form1 #version').val($(this).closest('tr').find('td:nth-child(7)').text());
+    $('#table-form1 #desc').val($(this).closest('tr').find('td:nth-child(3)').text());
 });
 
 //表格弹层表单-保存
 $('.layer-form1').on('click','#form-save',function () {
-    let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null;
+    let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null,
+        ajaxUrl = id ? ajaxdatatableedit : ajaxdatatableadd;
+
     let formdata = {
         id : id,
         name : $('#table-form1 #name').val(),
-        founder : $('#table-form1 #founder').val(),
-        time : $('#table-form1 #time').val(),
-        groupId : $('#table-form1 #groupId').val(),
-        artifactId : $('#table-form1 #artifactId').val(),
-        version : $('#table-form1 #version').val()
+        desc : $('#table-form1 #desc').val(),
     }
-
     $.ajax({
-        url: ajaxdatatableupdate,
+        url: ajaxUrl,
         data: formdata,
+        type: 'POST',
         dataType: 'json',
+        xhrFields: { withCredentials: true},
         success: function(rlt){
-            if(!id){
-                layer.msg('添加成功');
-            }else{
-                layer.msg('修改完成');
-            }
+            layer.msg(rlt.msg);
             $('#form-save').siblings('button').trigger('click');
-            $('#example').DataTable().draw();;
+            tableFun1();
         },
         error: function (r) {
             if(!id){
@@ -121,18 +113,18 @@ $('.layer-form1').on('click','#form-save',function () {
             }
         }
     });
-    tableshow($(".table-datatable"),datatable_columns,datatable_ele,dataurl,delete_ele,data_manage,del_url);
 });
 //表格删除
 $('.main-box').on('click','.table-delete',function () {
     let that = $(this);
     $.ajax({
         url: ajaxdatatabledelete,
-        data:{},
+        type: 'POST',
+        data:{id: $(this).closest('div').attr('data-id')},
         dataType: 'json',
         success: function (rlt) {
             that.closest('tr').remove();
-            layer.msg('删除成功');
+            layer.msg(rlt.msg);
         },
         error: function (r) {
             layer.msg('服务错误，删除失败');

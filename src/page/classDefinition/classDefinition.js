@@ -81,6 +81,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
     $.ajax({
         url: ajaxurl,
         // type: "POST",
+        xhrFields: { withCredentials: true},
         data: ajaxTreeData,
         dataType: 'json',
         success: function(rlt){
@@ -227,8 +228,6 @@ $('.main-box').on('click', '.table-add', function () {
     $('#table-form1 #version').val("version-1.0.0");
     layershow("表格添加", ["500px", "300px"], $(".layer-form1"), $(".layer-form1 div"));
 });
-
-
 
 //表格弹层表单-保存
 $('.layer-form1').on('click', '#form-save', function () {

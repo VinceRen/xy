@@ -1,6 +1,18 @@
 const SUCCESS = 200;
-let urlId = getUrlParam('id')
+let urlId = getUrlParam('id'),
+  singleTreeId = null;
 console.log(urlId)
+function isAdd(treeId, treeNode) {
+    return false;
+}
+
+function showRenameBtn(treeId, treeNode) {
+    return false;
+}
+
+function showRemoveBtn(treeId, treeNode) {
+    return false;
+}
 layui.use('form', function () {
     // layui相关插件定义
     let form = layui.form;
@@ -9,16 +21,148 @@ layui.use('form', function () {
     let tacticsSelection = null;
     let projectItem = null;
 
-    let treeData = "index.json";
+    // let treeData = "index.json";
+    let treeData = `${basePath}ruleService/rule/getRuleClassTree`;
     treeShow(treeData, $("#ruleTree"), true);
+
+    //标签加载
+    $.ajax({
+        url: `${basePath}ruleService/rulelable/loadAllRuleLableData`,
+        type: 'POST',
+        async: false,
+        // data: {},
+        xhrFields: { withCredentials: true},
+        dataType: 'JSON',
+        success: function (rlt) {
+            let optionHtml = '';
+            if(rlt.code == 200){
+                [...rlt.pageData].forEach(function (value, index, arr) {
+                    optionHtml += `<option value="${value.id}">${value.name}</option>`;
+                })
+            }
+            $('#table-form1 #label, #summary-label').html(optionHtml);
+        },
+        error: function (r) {
+            console.log(r);
+            layer.msg('服务错误，标签加载失败');
+            // return false;
+        }
+    });
+    //表格添加
+    $('.main-box').on('click', '.table-add', function () {
+        $('#table-form1 #form-save').attr('data-id', null);
+        $('#table-form1 #name').val("名称");
+        $('#table-form1 #creator').val("admin");
+        $('#table-form1 #desc').val("描述内容");
+        $('#table-form1 #version').val("version-1.0.0");
+        layershow("表格添加", ["500px", "auto"], $(".layer-form1"), $(".layer-form1 div"));
+    });
+    //表格弹层表单-添加保存
+    $('.layer-form1').on('click', '#form-save', function () {
+        let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null,
+            ajaxUrl = id ? `${basePath}ruleService/rule/updateRuleInfo` : `${basePath}ruleService/rule/addRuleInfo`,
+            ajaxData = getFormVal($("#table-form1"));
+        ajaxData.classId = singleTreeId;
+        ajaxData.pId = urlId;
+        ajaxData.lableName  = $("#label option:selected").text();
+        $.ajax({
+            url: ajaxUrl,
+            type: "POST",
+            xhrFields: { withCredentials: true},
+            data: ajaxData,
+            dataType: 'json',
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    $('#form-save').siblings('button').trigger('click');
+                    loadTableRuleInfo(singleTreeId);
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                console.log(r);
+                layer.msg('服务错误，操作失败');
+            }
+        });
+    });
+    //表格编辑
+    $('body').on('click', '.table-edit', function () {
+        let formData = {
+            name: $(this).closest('tr').find('td:nth-child(2)').text(),
+            desc: $(this).closest('tr').find('td:nth-child(3)').text(),
+            creator: $(this).closest('tr').find('td:nth-child(5)').text(),
+            version: $(this).closest('tr').find('td:nth-child(6)').text(),
+            lableName: $(this).closest('tr').find('td:nth-child(7)').text(),
+            lableId: $(this).closest('tr').find('td:nth-child(7) div').attr('data-id'),
+            classId: singleTreeId,
+            pId: urlId,
+        }
+        $('.summary-operating').removeClass('d-hidden');
+        $('#detailForm2 .summary-add').attr('data-id', $(this).closest('div').attr('data-id'));
+        for (let key in formData) {
+            $('#detailForm2 [name='+ key + ']').val(formData[key]);
+        }
+        $('.workTabs li:nth-child(4) a').trigger('click');
+    });
+    //表格-概述表单-编辑保存
+    $('.summary-add').on('click', function () {
+        let ajaxUrl = `${basePath}ruleService/rule/updateRuleInfo`,
+          ajaxData = getFormVal($("#detailForm2"));
+        ajaxData.id = $(this).attr('data-id');
+        ajaxData.lableName  = $("#label option:selected").text();
+        if(!ajaxData.id){layer.msg('请选择规则数据关联');return false;}
+        $.ajax({
+            url: ajaxUrl,
+            type: "POST",
+            xhrFields: { withCredentials: true},
+            data: ajaxData,
+            dataType: 'json',
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    $('#form-save').siblings('button').trigger('click');
+                    loadTableRuleInfo(singleTreeId);
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                console.log(r);
+                layer.msg('服务错误，操作失败');
+            }
+        });
+    });
+    //表格删除
+    $('.table-info').on('click', '.table-delete', function () {
+        debugger
+        let that = $(this);
+        $.ajax({
+            url: `${basePath}ruleService/rule/deletRuleInfo`,
+            type: 'POST',
+            data: {ids: that.closest('div').attr('data-id')},
+            dataType: 'json',
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    that.closest('tr').remove();
+                }
+                if(rlt.msg){
+                    layer.msg(rlt.msg);
+                }else{
+                    layer.msg('删除成功');
+                }
+            },
+            error: function (r) {
+                layer.msg('服务错误，删除失败');
+            }
+        });
+    });
 
     $('.tabs a').on('click', function () {
         let type = $(this).attr('href')
         // console.log(type)
-        if (type === 'tab-edit') {
+        if(type === 'tab-info'){
+            $('.ruleInfo').css({ "display": "block" }).siblings().css({ "display": "none" })
+        }else if (type === 'tab-edit') {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
-            loadCode('code')
+            // loadCode('code')
 
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
@@ -974,8 +1118,8 @@ function loadCode(type) {
         success: function (data) {
             if (data && data.code === SUCCESS) {
                 // if (type === 'code') $('.code code').html(data.pageData[0].definition)
-                if (type === 'code')$('#codeTextArea').val(data.pageData[0].definition)
-                else {
+                if (type === 'code')$('#codeTextArea').val(data.pageData[0].definition);
+                else if(data.pageData.length){
                     $('#summaryRuleName').val(data.pageData[0].name)
                     $('#summaryRuleType').val(data.pageData[0].type)
                     $('#summaryRuleDesc').val(data.pageData[0].desc)
@@ -1046,15 +1190,101 @@ function callbackBtn(ele, tableele) {
     }
 
 }
+function drawcallback(ele, tableele) {
+    layui.use('form', function () {
+        var form = layui.form;
+        form.render();
+    });
+}
+//规则信息表格加载函数
+function loadTableRuleInfo(id, search) {
+    var ajaxSearch = search ? search : null;
+    var param = {classId: id, search: ajaxSearch, pId: urlId};
+    var datatable_columns = [
+        {
+            data: "id",
+            render: function (data, type, row) {
+                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+            },
+            orderable: false
+        },
+        {
+            data: "name",
+            render: function (data, type, row) {
 
+                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ row.id +'">' + data + '</a>';
+            },
+            orderable: false
+        },
+        { data: "desc", orderable: false },
+        { data: "createtime", orderable: false },
+        { data: "creator", orderable: false },
+        { data: "version", orderable: false },
+        {
+            data: "lableName",
+            render: function(data, type, row){
+                return `<div data-id="${row.lableId }">${data}</div>`;
+            },
+            orderable: false
+        },
+        {
+            data: "id",
+            render: function (data, type, row) {
+
+                return `<div class="data-name" data-id=${data}>
+                        <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
+                        <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
+                    </div>`;
+            },
+            orderable: false
+        },
+    ];
+    var datatable_ele = null;
+    var dataurl = `${basePath}ruleService/rule/loadRuleInfoList`;
+    var delete_ele = "undefined";
+    var data_manage = {
+        getQueryCondition: function (data) {
+            // var param = {};
+            //组装排序参数
+            if (data.order && data.order.length && data.order[0]) {
+                var sqlName = data.columns[data.order[0].column].data;
+                param.orderColumn = sqlName;
+                //排序方式asc或者desc
+                param.orderDir = data.order[0].dir;
+            }
+
+            //组装分页参数
+            param.startIndex = data.start;
+            param.pageSize = data.length;
+            param.draw = data.draw;
+            return param;
+        }
+    };
+    var del_url = "undefined";
+    tableshow($(".table-info"),
+      datatable_columns,
+      datatable_ele,
+      dataurl,
+      delete_ele,
+      data_manage,
+      del_url,
+      "POST");
+}
+//tree点击事件
+
+function singaltree_click(id, treeId, treeNode){
+    singleTreeId = id;
+    loadTableRuleInfo(id);
+    $('.workTabs li:nth-child(1) a').trigger('click');
+}
 // 获取url参数
-function getUrlParam(name) {   
+function getUrlParam(name) {
     var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
     var r = window.location.search.substr(1).match(reg);
-    if (r != null) return unescape(r[2]); return null;
+    if (r != null)
+        return unescape(r[2]);
+    return null;
 } 
-
-
 
 
 

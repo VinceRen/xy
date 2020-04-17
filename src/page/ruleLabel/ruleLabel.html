@@ -184,11 +184,20 @@
 		</nav>
 		<main class="main-box">
 			<section>
+				<div class="pb10">
+					<button class="btn btn-sm btn-primary table-add"><i class="fa fa-plus"></i> 添加</button>
+					<span class="mr15 r">
+                <input class="input-search" type="text" placeholder="搜索对象名称" />
+                <i class="fa fa-times-circle input-delete"></i>
+                <i class="fa fa-search btn-search"></i>
+            </span>
+				</div>
 				<table class="table table-bordered table-datatable">
 					<thead>
 						<tr>
 							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
 							<th>标签名称</th>
+							<th>描述</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -196,6 +205,25 @@
 			</section>
 		</main>
 		<footer></footer>
+		<!--标签表格-form 弹窗 s-->
+		<div class="d-hidden layer-form1">
+			<form class="form-horizontal" id="table-form1">
+				<div class="form-group">
+					<label for="name" class="control-label" title="标签名称">名称</label>
+					<input type="text" class="form-control" id="name" name="name">
+				</div>
+				<div class="form-group">
+					<label for="name" class="control-label" title="描述">描述</label>
+					<input type="text" class="form-control" name="desc" id="desc">
+				</div>
+				<div class="form-group">
+					<label for="name" class="control-label" title=""></label>
+					<button type="button" id="form-save" class="btn btn-sm btn-primary">确定</button>
+					<button type="button" id="form-cance" class="btn btn-sm btn-default layui-layer-close">取消</button>
+				</div>
+			</form>
+		</div>
+		<!--标签表格-form 弹窗 e-->
 		<!--public js s-->
 		<script src="../../public/jquery/jquery-3.3.1.js"></script>
 		<script src="../../public/bootstrap-3.3.7/js/bootstrap.js"></script>
@@ -211,11 +239,15 @@
 		<!--public js e-->
 		<script>
 			//table数据获取
-			var ajaxdatatable1 = basePath + "ruleService/rulelable/loadAllRuleLableData";
+			var ajaxdatatable1 = basePath + "ruleService/rulelable/loadRuleLablePageData";
 			//table数据添加/编辑
-			var ajaxdatatableupdate = "../../json/datatable.json";
+			// var ajaxdatatableadd = "../../json/datatable.json";
+			var ajaxdatatableadd = basePath + "ruleService/rulelable/addRuleLable";
+			// var ajaxdatatableedit = "../../json/datatable.json";
+			var ajaxdatatableedit = basePath + "ruleService/rulelable/editRuleLable";
 			//table数据删除
-			var ajaxdatatabledelete = "../../json/datatable.json";
+			// var ajaxdatatabledelete = "../../json/datatable.json";
+			var ajaxdatatabledelete = basePath + "ruleService/rulelable/delRuleLable";
 		</script>
 		<script src="ruleLabel.js"></script>
 	</body>

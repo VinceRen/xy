@@ -16,8 +16,8 @@ function tableFun(search) {
         {
             data: "name",
             render: function (data, type, row) {
-
-                return '<a  class="pointer tdn data-name">'+ data +'</a>';
+                // return '<a  class="pointer tdn data-name">'+ data +'</a>';
+                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ row.id +'">' + data + '</a>';
             },
             orderable: false
         },
@@ -153,6 +153,7 @@ $('.layer-form1').on('click','#form-save',function () {
     let ajaxUrl = id ? ajaxdatatableedit : ajaxdatatableadd;
     $.ajax({
         url: ajaxUrl,
+        xhrFields: {withCredentials: true},
         type: "POST",
         data: formdata,
         dataType: 'json',

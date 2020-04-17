@@ -64,8 +64,6 @@ var CONSTANT = {
 	}
 };
 
-
-
 function subFuntion(form2,zTree,treeNode,addTreeUrl,fixTreeUrl){}
 function subFuntion2(form2,zTree,treeNode,addTreeUrl,fixTreeUrl){}
 
@@ -223,6 +221,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 				cache: false, //禁用缓存
 				data: param, //传入已封装的参数
 				dataType: "json",
+				xhrFields: { withCredentials: true },
 				// async: false,//同步
 				success: function(result) {
 					//异常判断与处理
@@ -284,7 +283,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 		}
 	})).api();
 
-	ele.on("change", ":checkbox", function() {
+		ele.on("change", ":checkbox", function() {
 		if($(this).is("[name='cb-check-all']")) {
 			$(":checkbox", ele).prop("checked", $(this).prop("checked"));
 			ele.find("tr").removeClass("active");
@@ -298,7 +297,7 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 		}
 	});
 
-	if(deleteDom != "undefined") {
+		if(deleteDom != "undefined") {
 		deleteDom.unbind("click")
 		deleteDom.click(function() {
 
@@ -342,25 +341,25 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 		});
 	}
 
-	// 搜索按钮触发效果
-	ele.find(".tablesearch").click(function() {
-		tableele.draw();
-	});
-	
-	ele.find(".upsearch").unbind("keyup");
-	ele.find(".upsearch").keyup(function(){
-	$(this).closest("tr").find(".tablesearch").trigger("click");
-	})
+		// 搜索按钮触发效果
+		ele.find(".tablesearch").click(function() {
+			tableele.draw();
+		});
 
-	$table.on("click", ".btn-edit", function() {
-		//编辑按钮
-		var item = tableele.row($(this).closest('tr')).data();
-		userManage.editItemInit(item);
-	}).on("click", ".btn-del", function() {
-		//删除按钮
-		var item = tableele.row($(this).closest('tr')).data();
-		userManage.deleteItem(item);
-	});
+		ele.find(".upsearch").unbind("keyup");
+		ele.find(".upsearch").keyup(function(){
+		$(this).closest("tr").find(".tablesearch").trigger("click");
+		})
+
+		$table.on("click", ".btn-edit", function() {
+			//编辑按钮
+			var item = tableele.row($(this).closest('tr')).data();
+			userManage.editItemInit(item);
+		}).on("click", ".btn-del", function() {
+			//删除按钮
+			var item = tableele.row($(this).closest('tr')).data();
+			userManage.deleteItem(item);
+		});
 }
 
 function singaltree_click(id, treeId, treeNode) {}
@@ -480,8 +479,7 @@ function treeTable(treeDom, url, tableurl, tableDom, msg, table, delDom, userMan
 }
 var treedele = null;
 function treeShow(url, treele, flag, ajaxType, ajaxData) {
-	var view = null,
-			enable;
+	var view = null, enable;
 	ajaxType = ajaxType == "POST" ? "POST" : "GET";
 	ajaxData = Object.prototype.toString.call(ajaxData) === '[object Object]' ? ajaxData : {};
 	ajaxData.otherParam = "zTreeAsyncTest";
@@ -518,6 +516,7 @@ function treeShow(url, treele, flag, ajaxType, ajaxData) {
 			enable: true,
 			type: ajaxType,
 			url: url,
+			xhrFields: {withCredentials: flag},
 			//autoParam: ["id", "name=n", "level=lv"],
 			autoParam: ["id", "name=n", "lvs=lv", "lvs=level"],
 			otherParam: ajaxData,

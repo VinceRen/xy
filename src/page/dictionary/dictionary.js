@@ -59,6 +59,7 @@ function singaltree_click(id, treeId, treeNode) {
               type: 'POST',
               data: {dictId : id},
               dataType: 'json',
+              xhrFields: { withCredentials: true },
               success: function (rlt) {
                 if(rlt.code == 200){
                     layer.close(index);
@@ -269,5 +270,3 @@ $('.layer-form1').on('click', '#form-save', function () {
         }
     });
 });
-
-
