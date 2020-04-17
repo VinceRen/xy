@@ -1,7 +1,7 @@
 const SUCCESS = 200;
 let urlId = getUrlParam('id'),
   singleTreeId = null;
-console.log(urlId)
+let ruleId = null;
 function isAdd(treeId, treeNode) {
     return false;
 }
@@ -20,6 +20,7 @@ layui.use('form', function () {
     // 全局变量相关定义
     let tacticsSelection = null;
     let projectItem = null;
+
 
     // let treeData = "index.json";
     let treeData = `${basePath}ruleService/rule/getRuleClassTree`;
@@ -103,6 +104,11 @@ layui.use('form', function () {
         }
         $('.workTabs li:nth-child(4) a').trigger('click');
     });
+    $('body').on('click', '.editCode', function () {
+        ruleId = $(this).parent().attr('data-id')
+        loadCode('code')
+        $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
+    });
     //表格-概述表单-编辑保存
     $('.summary-add').on('click', function () {
         let ajaxUrl = `${basePath}ruleService/rule/updateRuleInfo`,
@@ -163,7 +169,7 @@ layui.use('form', function () {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
             // loadCode('code')
-
+            if (!ruleId) return layer.msg('请选择规则数据')
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
@@ -620,7 +626,7 @@ layui.use('form', function () {
         $.ajax({
             url: 'http://172.18.84.114:8081/ruleService/rule/updateRuleDefinition',
             data: {
-                id: urlId,
+                id: ruleId,
                 content: $('#codeTextArea').val()
             },
             type: 'POST',
@@ -1112,7 +1118,7 @@ function loadCode(type) {
     $.ajax({
         url: 'http://172.18.84.114:8081/ruleService/rule/getRuleInfoById',
         data: {
-            id: urlId
+            id: ruleId
         },
         type: 'POST',
         success: function (data) {
@@ -1233,6 +1239,7 @@ function loadTableRuleInfo(id, search) {
 
                 return `<div class="data-name" data-id=${data}>
                         <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
+                        <button class="btn btn-xs btn-primary editCode"><i class="fa fa-pencil"></i> 源代码</button>
                         <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
                     </div>`;
             },
