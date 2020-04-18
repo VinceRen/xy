@@ -130,7 +130,7 @@ layui.use('form', function () {
         });
     });
     //表格删除
-    $('.table-info').on('click', '.table-delete', function () {
+    $('body').on('click', '.table-delete', function () {
         debugger
         let that = $(this);
         $.ajax({

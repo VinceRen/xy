@@ -227,7 +227,11 @@ function tableshow(ele, inputcolumns, tableele, url, deleteDom, userManage, delU
 					//异常判断与处理
 					if(result.code == 400) {
 						console.log(result);
-						layer.msg("查询失败");
+						if(result.msg){
+							layer.msg(result.msg);
+						}else{
+							layer.msg("查询失败");
+						}
 						return;
 					}
 					//封装返回数据
@@ -542,6 +546,7 @@ function treeShow(url, treele, flag, ajaxType, ajaxData) {
 			childNodes.code == 400 &&
 			!childNodes.pageData.length){
 				alert(childNodes.msg);
+			  childNodes = [{name: childNodes.msg}]
 		}
 		for(var i = 0, l = childNodes.length; i < l; i++) {
 			childNodes[i].name = childNodes[i].name.replace(/\.n/g,'.');

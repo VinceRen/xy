@@ -25,6 +25,8 @@ function tableFun1() {
             orderable: false
         },
         { data: "desc", orderable: false },
+        { data: "createtime", orderable: false },
+        { data: "edittime", orderable: false },
         {
             data: "id",
             render: function (data, type, row) {
