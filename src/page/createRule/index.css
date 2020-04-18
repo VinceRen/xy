@@ -51,6 +51,10 @@
 }
 .workTabs > li {
     border: 1px solid #E4E4E4;
+    display: none;
+}
+.workTabs > li:first-child {
+    display: block;
 }
 .workTabs > li a:hover {
     background: none!important;

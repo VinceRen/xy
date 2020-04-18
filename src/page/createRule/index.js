@@ -104,10 +104,14 @@ layui.use('form', function () {
         }
         $('.workTabs li:nth-child(4) a').trigger('click');
     });
-    $('body').on('click', '.editCode', function () {
-        ruleId = $(this).parent().attr('data-id')
-        loadCode('code')
-        $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
+    $('body').on('click', '.ruleTitle', function () {
+        $(this).closest('tr').css({"background":"#eee"}).siblings().css({"background":"none"})
+        ruleId = $(this).attr('data-id')
+        $('.workTabs li').css({"display":"block"})
+        $('.workTabs li').eq(3).addClass('active').siblings().removeClass('active')
+        $('.summary').css({"display":"block"}).siblings().css({"display":"none"})
+        loadCode('brief')
+        loadBriefTable()
     });
     //表格-概述表单-编辑保存
     $('.summary-add').on('click', function () {
@@ -168,8 +172,7 @@ layui.use('form', function () {
         }else if (type === 'tab-edit') {
             $('.ruleDefine').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-code') {
-            // loadCode('code')
-            if (!ruleId) return layer.msg('请选择规则数据')
+            loadCode('code')
             $('.code').css({ "display": "block" }).siblings().css({ "display": "none" })
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
@@ -1104,7 +1107,7 @@ function loadBriefTable() {
             param.startIndex = data.start;
             param.pageSize = data.length;
             param.draw = data.draw;
-            param.ruleId = 3
+            param.ruleId = ruleId
             return param;
         }
     };
@@ -1126,13 +1129,17 @@ function loadCode(type) {
                 // if (type === 'code') $('.code code').html(data.pageData[0].definition)
                 if (type === 'code')$('#codeTextArea').val(data.pageData[0].definition);
                 else if(data.pageData.length){
+                    // 编辑状态
+                    $('#summaryRuleCreate,#summaryRuleEdit,#summaryRuleMan').attr("disabled", false)
+                    // 赋值
                     $('#summaryRuleName').val(data.pageData[0].name)
-                    $('#summaryRuleType').val(data.pageData[0].type)
                     $('#summaryRuleDesc').val(data.pageData[0].desc)
                     $('#summaryRuleCreate').val(data.pageData[0].createtime)
                     $('#summaryRuleEdit').val(data.pageData[0].edittime)
                     $('#summaryRuleMan').val(data.pageData[0].creator)
                     $('#summaryRuleVersion').val(data.pageData[0].version)
+                    // 不可编辑
+                    $('#summaryRuleCreate,#summaryRuleEdit,#summaryRuleMan').attr("disabled", true)
                 }
             } else layer.msg('删除失败');
         }
@@ -1217,8 +1224,7 @@ function loadTableRuleInfo(id, search) {
         {
             data: "name",
             render: function (data, type, row) {
-
-                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ row.id +'">' + data + '</a>';
+                return `<p data-id="${row.id}" class="ruleTitle">${data}</p>`;
             },
             orderable: false
         },
@@ -1238,8 +1244,6 @@ function loadTableRuleInfo(id, search) {
             render: function (data, type, row) {
 
                 return `<div class="data-name" data-id=${data}>
-                        <button class="btn btn-xs btn-primary table-edit"><i class="fa fa-pencil"></i> 编辑</button>
-                        <button class="btn btn-xs btn-primary editCode"><i class="fa fa-pencil"></i> 源代码</button>
                         <button class="btn btn-xs btn-primary table-delete"><i class="fa fa-trash-o"></i> 删除</button>
                     </div>`;
             },
