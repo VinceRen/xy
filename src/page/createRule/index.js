@@ -117,7 +117,7 @@ layui.use('form', function () {
     $('.summary-add').on('click', function () {
         let ajaxUrl = `${basePath}ruleService/rule/updateRuleInfo`,
           ajaxData = getFormVal($("#detailForm2"));
-        ajaxData.id = $(this).attr('data-id');
+        ajaxData.id = ruleId;
         ajaxData.lableName  = $("#summary-label option:selected").text();
         if(!ajaxData.id){layer.msg('请选择规则数据关联');return false;}
         $.ajax({

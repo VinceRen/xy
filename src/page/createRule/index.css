@@ -167,6 +167,7 @@
 /* 规则列表 */
 .ruleInfo .ruleTitle {
     cursor: pointer;
+    color: #50a0eb;
 }
 
 /* 源代码 */
