@@ -118,7 +118,7 @@ layui.use('form', function () {
         let ajaxUrl = `${basePath}ruleService/rule/updateRuleInfo`,
           ajaxData = getFormVal($("#detailForm2"));
         ajaxData.id = $(this).attr('data-id');
-        ajaxData.lableName  = $("#label option:selected").text();
+        ajaxData.lableName  = $("#summary-label option:selected").text();
         if(!ajaxData.id){layer.msg('请选择规则数据关联');return false;}
         $.ajax({
             url: ajaxUrl,
@@ -140,7 +140,7 @@ layui.use('form', function () {
         });
     });
     //表格删除
-    $('.table-info').on('click', '.table-delete', function () {
+    $('body').on('click', '.table-delete', function () {
         debugger
         let that = $(this);
         $.ajax({
