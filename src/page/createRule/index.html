@@ -421,7 +421,7 @@
                         <span></span>
                         <b>规则信息</b>
                     </div>
-                    <form class="form-horizontal" role="form" id="detailForm2" action="" method="post">
+                    <form class="form-horizontal layui-form" role="form" id="detailForm2" action="" method="post">
                         <input type="hidden" class="form-control" id="id" name="id">
                         <div class="form-group">
                             <label class="col-sm-2 control-label">规则名称</label>
@@ -461,8 +461,8 @@
                         </div>
                         <div class="form-group">
                             <label for="summaryRuleVersion" class="col-sm-2 control-label">标签</label>
-                            <div class="col-sm-10">
-                                <select type="text" class="form-control" id="summary-label" name="lableId"></select>
+                            <div class="col-sm-10 summaryLabel">
+                                <!-- <select type="text" class="form-control" id="summary-label" name="lableId"></select> -->
                             </div>
                         </div>
                         <div class="form-group summary-operating">
@@ -651,7 +651,7 @@
     <!-- 弹出层内容 -->
     <!--规则信息表格-form 弹窗 s-->
     <div class="d-hidden layer-form1">
-        <form class="form-horizontal table-form1" id="table-form1">
+        <form class="form-horizontal table-form1 layui-form" id="table-form1">
             <div class="form-group">
                 <label for="name" class="control-label" title="规则名称">名称</label>
                 <input type="text" class="form-control" id="name" name="name">
@@ -670,7 +670,7 @@
             </div>
             <div class="form-group">
                 <label for="name" class="control-label" title="version">标签</label>
-                <select type="text" class="form-control" id="label" name="lableId"></select>
+                <div class="labelOption"></div>
             </div>
             <div class="form-group">
                 <label for="name" class="control-label" title=""></label>

@@ -26,29 +26,7 @@ layui.use('form', function () {
     let treeData = `${basePath}ruleService/rule/getRuleClassTree`;
     treeShow(treeData, $("#ruleTree"), true);
 
-    //标签加载
-    $.ajax({
-        url: `${basePath}ruleService/rulelable/loadAllRuleLableData`,
-        type: 'POST',
-        async: false,
-        // data: {},
-        xhrFields: { withCredentials: true},
-        dataType: 'JSON',
-        success: function (rlt) {
-            let optionHtml = '';
-            if(rlt.code == 200){
-                [...rlt.pageData].forEach(function (value, index, arr) {
-                    optionHtml += `<option value="${value.id}">${value.name}</option>`;
-                })
-            }
-            $('#table-form1 #label, #summary-label').html(optionHtml);
-        },
-        error: function (r) {
-            console.log(r);
-            layer.msg('服务错误，标签加载失败');
-            // return false;
-        }
-    });
+    
     //表格添加
     $('.main-box').on('click', '.table-add', function () {
         $('#table-form1 #form-save').attr('data-id', null);
@@ -56,6 +34,7 @@ layui.use('form', function () {
         $('#table-form1 #creator').val("admin");
         $('#table-form1 #desc').val("描述内容");
         $('#table-form1 #version').val("version-1.0.0");
+        loadLabel('add', form)
         layershow("表格添加", ["500px", "auto"], $(".layer-form1"), $(".layer-form1 div"));
     });
     //表格弹层表单-添加保存
@@ -63,9 +42,16 @@ layui.use('form', function () {
         let id = $('#table-form1 #form-save').attr('data-id') ? $('#table-form1 #form-save').attr('data-id') : null,
             ajaxUrl = id ? `${basePath}ruleService/rule/updateRuleInfo` : `${basePath}ruleService/rule/addRuleInfo`,
             ajaxData = getFormVal($("#table-form1"));
+
+        let chackedGroup = $('.labelOption').find('input:checkbox:checked')
+        let labelData = []
+        chackedGroup.each(function (i, n) {
+            labelData.push($('.labelOption').find('input:checkbox:checked').eq(i).val())
+        })
+
         ajaxData.classId = singleTreeId;
         ajaxData.pId = urlId;
-        ajaxData.lableName  = $("#label option:selected").text();
+        ajaxData.lableId  = labelData.join(',')
         $.ajax({
             url: ajaxUrl,
             type: "POST",
@@ -110,15 +96,22 @@ layui.use('form', function () {
         $('.workTabs li').css({"display":"block"})
         $('.workTabs li').eq(3).addClass('active').siblings().removeClass('active')
         $('.summary').css({"display":"block"}).siblings().css({"display":"none"})
-        loadCode('brief')
+        loadCode('brief', form)
         loadBriefTable()
     });
     //表格-概述表单-编辑保存
     $('.summary-add').on('click', function () {
         let ajaxUrl = `${basePath}ruleService/rule/updateRuleInfo`,
           ajaxData = getFormVal($("#detailForm2"));
+
+        let chackedGroup = $('.summaryLabel').find('input:checkbox:checked')
+        let labelData = []
+        chackedGroup.each(function (i, n) {
+            labelData.push($('.summaryLabel').find('input:checkbox:checked').eq(i).val())
+        })
+
         ajaxData.id = ruleId;
-        ajaxData.lableName  = $("#summary-label option:selected").text();
+        ajaxData.lableId  = labelData.join(',')
         if(!ajaxData.id){layer.msg('请选择规则数据关联');return false;}
         $.ajax({
             url: ajaxUrl,
@@ -177,7 +170,7 @@ layui.use('form', function () {
         } else if (type === 'tab-brief') {
             $('.summary').css({ "display": "block" }).siblings().css({ "display": "none" })
             // loadFormData()
-            loadCode('brief')
+            loadCode('brief', form)
             loadBriefTable()
         } else if (type === 'tab-data') {
             loadSpaceTable()
@@ -1117,7 +1110,7 @@ function loadBriefTable() {
     // CONSTANT.DATA_TABLES.DEFAULT_OPTION.info = false;
     tableshow($("#historyTable"), datatable_columns, datatable_ele, dataurl, delete_ele, data_manage, del_url, 'POST');
 }
-function loadCode(type) {
+function loadCode(type, form) {
     $.ajax({
         url: 'http://172.18.84.114:8081/ruleService/rule/getRuleInfoById',
         data: {
@@ -1138,6 +1131,8 @@ function loadCode(type) {
                     $('#summaryRuleEdit').val(data.pageData[0].edittime)
                     $('#summaryRuleMan').val(data.pageData[0].creator)
                     $('#summaryRuleVersion').val(data.pageData[0].version)
+                    let labels = data.pageData[0].lableIds.map(e => e.lableId)
+                    loadLabel('', form, labels)
                     // 不可编辑
                     $('#summaryRuleCreate,#summaryRuleEdit,#summaryRuleMan').attr("disabled", true)
                 }
@@ -1296,7 +1291,40 @@ function getUrlParam(name) {
         return unescape(r[2]);
     return null;
 } 
-
+// 获取标签
+function loadLabel (type, form, labels) {
+    $.ajax({
+        url: `${basePath}ruleService/rulelable/loadAllRuleLableData`,
+        type: 'POST',
+        async: false,
+        // data: {},
+        xhrFields: { withCredentials: true},
+        dataType: 'JSON',
+        success: function (data) {
+            let res = data && data.pageData
+           if (type === 'add') {
+               let html = ''
+               res.map(e => {
+                html += `<input type="checkbox" name="" title="${e.name}" lay-skin="primary" value="${e.id}">`
+               })
+               $('.labelOption').html(html)
+           } else {
+                let html = ''
+                res.map(e => {
+                   if (labels.includes(e.id)) html += `<input type="checkbox" name="" title="${e.name}" lay-skin="primary" value="${e.id}" checked>`
+                   else html += `<input type="checkbox" name="" title="${e.name}" lay-skin="primary" value="${e.id}">`
+                })
+                $('.summaryLabel').html(html)
+           }
+           if (form) form.render()
+        },
+        error: function (r) {
+            console.log(r);
+            layer.msg('服务错误，标签加载失败');
+            // return false;
+        }
+    });
+}
 
 
 

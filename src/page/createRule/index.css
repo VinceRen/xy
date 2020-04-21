@@ -216,7 +216,17 @@
     justify-content: space-between;
 }
 
+.summaryLabel .layui-form-checkbox {
+    margin: 5px 10px 0 0;
+}
 
+.labelOption {
+    display: inline-block;
+    width: calc(100% - 150px);
+}
+.labelOption .layui-form-checkbox {
+    margin: 0px 10px 0 0;
+}
 /* 数据对象 */
 
 .data {
