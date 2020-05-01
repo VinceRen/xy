@@ -12,7 +12,6 @@
 		<!--[endif]-->
 		<!--public css s-->
 		<link rel="stylesheet" href="../../public/bootstrap-3.3.7/css/bootstrap.min.css">
-		<link rel="stylesheet" href="../../public/validator/css/bootstrapValidator.css">
 		<link rel="stylesheet" href="../../public/dataTables/css/dataTables.bootstrap.css">
 		<link rel="stylesheet" href="../../public/zTree/css/zTreeStyle/zTreeStyle.css">
 		<link rel="stylesheet" href="../../public/layui/css/layui.css">
@@ -195,13 +194,14 @@
 				<table class="layui-form table table-bordered table-datatable">
 					<thead>
 						<tr>
-							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>
+<!--							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>-->
+							<th class="tc"></th>
 							<th>工程规则名称</th>
 							<th>创建人</th>
 							<th>创建时间</th>
-							<th>groupId</th>
-							<th>artifactId</th>
-							<th>version</th>
+							<th>组织标识</th>
+							<th>工程标识</th>
+							<th>版本</th>
 							<th>操作</th>
 						</tr>
 					</thead>
@@ -213,27 +213,27 @@
 			<form class="form-horizontal" id="table-form1">
 				<div class="form-group">
 					<label for="name" class="control-label" title="工程规则名称">工程规则名称</label>
-					<input type="text" class="form-control" id="name" name="name">
+					<input type="text" class="form-control" id="name" name="name" placeholder="请输入工程规则名称">
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title="创建人">创建人</label>
-					<input type="text" class="form-control" id="founder" name="founder">
+					<input type="text" class="form-control" id="founder" name="founder" placeholder="请输入创建人">
 				</div>
-				<div class="form-group">
+				<div class="form-group d-hidden">
 					<label for="name" class="control-label" title="创建时间">创建时间</label>
 					<input type="date" class="form-control" id="time" name="time" value="2020-02-02">
 				</div>
 				<div class="form-group">
-					<label for="name" class="control-label" title="groupId">groupId</label>
-					<input type="text" class="form-control" id="groupId" name="groupId">
+					<label for="name" class="control-label" title="groupId">组织标识</label>
+					<input type="text" class="form-control" id="groupId" name="groupId" placeholder="请输入组织标识">
 				</div>
 				<div class="form-group">
-					<label for="name" class="control-label" title="artifactId">artifactId</label>
-					<input type="text" class="form-control" id="artifactId" name="artifactId">
+					<label for="name" class="control-label" title="artifactId">工程标识</label>
+					<input type="text" class="form-control" id="artifactId" name="artifactId" placeholder="请输入工程标识">
 				</div>
 				<div class="form-group">
-					<label for="name" class="control-label" title="version">version</label>
-					<input type="text" class="form-control" id="version" name="version">
+					<label for="name" class="control-label" title="version">版本</label>
+					<input type="text" class="form-control" id="version" name="version" placeholder="请输入版本">
 				</div>
 				<div class="form-group">
 					<label for="name" class="control-label" title=""></label>
@@ -247,7 +247,7 @@
 		<!--public js s-->
 		<script src="../../public/jquery/jquery-3.3.1.js"></script>
 		<script src="../../public/bootstrap-3.3.7/js/bootstrap.js"></script>
-		<script src="../../public/validator/js/bootstrapValidator.js"></script>
+		<script src="../../public/validata/js/jquery.validate.min.js"></script>
 		<script src="../../public/dataTables/js/jquery.dataTables.js"></script>
 		<script src="../../public/dataTables/js/dataTables.bootstrap.js"></script>
 		<script src="../../public/zTree/js/jquery.ztree.core.js"></script>

@@ -157,22 +157,34 @@ function callbackBtn(ele, tableele) {
 
     }else if($(ele).hasClass("table-delete")){//表格删除
         let that = $(ele);
-        $.ajax({
-            url: ajaxdatatabledelete,
-            type: "POST",
-            data:{id: that.closest('div').attr("data-id")},
-            dataType: 'json',
-            success: function (rlt) {
-                if(rlt.code = 200){
-                    // that.closest('tr').remove();
-                    tableFun1();
+        layer.confirm(
+          '确定删除吗？',
+          {title: '删除提示', closeBtn: 0},
+          function (index) {
+                ajaxRemove();
+                layer.close(index);
+          }
+        );
+        //删除回调
+        function ajaxRemove() {
+            $.ajax({
+                url: ajaxdatatabledelete,
+                type: "POST",
+                data:{id: that.closest('div').attr("data-id")},
+                dataType: 'json',
+                async: false,
+                success: function (rlt) {
+                    if(rlt.code = 200){
+                        // that.closest('tr').remove();
+                        tableFun1();
+                    }
+                    layer.msg(rlt.message);
+                },
+                error: function (r) {
+                    layer.msg('服务错误，删除失败');
                 }
-                layer.msg(rlt.message);
-            },
-            error: function (r) {
-                layer.msg('服务错误，删除失败');
-            }
-        });
+            });
+        }
     }
 
 }

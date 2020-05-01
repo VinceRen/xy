@@ -91,26 +91,36 @@ function callbackBtn(ele, tableele){
         $('#table-form1 #artifactId').val($(ele).closest('tr').find('td:nth-child(6)').text());
         $('#table-form1 #version').val($(ele).closest('tr').find('td:nth-child(7)').text());
 
-    }else if($(ele).hasClass('table-delete')){
-        //表格删除
-        $.ajax({
-            url: ajaxdatatabledelete,
-            type: 'POST',
-            data:{id: $(ele).closest('div').attr("data-id")},
-            dataType: 'json',
-            success: function (rlt) {
-                if(rlt.code == 200){
-                    $(ele).closest('tr').remove();
+    }else if($(ele).hasClass('table-delete')){//表格删除
+        //删除确认回调
+        function ajaxRemove(){
+            $.ajax({
+                url: ajaxdatatabledelete,
+                type: 'POST',
+                data:{id: $(ele).closest('div').attr("data-id")},
+                dataType: 'json',
+                async: false,
+                success: function (rlt) {
+                    if(rlt.code == 200){
+                        $(ele).closest('tr').remove();
+                    }
+                    if(rlt.msg){
+                        layer.msg(rlt.msg);
+                    }else{
+                        layer.msg('删除成功');
+                    }
+                },
+                error: function (r) {
+                    layer.msg('服务错误，删除失败');
                 }
-                if(rlt.msg){
-                    layer.msg(rlt.msg);
-                }else{
-                    layer.msg('删除成功');
-                }
-            },
-            error: function (r) {
-                layer.msg('服务错误，删除失败');
-            }
+            });
+        }
+        layer.confirm(
+          '确定删除吗？',
+          {title: '删除提示', closeBtn: 0},
+          function (index) {
+              ajaxRemove();
+              layer.close(index);
         });
     }
 }
@@ -133,7 +143,7 @@ $('.main-box').on('click','.table-add',function () {
     $('#table-form1 #groupId').val("groupId");
     $('#table-form1 #artifactId').val("artifactId");
     $('#table-form1 #version').val("version");
-    layershow("表格添加",["500px","300px"],$(".layer-form1"), $(".layer-form1 div"));
+    layershow("表格添加",["500px","300px"],$(".layer-form1"));
     $('#table-form1 #form-save').attr('data-id', null);
 });
 
@@ -149,6 +159,27 @@ $('.layer-form1').on('click','#form-save',function () {
         artifactId : $('#table-form1 #artifactId').val(),
         version : $('#table-form1 #version').val(),
         strArray:'[]'
+    }
+    if(!formdata.name){
+        layer.msg('请输入工程规则名称');
+        $('#table-form1 #name').focus().addClass('has-error');
+        return false;
+    }else if(!formdata.founder){
+        layer.msg('请输入创建人');
+        $('#table-form1 #founder').focus().addClass('has-error');
+        return false;
+    }else if(!formdata.groupId){
+        layer.msg('请输入组织标识');
+        $('#table-form1 #groupId').focus().addClass('has-error');
+        return false;
+    }else if(!formdata.artifactId){
+        layer.msg('请输入工程标识');
+        $('#table-form1 #artifactId').focus().addClass('has-error');
+        return false;
+    }else if(!formdata.version){
+        layer.msg('请输入版本');
+        $('#table-form1 #version').focus().addClass('has-error');
+        return false;
     }
     let ajaxUrl = id ? ajaxdatatableedit : ajaxdatatableadd;
     $.ajax({
@@ -166,10 +197,14 @@ $('.layer-form1').on('click','#form-save',function () {
             layer.msg(rlt.msg);
         },
         error: function (r) {
-                layer.msg('服务错误，操作失败');
+            layer.msg('服务错误，操作失败');
         }
     });
-
 });
 
-
+//form-清除has-error
+$('#table-form1 input[type="text"]').keyup(function () {
+    if($(this).hasClass('has-error')){
+        $(this).val().length == 0 ? $(this).addClass('has-error').removeClass('has-success') : $(this).addClass('has-success').removeClass('has-error');
+    }
+});

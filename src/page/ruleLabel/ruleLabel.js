@@ -119,18 +119,29 @@ $('.layer-form1').on('click','#form-save',function () {
 //表格删除
 $('.main-box').on('click','.table-delete',function () {
     let that = $(this);
-    $.ajax({
-        url: ajaxdatatabledelete,
-        type: 'POST',
-        data:{id: $(this).closest('div').attr('data-id')},
-        dataType: 'json',
-        success: function (rlt) {
-            that.closest('tr').remove();
-            layer.msg(rlt.msg);
-        },
-        error: function (r) {
-            layer.msg('服务错误，删除失败');
-        }
-    });
+    function ajaxRemove(){
+        $.ajax({
+            url: ajaxdatatabledelete,
+            type: 'POST',
+            data:{id: that.closest('div').attr('data-id')},
+            dataType: 'json',
+            async: false,
+            success: function (rlt) {
+                that.closest('tr').remove();
+                layer.msg(rlt.msg);
+            },
+            error: function (r) {
+                layer.msg('服务错误，删除失败');
+            }
+        });
+    }
+    layer.confirm(
+      '确定删除吗？',
+      {title: '删除提示', closeBtn: 0},
+      function(index){
+        ajaxRemove();
+        layer.close(index);
+      }
+    );
 });
 

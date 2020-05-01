@@ -174,7 +174,7 @@ $('.main-box').on('click','.input-delete',function () {
     $(this).siblings('.input-search').val('').blur();
 
 });
-//表格搜索清空
+//表格搜索
 $('.main-box').on('click','.btn-search',function () {
     let search = $(this).siblings('.input-search').val();
     if($(this).closest('table').hasClass('table-datatable1')){
@@ -306,7 +306,7 @@ $('body').on('click','.form-save',function () {
         }
     });
 });
-//表格2删除
+//表格1删除
 $('.main-box').on('click','.table-delete',function () {
     var that = $(this);
     var deleteurl = null;
@@ -317,21 +317,34 @@ $('.main-box').on('click','.table-delete',function () {
         deleteurl = ajaxdatatabledelete2;
         ajaxdata.id = that.closest('div').attr("data-id");
     }
-    $.ajax({
-        url: deleteurl,
-        type: 'POST',
-        data:ajaxdata,
-        dataType: 'json',
-        success: function (rlt) {
-            if(rlt.code == 200){
-                that.closest('tr').remove();
+
+    layer.confirm(
+      '确定删除吗？',
+      {title: '删除提示', closeBtn: 0},
+      function (index) {
+          ajaxRemove();
+          layer.close(index);
+      }
+    );
+    //删除确定回调
+    function ajaxRemove(){
+        $.ajax({
+            url: deleteurl,
+            type: 'POST',
+            data:ajaxdata,
+            dataType: 'json',
+            async: false,
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    that.closest('tr').remove();
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                layer.msg('服务错误，操作失败');
             }
-            layer.msg(rlt.message);
-        },
-        error: function (r) {
-            layer.msg('服务错误，操作失败');
-        }
-    });
+        });
+    }
 });
 
 //表格1更新

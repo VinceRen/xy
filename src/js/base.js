@@ -72,27 +72,27 @@ function validation(obj,zTree,addTreeUrl,fixTreeUrl) {
     // http://docs.jquery.com/Plugins/Validation
     var form2 = obj;
     form2.validate({
-        errorElement: 'span', //default input error message container
-        errorClass: 'help-block help-block-error', // default input error message class
-        focusInvalid: true, // do not focus the last invalid input
-        ignore: "",  // validate all fields including form hidden input
-        rules: {
-            name: {
-                minlength: 2,
-                required: true
-            },
-            email: {
-                
-                email: true
-            },
-            url: {
-                required: true,
-                url: true
-            },
-            number: {
-                required: true,
-                number: true
-            },
+		errorElement: 'span', //default input error message container
+		errorClass: 'help-block help-block-error', // default input error message class
+		focusInvalid: true, // do not focus the last invalid input
+		ignore: "",  // validate all fields including form hidden input
+		rules: {
+			name: {
+				minlength: 2,
+				required: true
+			},
+			email: {
+
+				email: true
+			},
+			url: {
+				required: true,
+				url: true
+			},
+			number: {
+				required: true,
+				number: true
+			},
             digits: {
                 required: true,
                 digits: true
@@ -119,12 +119,12 @@ function validation(obj,zTree,addTreeUrl,fixTreeUrl) {
 				  alnum: true,
 				  samepassword: true
 			}
-        },
-        messages: {
+		},
+		messages: {
         newpasswordrepeat: {
 	        equalTo: "两次密码输入不一致"
 	      }
-        },
+		},
 
 		errorPlacement: function(error, element) { // render error placement for each input type
 			var icon = $(element).parent('.input-icon').children('i');
@@ -134,19 +134,19 @@ function validation(obj,zTree,addTreeUrl,fixTreeUrl) {
 			});
 		},
 
-        highlight: function (element) { // hightlight error inputs
-            $(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group
-        },
-        success: function (label, element) {
-            var icon = $(element).parent('.input-icon').children('i');
-            $(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
-            icon.removeClass("fa-warning").addClass("fa-check");
-        },
-        submitHandler: function () {
+		highlight: function (element) { // hightlight error inputs
+			$(element).closest('.form-group').removeClass("has-success").addClass('has-error'); // set error class to the control group
+		},
+		success: function (label, element) {
+			var icon = $(element).parent('.input-icon').children('i');
+			$(element).closest('.form-group').removeClass('has-error').addClass('has-success'); // set success class to the control group
+			icon.removeClass("fa-warning").addClass("fa-check");
+		},
+		submitHandler: function () {
             subFuntion(form2,zTree,addTreeUrl,fixTreeUrl)
             subFuntion2(form2,zTree,addTreeUrl,fixTreeUrl)
-         }
-    });
+		}
+	});
 }
 
 
