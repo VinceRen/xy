@@ -11,7 +11,7 @@ var CONSTANT = {
 				"sProcessing": "处理中...",
 				"sLengthMenu": "",
 				"sZeroRecords": "没有匹配结果",
-				"sInfo": "",
+				"sInfo": "当前显示第 _START_ 至 _END_ 项，共 _TOTAL_ 项。",
 				"sInfoEmpty": "当前显示第 0 至 0 项，共 0 项",
 				"sInfoFiltered": "(由 _MAX_ 项结果过滤)",
 				"sInfoPostFix": "",
@@ -35,6 +35,7 @@ var CONSTANT = {
 			"ordering": true,
 			"dom": "ft<'row-fluid'<'fl'i> <'fl'l><'fr'p>>",
 			"lengthMenu": [10, 20, 30],
+			paging: true,
 			autoWidth: false, //禁用自动调整列宽
 			stripeClasses: [], //为奇偶行加上样式，兼容不支持CSS伪类的场合
 			order: [], //取消默认排序查询,否则复选框一列会出现小箭头

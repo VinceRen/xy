@@ -22,11 +22,26 @@ layui.use('form', function () {
     let projectItem = null;
 
 
-    // let treeData = "index.json";
-    let treeData = `${basePath}ruleService/rule/getRuleClassTree`;
-    treeShow(treeData, $("#ruleTree"), true);
+    // let treeDataUrl = "index.json";
+    // let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
+    let treeDataUrl = `${basePath}ruleService/rule/ruleClassTreeByLevel`;
+    let initTreeDate = {
+        id: null,
+        level: null,
+        searchContent: null,
+    };
+    treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
 
-    
+    //tree分级搜索
+    $('.input-group-btn').on('click', function () {
+        initTreeDate = {
+            id: singleTreeId,
+            level: null,
+            searchContent: $('.ruleSearch .form-control').val(),
+        };
+        treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
+    });
+
     //表格添加
     $('.main-box').on('click', '.table-add', function () {
         $('#table-form1 #form-save').attr('data-id', null);
@@ -134,26 +149,35 @@ layui.use('form', function () {
     });
     //表格删除
     $('body').on('click', '.table-delete', function () {
-        debugger
         let that = $(this);
-        $.ajax({
-            url: `${basePath}ruleService/rule/deletRuleInfo`,
-            type: 'POST',
-            data: {ids: that.closest('div').attr('data-id')},
-            dataType: 'json',
-            success: function (rlt) {
-                if(rlt.code == 200){
-                    that.closest('tr').remove();
+        //表格删除回调
+        function ajaxRemove(){
+            $.ajax({
+                url: `${basePath}ruleService/rule/deletRuleInfo`,
+                type: 'POST',
+                data: {ids: that.closest('div').attr('data-id')},
+                dataType: 'json',
+                success: function (rlt) {
+                    if(rlt.code == 200){
+                        that.closest('tr').remove();
+                    }
+                    if(rlt.msg){
+                        layer.msg(rlt.msg);
+                    }else{
+                        layer.msg('删除成功');
+                    }
+                },
+                error: function (r) {
+                    layer.msg('服务错误，删除失败');
                 }
-                if(rlt.msg){
-                    layer.msg(rlt.msg);
-                }else{
-                    layer.msg('删除成功');
-                }
-            },
-            error: function (r) {
-                layer.msg('服务错误，删除失败');
-            }
+            });
+        }
+        layer.confirm(
+          '确定删除吗？',
+          {title:'删除提示',closeBtn: 0},
+          function (index) {
+            ajaxRemove();
+            layer.close(index);
         });
     });
 

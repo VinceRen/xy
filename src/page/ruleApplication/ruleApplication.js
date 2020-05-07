@@ -405,6 +405,16 @@ layui.use('form', function () {
     form.render();
   });
 });
+
+//表格搜索清空
+$('.main-box').on('click','.input-delete',function(){
+  $(this).siblings('.input-search').val('').focus();
+});
+//表格搜索
+$('.main-box').on('click','.btn-search',function () {
+  let search = $(this).siblings('.input-search').val();
+  tableFun(dataurl, {classId: singleTreeId,search: search});
+});
 // 关联规则添加-弹层
 $('.main-box').on('click', '.table-add', function () {
   layType = 'add';

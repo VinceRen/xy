@@ -96,6 +96,11 @@ $('.layer-form1').on('click','#form-save',function () {
         name : $('#table-form1 #name').val(),
         desc : $('#table-form1 #desc').val(),
     }
+    if(!$('#table-form1 #name').val()){
+        layer.msg('名称不能为空！');
+        $('#table-form1 #name').focus();
+        return false;
+    }
     $.ajax({
         url: ajaxUrl,
         data: formdata,
@@ -104,6 +109,7 @@ $('.layer-form1').on('click','#form-save',function () {
         xhrFields: { withCredentials: true},
         success: function(rlt){
             layer.msg(rlt.msg);
+            if(rlt.code == 400){ return false;}
             $('#form-save').siblings('button').trigger('click');
             tableFun1();
         },
