@@ -421,6 +421,9 @@ div.dataTables_wrapper {
     padding: 10px;
     border: 2px solid #ddd;
 }
+.ztree li a {
+    padding-right: 80px;
+}
 /*****tree e******/
 /* header-s */
 header{

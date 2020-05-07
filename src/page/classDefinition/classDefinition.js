@@ -43,22 +43,38 @@ function zTreeBeforeEditName(treeId, treeNode) {
     return false;
 }
 function zTreeBeforeRemove(treeId, treeNode) {
-    $.ajax({
-        url: ajaxdataztreedelet,
-        // type: 'POST',
-        data: {id: treeNode.id},
-        dataType: 'json',
-        success:function (rlt) {
-            if(rlt.code == 200){
-                treeShow(ajaxdataztree, $("#treeDemo"), true);
+    //删除确认回调
+    function ajaxRemove(){
+        $.ajax({
+            url: ajaxdataztreedelet,
+            // type: 'POST',
+            data: {id: treeNode.id},
+            dataType: 'json',
+            async: false,
+            success:function (rlt) {
+                if(rlt.code == 200){
+                    treeShow(ajaxdataztree, $("#treeDemo"), true);
+                }
+                layer.msg(rlt.msg);
+            },
+            error: function (r) {
+                console.log(r);
+                layer.msg('服务错误，删除失败');
             }
-            layer.msg(rlt.msg);
-        },
-        error: function (r) {
-            console.log(r);
-            layer.msg('服务错误，删除失败');
-        }
-    });
+        });
+    }
+    layer.confirm(
+      '确定删除' + treeNode.name +'吗？',
+      {title: '删除提示', closeBtn: 0},
+      function (index) {
+          ajaxRemove();
+          layer.close(index);
+      },
+      function (index) {
+
+      }
+    );
+    return false;
 }
 let singleTreeId = null;
 /*function singaltree_click(id, treeId, treeNode) {
@@ -72,6 +88,11 @@ let singleTreeId = null;
 
 //tree节点名称添加/提交
 $('body').on('click', '.tree-form .tree-save', function () {
+    if(!$(".tree-form [name='tree-name']").val()){
+        layer.msg('名称不能为空');
+        $(".tree-form [name='tree-name']").focus();
+        return false;
+    }
     let id = $(this).attr('data-id');
     let name = $(".tree-form [name='tree-name']").val();
     let desc = $(".tree-form [name='tree-desc']").val();

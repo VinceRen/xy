@@ -313,7 +313,7 @@ $('.main-box').on('click','.table-edit',function () {
     }
 });
 
-//表格2删除
+//表格删除
 $('.main-box').on('click','.table-delete',function () {
     var that = $(this);
     var deleteurl = null;
@@ -324,24 +324,36 @@ $('.main-box').on('click','.table-delete',function () {
         deleteurl = ajaxdatatabledelete2;
         ajaxdata.id = that.closest('div').attr("data-id");
     }
-    $.ajax({
-        url: deleteurl,
-        type: 'POST',
-        data:ajaxdata,
-        dataType: 'json',
-        success: function (rlt) {
-            if(rlt.code == 200){
-                that.closest('tr').remove();
+    layer.confirm(
+      '确定删除吗？',
+      {title: '删除提示', closeBtn: 0},
+      function (index) {
+          ajaxRemove();
+          layer.close(index);
+      }
+    );
+    //删除表格回调
+    function ajaxRemove(){
+        $.ajax({
+            url: deleteurl,
+            type: 'POST',
+            data:ajaxdata,
+            dataType: 'json',
+            async: false,
+            success: function (rlt) {
+                if(rlt.code == 200){
+                    that.closest('tr').remove();
+                }
+                layer.msg(rlt.message);
+            },
+            error: function (r) {
+                layer.msg('服务错误，操作失败');
             }
-            layer.msg(rlt.message);
-        },
-        error: function (r) {
-            layer.msg('服务错误，操作失败');
-        }
-    });
+        });
+    }
 });
 
-//表格1更新
+//表格更新
 $('.main-box').on('click','.table-upload',function () {
     $.ajax({
         url: ajaxdatatableupload1,

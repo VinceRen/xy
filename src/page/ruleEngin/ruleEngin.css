@@ -42,3 +42,9 @@
     color: #50a0eb;
 }
 /* main-e */
+#table-form1 input.has-error{
+     border-color: #f00;
+}
+#table-form1 input.has-success{
+    /*border-color: #2EDF43;*/
+}
