@@ -1,18 +1,8 @@
 const SUCCESS = 200;
-let urlId = getUrlParam('id'),
-  singleTreeId = null;
+let urlId = getUrlParam('id');
+let singleTreeId = null;
 let ruleId = null;
-function isAdd(treeId, treeNode) {
-    return false;
-}
 
-function showRenameBtn(treeId, treeNode) {
-    return false;
-}
-
-function showRemoveBtn(treeId, treeNode) {
-    return false;
-}
 layui.use('form', function () {
     // layui相关插件定义
     let form = layui.form;
@@ -892,7 +882,7 @@ layui.use('form', function () {
             }
         })
     })
-
+    // 取消事件
     
 
     
@@ -1350,5 +1340,15 @@ function loadLabel (type, form, labels) {
     });
 }
 
+function isAdd(treeId, treeNode) {
+    return false;
+}
 
+function showRenameBtn(treeId, treeNode) {
+    return false;
+}
+
+function showRemoveBtn(treeId, treeNode) {
+    return false;
+}
 
