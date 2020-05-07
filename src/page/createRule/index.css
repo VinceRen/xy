@@ -317,6 +317,9 @@
     display: flex;
 }
 
+#setAttrName .layui-form {
+    flex: 1;
+}
 #setAttrName .form-group {
     display: flex;
     align-items: center;
@@ -391,4 +394,7 @@ code span {
 #projectLayer .layui-input-block, #selectObjectLayer .layui-input-block {
     display: flex;
     margin-left: 10px;
+}
+.layui-layer-close {
+    position: static!important;
 }
