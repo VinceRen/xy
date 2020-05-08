@@ -8,7 +8,8 @@ function drawcallback(ele, tableele) {
         form.render();
     });
 }
-function tableFun1() {
+function tableFun1(search) {
+    search = search ? search : null;
     var datatable_columns = [
         {
             data: "id",
@@ -44,7 +45,7 @@ function tableFun1() {
     var delete_ele = "undefined";
     var data_manage = {
         getQueryCondition: function (data) {
-            var param = {search: null};
+            var param = {search: search};
             //组装排序参数
             if (data.order && data.order.length && data.order[0]) {
                 var sqlName = data.columns[data.order[0].column].data;
@@ -72,6 +73,15 @@ function tableFun1() {
 }
 tableFun1();
 
+//表格搜索清空
+$('.main-box').on('click','.input-delete',function(){
+    $(this).siblings('.input-search').val('').focus();
+});
+//表格搜索
+$('.main-box').on('click','.btn-search',function () {
+    let search = $(this).siblings('.input-search').val();
+    tableFun1(search);
+});
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     layershow("标签添加",["500px","auto"],$(".layer-form1"));

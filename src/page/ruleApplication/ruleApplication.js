@@ -131,8 +131,14 @@ function singaltree_click(id, treeId, treeNode) {
 
 //规则工程table
 function ruleEnginTableFun(search) {
+  let resultFun = true;
+  if(singleTreeId == 0){//更节点不允许添加
+    layer.msg('请选择要关联的规则应用');
+    resultFun = false;
+    return resultFun;
+  }
   let searchWord = search ? search : null;
-  var param = {"search": searchWord};
+  var param = {"search": searchWord, classId: singleTreeId};
   // var param = {param: search};
   var datatable_columns = [
     {
@@ -189,6 +195,7 @@ function ruleEnginTableFun(search) {
     data_manage,
     del_url,
     "POST");
+  return resultFun;
 }
 
 //规则工程关联规则table
@@ -419,7 +426,7 @@ $('.main-box').on('click','.btn-search',function () {
 $('.main-box').on('click', '.table-add', function () {
   layType = 'add';
   ruleEnginIdArr.length = 0;//关联规则工程ID清空
-  ruleEnginTableFun();
+  if(!ruleEnginTableFun()){return false};
   layershow("关联规则添加", ["780px", "480px"], $(".layer-table-box"));
 });
 // 关联规则编辑-弹层
