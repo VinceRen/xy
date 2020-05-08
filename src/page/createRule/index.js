@@ -13,11 +13,9 @@ layui.use('form', function () {
 
 
     // let treeDataUrl = "index.json";
-    // let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
-    let treeDataUrl = `${basePath}ruleService/rule/ruleClassTreeByLevel`;
+    let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
+    // let treeDataUrl = `${basePath}ruleService/rule/ruleClassTreeByLevel`;
     let initTreeDate = {
-        id: null,
-        level: null,
         searchContent: null,
     };
     treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
@@ -25,8 +23,6 @@ layui.use('form', function () {
     //tree分级搜索
     $('.input-group-btn').on('click', function () {
         initTreeDate = {
-            id: singleTreeId,
-            level: null,
             searchContent: $('.ruleSearch .form-control').val(),
         };
         treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
