@@ -95,6 +95,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
     type: "POST",
     data: ajaxdata,
     dataType: 'json',
+    xhrFields:{withCredentials: true},
     success: function (rlt) {
       if (rlt.code == 200) {
         $('.tree-form .tree-save').siblings('.btn').trigger('click');
