@@ -547,4 +547,7 @@ nav{
     overflow: auto;
     height: calc(100vh - 50px);
 }
+section .mr15.r{
+    white-space: nowrap;
+}
 /* main-e */
