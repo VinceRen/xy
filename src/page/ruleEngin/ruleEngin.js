@@ -97,6 +97,7 @@ function callbackBtn(ele, tableele){
             $.ajax({
                 url: ajaxdatatabledelete,
                 type: 'POST',
+				xhrFields:{withCredentials: true},
                 data:{id: $(ele).closest('div').attr("data-id")},
                 dataType: 'json',
                 async: false,

@@ -49,6 +49,7 @@ function zTreeBeforeRemove(treeId, treeNode) {
             url: ajaxdataztreedelet,
             // type: 'POST',
             data: {id: treeNode.id},
+			xhrFields:{withCredentials: true},
             dataType: 'json',
             async: false,
             success:function (rlt) {
