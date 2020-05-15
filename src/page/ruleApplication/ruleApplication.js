@@ -160,7 +160,7 @@ function ruleEnginTableFun(search) {
     // {   data: "founder" , orderable: false  },
     // {   data: "time" , orderable: false },
     {data: "description", orderable: false},
-    {data: "conversationName", orderable: false},
+    // {data: "conversationName", orderable: false},
     {data: "groupId", orderable: false},
     {data: "artifactId", orderable: false},
     {data: "version", orderable: false},
@@ -240,13 +240,13 @@ function tableFun(ajaxUrl, ajaxData) {
       },
       orderable: false
     },
-    {
-      data: "conversationName",
-      render: function (data, type, row) {
-        return '<a  class="pointer tdn data-name">' + data + '</a>';
-      },
-      orderable: false
-    },
+    // {
+    //   data: "conversationName",
+    //   render: function (data, type, row) {
+    //     return '<a  class="pointer tdn data-name">' + data + '</a>';
+    //   },
+    //   orderable: false
+    // },
     {
       data: "groupId",
       render: function (data, type, row) {

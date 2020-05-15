@@ -39,6 +39,10 @@ function tableFun1(treeId, search) {
                 return '<a  class="pointer tdn data-name">' + data + '</a>';
             },
             orderable: false
+        },
+        {
+            data: "className",
+            orderable: false
         }
     ];
     var datatable_ele = null;
