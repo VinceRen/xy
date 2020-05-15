@@ -41,8 +41,7 @@ function tableFun1(treeId, search) {
             orderable: false
         },
         {
-            data: "className",
-            orderable: false
+            data: "className",orderable: false
         }
     ];
     var datatable_ele = null;
