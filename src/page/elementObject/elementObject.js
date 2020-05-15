@@ -145,6 +145,7 @@ function singaltree_click(id, treeId, treeNode) {
     singleTreeId = treeNode.id;
     tableFun1(singleTreeId);
     $('.tab-content').removeClass('d-hidden');
+    $('.input-search').val('')
 }
 
 //点击table1-tr事件--table2加载

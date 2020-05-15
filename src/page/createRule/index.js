@@ -1292,7 +1292,6 @@ function singaltree_click(id, treeId, treeNode){
     singleTreeId = id;
     loadTableRuleInfo(id);
     $('.workTabs li:nth-child(1) a').trigger('click');
-    $('.ruleSearch .form-control').val('');
 }
 // 获取url参数
 function getUrlParam(name) {
