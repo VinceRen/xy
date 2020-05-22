@@ -185,12 +185,22 @@
 		<main class="main-box">
 			<section>
 				<div class="pb10">
+					<section class="dictOptions" >
+						<form class="layui-form">
+							<div class="layui-inline">
+								<label class="layui-form-label">字典选择:</label>
+								<div class="layui-input-inline">
+								  <select name="modules" id="dictSelect" lay-verify="required" lay-search="" lay-filter="dictSelect"></select>
+								</div>
+							  </div>
+						</form>
+					</section>
 					<button class="btn btn-sm btn-primary table-add"><i class="fa fa-plus"></i> 添加</button>
 					<span class="mr15 r">
-                <input class="input-search" type="text" placeholder="搜索对象名称" />
-                <i class="fa fa-times-circle input-delete"></i>
-                <i class="fa fa-search btn-search"></i>
-            </span>
+						<input class="input-search" type="text" placeholder="搜索对象名称" />
+						<i class="fa fa-times-circle input-delete"></i>
+						<i class="fa fa-search btn-search"></i>
+					</span>
 				</div>
 				<table class="layui-form table table-bordered table-datatable">
 					<thead>
@@ -251,6 +261,7 @@
 			//table数据删除
 			// var ajaxdatatabledelete = "../../json/datatable.json";
 			var ajaxdatatabledelete = basePath + "ruleService/rulelable/delRuleLable";
+			var getDictList = `${basePath}ruleService/dict/loadDictTree`;
 		</script>
 		<script src="ruleLabel.js"></script>
 	</body>

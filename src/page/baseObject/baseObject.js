@@ -187,9 +187,11 @@ $('.main-box').on('click','.btn-search',function () {
 $('.main-box').on('click','.table-add',function () {
     if($(this).closest('table').hasClass('table-datatable1')){
         layershow("表格添加",["500px","300px"],$(".layer-form1"));
+        $(".layer-form1 input").val('')
         $('#table-form1 .form-save').attr('data-id', null);
     }else if($(this).closest('table').hasClass('table-datatable2')){
         layershow("表格添加",["500px","300px"],$(".layer-form2"),$(this));
+        $(".layer-form2 input").val('')
         $('#table-form2 .form-save').attr('data-id', null);
     }
 });

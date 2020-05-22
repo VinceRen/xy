@@ -1,5 +1,6 @@
 .main-box {
     display: flex;
+    height: calc(100vh - 85px);
 }
 
 .ruleTree {
@@ -397,4 +398,18 @@ code span {
 }
 .layui-layer-close {
     position: static!important;
+}
+
+.dictOptions {
+    display: flex;
+    justify-content: flex-end;
+    height: 35px;
+}
+.dictOptions .layui-form-label {
+    padding: 9px 0;
+    text-align: left;
+}
+
+.ztree {
+    height: 90%;
 }

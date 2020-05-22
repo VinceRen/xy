@@ -183,6 +183,16 @@
 			</ul>
 		</nav>
 		<main class="main-box">
+			<section class="dictOptions" >
+				<form class="layui-form">
+					<div class="layui-inline">
+						<label class="layui-form-label">字典选择:</label>
+						<div class="layui-input-inline">
+						  <select name="modules" id="dictSelect" lay-verify="required" lay-search="" lay-filter="dictSelect"></select>
+						</div>
+					  </div>
+				</form>
+			</section>
 			<section class="l pcth100">
 				<ul id="treeDemo" class="ztree"></ul>
 			</section>
@@ -251,8 +261,9 @@
 			//table数据获取
 			// var ajaxdatatable1 = "../../json/elementObject-datatable1.json";
 			var ajaxdatatable1 = basePath + "ruleService/bean/loadElementInfo";
-			// var ajaxdatatable2 = "../../json/elementObject-datatable2.json";
+			var getDictList = `${basePath}ruleService/dict/loadDictTree`;
 			var ajaxdatatable2 =  basePath + "ruleService/bean/loadAttributeInfo";
+			
 		</script>
 		<script src="elementObject.js"></script>
 	</body>

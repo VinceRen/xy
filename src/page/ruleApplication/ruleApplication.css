@@ -51,3 +51,10 @@
     color: #50a0eb;
 }
 /* main-e */
+.dictOptions {
+    margin-bottom: 20px;
+}
+.dictOptions .layui-form-label {
+    padding: 9px 0;
+    text-align: left;
+}

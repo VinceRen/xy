@@ -48,3 +48,12 @@
 #table-form1 input.has-success{
     /*border-color: #2EDF43;*/
 }
+
+.dictOptions {
+    margin-bottom: 20px;
+	display: inline-block;
+}
+.dictOptions .layui-form-label {
+    padding: 9px 0;
+    text-align: left;
+}

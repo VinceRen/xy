@@ -1,12 +1,47 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
+
 const treeData = {
     projectId: "3E10B807-7354-C151-D75A-C950FEC6C681",
+    dictId: '',
     id: null,
     level: null
 }
-treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
+
+layui.use(['form'], function () {
+    var form = layui.form;
+    getDict(form)
+    form.on('select(dictSelect)', function(data){
+        treeData.dictId = data.value
+        treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
+    }); 
+});
+
+function getDict(form) {
+    $.ajax({
+        url: getDictList,
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            let res = data && data.pageData
+            let html = ''
+            res.map(item => {
+                html += `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#dictSelect').html(html)
+            form.render()
+
+            treeData.dictId = $('#dictSelect').val()
+            treeShow(ajaxdataztree,$("#treeDemo"), true, "POST", treeData);
+        },
+        error: function (r) {
+            layer.msg('服务错误');
+        }
+    });
+}
+
+
 function isAdd(treeId, treeNode) {
     return false
 }
@@ -56,7 +91,7 @@ function tableFun1(treeId, search) {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-
+            param.dictId = $('#dictSelect').val()
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -168,5 +203,6 @@ $('.main-box').on('click','.btn-search',function () {
         tableFun2(trId, search);
     }
 });
+
 
 

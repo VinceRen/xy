@@ -1,8 +1,41 @@
 /**
  * Created by Administrator on 2020/3/2 0002.
  */
+let treeData = {}
+layui.use(['form'], function () {
+    var form = layui.form;
+    getDict(form)
+    form.on('select(dictSelect)', function(data){
+        treeData.dictId = data.value
+        treeShow(ajaxdataztree,$("#treeDemo"), true, "GET", treeData);
+    }); 
+});
 
-treeShow(ajaxdataztree, $("#treeDemo"), true);
+function getDict(form) {
+    $.ajax({
+        url: getDictList,
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            let res = data && data.pageData
+            let html = ''
+            res.map(item => {
+                html += `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#dictSelect').html(html)
+            form.render()
+
+            treeData.dictId = $('#dictSelect').val()
+            treeShow(ajaxdataztree,$("#treeDemo"), true, "GET", treeData);
+        },
+        error: function (r) {
+            layer.msg('服务错误');
+        }
+    });
+}
+
+
+// treeShow(ajaxdataztree, $("#treeDemo"), true);
 
 function isAdd(treeId, treeNode) {
     return true;

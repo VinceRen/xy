@@ -207,8 +207,11 @@ $('.main-box').on('click','.table-add',function () {
     layershow("表格添加",["500px","auto"],$(".layer-form1"),$(".layer-form1 div"));
     $('#table-form1 .form-save').attr('data-id', null);
 
-    $('#table-form1 [name="name1"]').val("Spacedata");
-    $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
+    // $('#table-form1 [name="name1"]').val("Spacedata");
+    // $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
+    $('#table-form1 [name="name1"]').val("");
+    $('#table-form1 [name="name2"]').val("");
+    $('#table-form1 [name="name4"]').val("");
 });
 //表格搜索清空
 $('.main-box').on('click','.input-delete',function(){

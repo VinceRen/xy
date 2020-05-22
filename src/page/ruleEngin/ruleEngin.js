@@ -2,6 +2,35 @@
  * Created by Administrator on 2020/3/2 0002.
  */
 
+layui.use(['form'], function () {
+    var form = layui.form;
+    getDict(form)
+    form.on('select(dictSelect)', function(data){
+        tableFun()
+    }); 
+});
+
+function getDict(form) {
+    $.ajax({
+        url: getDictList,
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            let res = data && data.pageData
+            let html = ''
+            res.map(item => {
+                html += `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#dictSelect').html(html)
+            form.render()
+            tableFun()
+        },
+        error: function (r) {
+            layer.msg('服务错误');
+        }
+    });
+}
+
 function tableFun(search) {
     var ajaxSearch = search ? search : null;
     var param = {param: ajaxSearch};
@@ -51,7 +80,7 @@ function tableFun(search) {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-
+            param.dictId = $('#dictSelect').val()
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -82,7 +111,7 @@ function drawcallback(ele, tableele) {
 function callbackBtn(ele, tableele){
     if($(ele).hasClass('table-edit')){
         //表格编辑-弹层
-        layershow("表格编辑",["500px","300px"],$(".layer-form1"));
+        layershow("表格编辑",["500px","350px"],$(".layer-form1"));
         $('#table-form1 #form-save').attr('data-id', $(ele).closest('div').attr('data-id'));
         $('#table-form1 #name').val($(ele).closest('tr').find('td:nth-child(2)').text());
         $('#table-form1 #founder').val($(ele).closest('tr').find('td:nth-child(3)').text());
@@ -138,13 +167,15 @@ $('.main-box').on('click','.btn-search',function () {
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
-    $('#table-form1 #name').val("name");
-    $('#table-form1 #founder').val("founder");
-    $('#table-form1 #time').val("2020-02-05");
-    $('#table-form1 #groupId').val("groupId");
-    $('#table-form1 #artifactId').val("artifactId");
-    $('#table-form1 #version').val("version");
-    layershow("表格添加",["500px","300px"],$(".layer-form1"));
+    // $('#table-form1 #name').val("name");
+    // $('#table-form1 #founder').val("founder");
+    // $('#table-form1 #time').val("2020-02-05");
+    // $('#table-form1 #groupId').val("groupId");
+    // $('#table-form1 #artifactId').val("artifactId");
+    // $('#table-form1 #version').val("version");
+    $('.has-error').removeClass('has-error')
+    $('#table-form1 input').val('')
+    layershow("表格添加",["500px","350px"],$(".layer-form1"));
     $('#table-form1 #form-save').attr('data-id', null);
 });
 
@@ -183,6 +214,7 @@ $('.layer-form1').on('click','#form-save',function () {
         return false;
     }
     let ajaxUrl = id ? ajaxdatatableedit : ajaxdatatableadd;
+    if (!id ) formdata.dictId = $('#dictSelect').val()
     $.ajax({
         url: ajaxUrl,
         xhrFields: {withCredentials: true},

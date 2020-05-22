@@ -2,6 +2,35 @@
  * Created by Administrator on 2020/3/2 0002.
  */
 
+layui.use(['form'], function () {
+    var form = layui.form;
+    getDict(form)
+    form.on('select(dictSelect)', function(data){
+        tableFun1()
+    }); 
+});
+
+function getDict(form) {
+    $.ajax({
+        url: getDictList,
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            let res = data && data.pageData
+            let html = ''
+            res.map(item => {
+                html += `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#dictSelect').html(html)
+            form.render()
+            tableFun1()
+        },
+        error: function (r) {
+            layer.msg('服务错误');
+        }
+    });
+}
+
 function drawcallback(ele, tableele) {
     layui.use('form', function(){
         var form = layui.form;
@@ -53,7 +82,7 @@ function tableFun1(search) {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-
+            param.dictId = $('#dictSelect').val()
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -71,7 +100,7 @@ function tableFun1(search) {
         del_url,
       "POST");
 }
-tableFun1();
+// tableFun1();
 
 //表格搜索清空
 $('.main-box').on('click','.input-delete',function(){
@@ -85,6 +114,7 @@ $('.main-box').on('click','.btn-search',function () {
 //表格添加
 $('.main-box').on('click','.table-add',function () {
     layershow("标签添加",["500px","auto"],$(".layer-form1"));
+    $('#table-form1 input').val('')
     $('#table-form1 #form-save').attr('data-id', null);
 });
 
@@ -105,6 +135,7 @@ $('.layer-form1').on('click','#form-save',function () {
         id : id,
         name : $('#table-form1 #name').val(),
         desc : $('#table-form1 #desc').val(),
+        dictId: $('#dictSelect').val()
     }
     if(!$('#table-form1 #name').val()){
         layer.msg('名称不能为空！');

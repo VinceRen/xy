@@ -192,13 +192,15 @@ $('.main-box').on('click','.btn-search',function () {
 $('.main-box').on('click','.table-add',function () {
     if($(this).closest('table').hasClass('table-datatable1')){
         layershow("表格添加",["500px","300px"],$(".layer-form1"));
+        $(".layer-form1 input").val('')
         $('#table-form1 .form-save').attr('data-id', null);
     }else if($(this).closest('table').hasClass('table-datatable2')){
-        $('#table-form2 input[name="name1"]').val("nickname");
-        $('#table-form2 input[name="name2"]').val("name");
-        $('#table-form2 input[name="name3"]').val("desc");
-        $('#table-form2 input[name="name4"]').val("com.vci.ruleservice.entity");
+        // $('#table-form2 input[name="name1"]').val("nickname");
+        // $('#table-form2 input[name="name2"]').val("name");
+        // $('#table-form2 input[name="name3"]').val("desc");
+        // $('#table-form2 input[name="name4"]').val("com.vci.ruleservice.entity");
         layershow("表格添加",["500px","300px"],$(".layer-form2"),$(".layer-form2 div"));
+        $(".layer-form2 input").val('')
         $('#table-form2 .form-save').attr('data-id', null);
     }
 });

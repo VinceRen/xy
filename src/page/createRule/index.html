@@ -185,7 +185,18 @@
             </li>
         </ul>
     </nav>
+    <section class="dictOptions" >
+        <form class="layui-form">
+            <div class="layui-inline">
+                <label class="layui-form-label">字典选择:</label>
+                <div class="layui-input-inline">
+                  <select name="modules" id="dictSelect" lay-verify="required" lay-search="" lay-filter="dictSelect"></select>
+                </div>
+              </div>
+        </form>
+    </section>
     <main class="main-box">
+        
         <section class="ruleTree">
             <div class="tabs">
                 <ul class="nav nav-tabs">
@@ -835,43 +846,43 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">对象类型</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="type" value="java">
+                        <input type="text" class="form-control" name="type" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">对象名称</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="objName" value="testObjName">
+                        <input type="text" class="form-control" name="objName" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">对象别名</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="objNickName" value="测试对象别名">
+                        <input type="text" class="form-control" name="objNickName" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">对象路径</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="path" value="com.vci.ruleservice.entity">
+                        <input type="text" class="form-control" name="path" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">对象描述</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="desc" value="测试对象描述信息">
+                        <input type="text" class="form-control" name="desc" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">属性信息</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="attr_data" value="[]">
+                        <input type="text" class="form-control" name="attr_data" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label class="col-sm-2 control-label">方法信息</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="method_data" value="[]">
+                        <input type="text" class="form-control" name="method_data" value="">
                     </div>
                 </div>
             </form>
@@ -888,31 +899,31 @@
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">对象类型</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="type" value="FUNCTION_SPACE">
+                        <input type="text" class="form-control" name="type" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">对象名称</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="objName" value="Spacedata">
+                        <input type="text" class="form-control" name="objName" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">对象别名</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="objNickName" value="空间数据对象">
+                        <input type="text" class="form-control" name="objNickName" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">对象路径</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="path" value="com.vci.ruleservice.entity">
+                        <input type="text" class="form-control" name="path" value="">
                     </div>
                 </div>
                 <div class="form-group">
                     <label  class="col-sm-2 control-label">方法信息</label>
                     <div class="col-sm-10">
-                        <input type="text" class="form-control" name="method_data" value='[{"name":"getInfo","nickName":"获取信息"," desc ":"描述","content":"","type":"void","param_data":"[{\"name\":\"id\",\"type\":\"String\"}]"}]'>
+                        <input type="text" class="form-control" name="method_data" value=''>
                     </div>
                 </div>
             </form>

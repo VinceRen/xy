@@ -2,6 +2,12 @@ const SUCCESS = 200;
 let urlId = getUrlParam('id');
 let singleTreeId = null;
 let ruleId = null;
+let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
+let getDictList = `${basePath}ruleService/dict/loadDictTree`;
+let initTreeDate = {
+    searchContent: null,
+    dictId: ''
+};
 
 layui.use('form', function () {
     // layui相关插件定义
@@ -12,14 +18,12 @@ layui.use('form', function () {
     let projectItem = null;
 
 
-    // let treeDataUrl = "index.json";
-    let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
-    // let treeDataUrl = `${basePath}ruleService/rule/ruleClassTreeByLevel`;
-    let initTreeDate = {
-        searchContent: null,
-    };
-    treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
 
+    getDict(form)
+    form.on('select(dictSelect)', function(data){
+        initTreeDate.dictId = $('#dictSelect').val()
+        treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
+    }); 
     //tree分级搜索
     $('.input-group-btn').on('click', function () {
         initTreeDate = {
@@ -53,6 +57,7 @@ layui.use('form', function () {
         ajaxData.classId = singleTreeId;
         ajaxData.pId = urlId;
         ajaxData.lableId  = labelData.join(',')
+        ajaxData.dictId = $('#dictSelect').val()
         $.ajax({
             url: ajaxUrl,
             type: "POST",
@@ -815,6 +820,7 @@ layui.use('form', function () {
     // 添加事件
     $('#addFunc').on('click', function () {
         // 添加函数事件
+        $('#addFuncLayer').find('input').val('')
         addFuncLayer = layer.open({
             type: 1,
             title: `添加函数`,
@@ -841,7 +847,8 @@ layui.use('form', function () {
     })
     $('#businessAdd').on('click', function () {
         // 业务对象添加事件
-        $('#addDataLayer .form-control').eq(0).val('business')
+        // $('#addDataLayer .form-control').eq(0).val('business')
+        $('#addDataLayer input').val('')
         addDataLayer = layer.open({
             type: 1,
             title: `添加业务数据对象`,
@@ -853,7 +860,8 @@ layui.use('form', function () {
 
     $('#spaceAdd').on('click', function () {
         // 空间对象添加事件
-        $('#addDataLayer .form-control').eq(0).val('space')
+        // $('#addDataLayer .form-control').eq(0).val('space')
+        $('#addDataLayer input').val('')
         addDataLayer = layer.open({
             type: 1,
             title: `添加空间数据对象`,
@@ -1268,7 +1276,7 @@ function loadTableRuleInfo(id, search) {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-
+            param.dictId = $('#dictSelect').val()
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -1307,7 +1315,9 @@ function loadLabel (type, form, labels) {
         url: `${basePath}ruleService/rulelable/loadAllRuleLableData`,
         type: 'POST',
         async: false,
-        // data: {},
+        data: {
+            dictId: $('#dictSelect').val()
+        },
         xhrFields: { withCredentials: true},
         dataType: 'JSON',
         success: function (data) {
@@ -1348,3 +1358,24 @@ function showRemoveBtn(treeId, treeNode) {
     return false;
 }
 
+function getDict(form) {
+    $.ajax({
+        url: getDictList,
+        type: 'POST',
+        dataType: 'json',
+        success: function (data) {
+            let res = data && data.pageData
+            let html = ''
+            res.map(item => {
+                html += `<option value="${item.id}">${item.name}</option>`
+            })
+            $('#dictSelect').html(html)
+            form.render()
+            initTreeDate.dictId = $('#dictSelect').val()
+            treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
+        },
+        error: function (r) {
+            layer.msg('服务错误');
+        }
+    });
+}

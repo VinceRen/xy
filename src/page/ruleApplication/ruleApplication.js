@@ -6,7 +6,39 @@ let treeData = {
   projectId: "A001023fsf34f34",//项目编号ID
 }
 //tree加载
-treeFun();
+// treeFun();
+
+layui.use(['form'], function () {
+  var form = layui.form;
+  getDict(form)
+  form.on('select(dictSelect)', function(data){
+      treeData.dictId = data.value
+      treeFun()
+  }); 
+});
+
+function getDict(form) {
+  $.ajax({
+      url: getDictList,
+      type: 'POST',
+      dataType: 'json',
+      success: function (data) {
+          let res = data && data.pageData
+          let html = ''
+          res.map(item => {
+              html += `<option value="${item.id}">${item.name}</option>`
+          })
+          $('#dictSelect').html(html)
+          form.render()
+
+          treeData.dictId = $('#dictSelect').val()
+          treeFun()
+      },
+      error: function (r) {
+          layer.msg('服务错误');
+      }
+  });
+}
 
 function isAdd(treeId, treeNode) {
   return true;
@@ -86,6 +118,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
   let ajaxdata = {};
   if (!id) {
     ajaxdata = addTreeData;
+    ajaxdata.dictId = $('#dictSelect').val()
   }
   ajaxdata.id = id;
   ajaxdata.name = name;
@@ -178,7 +211,7 @@ function ruleEnginTableFun(search) {
         //排序方式asc或者desc
         param.orderDir = data.order[0].dir;
       }
-
+      param.dictId = $('#dictSelect').val()
       //组装分页参数
       param.startIndex = data.start;
       param.pageSize = data.length;
