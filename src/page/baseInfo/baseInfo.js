@@ -7,13 +7,13 @@ function tableFun1(search) {
     var ajaxSearch = search ? search : null;
     var param = {type: paramType, search: ajaxSearch};
     var datatable_columns = [
-        {
-            data: "methodid",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
+        // {
+        //     data: "methodid",
+        //     render: function (data, type, row) {
+        //         return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+        //     },
+        //     orderable: false
+        // },
         {
             data: "name",
             render: function (data, type, row) {
@@ -69,13 +69,13 @@ function tableFun1(search) {
 
 function tableFun2(n) {
     var datatable_columns = [
-        {
-            data: "id",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //         return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+        //     },
+        //     orderable: false
+        // },
         {
             data: "name",
             render: function (data, type, row) {

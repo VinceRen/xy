@@ -41,13 +41,6 @@ function tableFun1(search) {
     search = search ? search : null;
     var datatable_columns = [
         {
-            data: "id",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
-        {
             data: "name",
             render: function (data, type, row) {
                 return '<a  class="pointer tdn data-name">' + data + '</a>';

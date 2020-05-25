@@ -61,13 +61,13 @@ function tableFun1(treeId, search) {
     var ajaxSearch = search ? search : null;
     var param = {id: treeId,search: ajaxSearch};
     var datatable_columns = [
-        {
-            data: "id",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //         return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+        //     },
+        //     orderable: false
+        // },
         {
             data: "name",
             render: function (data, type, row) {
@@ -114,13 +114,13 @@ function tableFun2(tableTrId, search) {
     var ajaxSearch = search ? search : null;
     var param = {id: tableTrId, search: ajaxSearch};
     var datatable_columns = [
-        {
-            data: "id",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //         return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+        //     },
+        //     orderable: false
+        // },
         {
             data: "attribute",
             render: function (data, type, row) {
