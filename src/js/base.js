@@ -694,8 +694,8 @@ function layershow(title, w, dom, formDom) {
 		
 	if(typeof formDom == "undefined") {
 	
-			$("form").find("input[type='text'],textarea,select").val('');
-			$("form").find("input[type='checkbox']").prop("checked", false);  
+			//$("form").find("input[type='text'],textarea,select").val('');
+			//$("form").find("input[type='checkbox']").prop("checked", false);  
 			$(".form-group").removeClass("has-success").removeClass('has-error');
 			$(".input-icon").find('i').removeClass().addClass("fa");
 			
