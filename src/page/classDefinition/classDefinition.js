@@ -60,7 +60,8 @@ function showRemoveBtn(treeId, treeNode) {
 let ajaxTreeData = {};//tree添加数据
 function addTree(zTree, treeNode) {
     $(".tree-form  .tree-save").attr('data-id', '');
-    layershow('节点名称添加', ["480px", "auto"], $(".tree-form"));
+    $('#tree-form').find('input').val('')
+    layershow('节点添加', ["480px", "auto"], $(".tree-form"));
     ajaxTreeData = {
         pId: treeNode.id,
     }
@@ -72,7 +73,7 @@ function zTreeBeforeEditName(treeId, treeNode) {
         id: treeNode.id,
         pId: treeNode.pId,
     }
-    layershow('节点名称添加', ["480px", "auto"], $(".tree-form"), $(".tree-form div"));
+    layershow('节点编辑', ["480px", "auto"], $(".tree-form"), $(".tree-form div"));
     return false;
 }
 function zTreeBeforeRemove(treeId, treeNode) {
@@ -87,7 +88,8 @@ function zTreeBeforeRemove(treeId, treeNode) {
             async: false,
             success:function (rlt) {
                 if(rlt.code == 200){
-                    treeShow(ajaxdataztree, $("#treeDemo"), true);
+                    treeData.dictId = $('#dictSelect').val()
+                    treeShow(ajaxdataztree,$("#treeDemo"), true, "GET", treeData);
                 }
                 layer.msg(rlt.msg);
             },
@@ -133,6 +135,7 @@ $('body').on('click', '.tree-form .tree-save', function () {
     let ajaxurl = id ? ajaxdataztreeedit : ajaxdataztreeadd;
     ajaxTreeData.name = name;
     ajaxTreeData.desc = desc;
+    ajaxTreeData.dictId = $('#dictSelect').val();
     $.ajax({
         url: ajaxurl,
         // type: "POST",
@@ -142,7 +145,8 @@ $('body').on('click', '.tree-form .tree-save', function () {
         success: function(rlt){
             if(rlt.code == 200){
                 $('.tree-form .tree-save').siblings('.btn').trigger('click');
-                treeShow(ajaxdataztree, $("#treeDemo"), true);
+                treeData.dictId = $('#dictSelect').val()
+                treeShow(ajaxdataztree,$("#treeDemo"), true, "GET", treeData);
             }
             layer.msg(rlt.msg);
         },

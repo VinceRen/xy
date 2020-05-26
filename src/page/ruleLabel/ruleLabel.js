@@ -115,8 +115,8 @@ $('.main-box').on('click','.table-add',function () {
 $('.main-box').on('click','.table-edit',function () {
     layershow("表格编辑",["500px","auto"],$(".layer-form1"));
     $('#table-form1 #form-save').attr('data-id', $(this).closest('div').attr('data-id'));
-    $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(2)').text());
-    $('#table-form1 #desc').val($(this).closest('tr').find('td:nth-child(3)').text());
+    $('#table-form1 #name').val($(this).closest('tr').find('td:nth-child(1)').text());
+    $('#table-form1 #desc').val($(this).closest('tr').find('td:nth-child(2)').text());
 });
 
 //表格弹层表单-保存

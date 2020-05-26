@@ -202,9 +202,9 @@ $('.main-box').on('click','.table-edit',function () {
     if($(this).closest('table').hasClass('table-datatable1')){
         layershow("表格编辑",["500px","300px"],$(".layer-form1"));
         $('#table-form1 .form-save').attr('data-id', id);
-        $('#table-form1 input[name="name1"]').val($(this).closest('tr').find('td:nth-child(2)').text());
-        $('#table-form1 input[name="name2"]').val($(this).closest('tr').find('td:nth-child(3)').text());
-        $('#table-form1 input[name="name3"]').val($(this).closest('tr').find('td:nth-child(4)').text());
+        $('#table-form1 input[name="name1"]').val($(this).closest('tr').find('td:nth-child(1)').text());
+        $('#table-form1 input[name="name2"]').val($(this).closest('tr').find('td:nth-child(2)').text());
+        $('#table-form1 input[name="name3"]').val($(this).closest('tr').find('td:nth-child(3)').text());
     }else if($(this).closest('table').hasClass('table-datatable2')){
         $.ajax({
             url: ajaxformdata2,

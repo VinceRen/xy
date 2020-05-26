@@ -50,7 +50,7 @@
 				<i class="fa fa-gears"></i>
 			</p>
 			<ul class="pct100 nav nav-pills">
-        <li role="presentation">
+        <!-- <li role="presentation">
             <a href="../dictionary/dictionary.html" class="tc">
                 <i class="fa fa-book"></i>
                 <p>规则字典</p>
@@ -63,7 +63,7 @@
                     </li>
                 </ul>
             </aside>
-        </li>
+        </li> -->
 				<!--<li class="active" role="presentation">-->
 				<li class="active" role="presentation">
 					<a href="../classDefinition/classDefinition.html" class="tc">
@@ -206,7 +206,7 @@
 						<tr>
 <!--							<th class="tc"><input type="checkbox" name="select" title="全选" lay-skin="primary"></th>-->
 							<th>工程规则名称</th>
-							<th>创建人</th>
+							<!-- <th>创建人</th> -->
 							<th>创建时间</th>
 							<th>组织标识</th>
 							<th>工程标识</th>
@@ -222,12 +222,9 @@
 			<form class="form-horizontal" id="table-form1">
 				<div class="form-group">
 					<label for="name" class="control-label" title="工程规则名称">工程规则名称</label>
-					<input type="text" class="form-control" id="name" name="name" placeholder="请输入工程规则名称">
+					<input type="text" class="form-control" id="name" name="name" autocomplete="off" placeholder="请输入工程规则名称">
 				</div>
-				<div class="form-group">
-					<label for="name" class="control-label" title="创建人">创建人</label>
-					<input type="text" class="form-control" id="founder" name="founder" placeholder="请输入创建人">
-				</div>
+				
 				<div class="form-group d-hidden">
 					<label for="name" class="control-label" title="创建时间">创建时间</label>
 					<input type="date" class="form-control" id="time" name="time" value="2020-02-02">

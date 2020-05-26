@@ -137,7 +137,7 @@ function callbackBtn(ele, tableele) {
         layershow("表格编辑",["500px","auto"],$(".layer-form1"),$(".layer-form1 div"));
 
         $('#table-form1 [name="name3"]').val("com.vci.ruleservice.entity");
-        $('#table-form1 [name="name4"]').val($(ele).closest('tr').find('td:nth-child(2)').text());
+        $('#table-form1 [name="name4"]').val($(ele).closest('tr').find('td:nth-child(1)').text());
         // $.ajax({
         //     url: 'ddd',
         //     type: 'POST',

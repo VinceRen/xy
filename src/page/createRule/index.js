@@ -6,7 +6,7 @@ let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
 let getDictList = `${basePath}ruleService/dict/loadDictTree`;
 let initTreeDate = {
     searchContent: null,
-    dictId: ''
+    dictId: urlId
 };
 
 layui.use('form', function () {
@@ -18,16 +18,17 @@ layui.use('form', function () {
     let projectItem = null;
 
 
-
-    getDict(form)
-    form.on('select(dictSelect)', function(data){
-        initTreeDate.dictId = $('#dictSelect').val()
-        treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
-    }); 
+    treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
+    // getDict(form)
+    // form.on('select(dictSelect)', function(data){
+    //     initTreeDate.dictId = $('#dictSelect').val()
+    //     treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
+    // }); 
     //tree分级搜索
     $('.input-group-btn').on('click', function () {
         initTreeDate = {
             searchContent: $('.ruleSearch .form-control').val(),
+            dictId: urlId
         };
         treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
     });
@@ -35,10 +36,11 @@ layui.use('form', function () {
     //表格添加
     $('.main-box').on('click', '.table-add', function () {
         $('#table-form1 #form-save').attr('data-id', null);
-        $('#table-form1 #name').val("名称");
-        $('#table-form1 #creator').val("admin");
-        $('#table-form1 #desc').val("描述内容");
-        $('#table-form1 #version').val("version-1.0.0");
+        $('#table-form1 input').val("");
+        // $('#table-form1 #name').val("名称");
+        // $('#table-form1 #creator').val("admin");
+        // $('#table-form1 #desc').val("描述内容");
+        // $('#table-form1 #version').val("version-1.0.0");
         loadLabel('add', form)
         layershow("表格添加", ["500px", "auto"], $(".layer-form1"), $(".layer-form1 div"));
     });
@@ -57,7 +59,7 @@ layui.use('form', function () {
         ajaxData.classId = singleTreeId;
         ajaxData.pId = urlId;
         ajaxData.lableId  = labelData.join(',')
-        ajaxData.dictId = $('#dictSelect').val()
+        ajaxData.dictId = urlId
         $.ajax({
             url: ajaxUrl,
             type: "POST",
@@ -1276,7 +1278,7 @@ function loadTableRuleInfo(id, search) {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-            param.dictId = $('#dictSelect').val()
+            param.dictId = urlId
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -1316,7 +1318,7 @@ function loadLabel (type, form, labels) {
         type: 'POST',
         async: false,
         data: {
-            dictId: $('#dictSelect').val()
+            dictId: urlId
         },
         xhrFields: { withCredentials: true},
         dataType: 'JSON',
@@ -1371,7 +1373,7 @@ function getDict(form) {
             })
             $('#dictSelect').html(html)
             form.render()
-            initTreeDate.dictId = $('#dictSelect').val()
+            initTreeDate.dictId = urlId
             treeShow(treeDataUrl, $("#ruleTree"), true,'GET',initTreeDate);
         },
         error: function (r) {

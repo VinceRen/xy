@@ -39,11 +39,10 @@ function tableFun(search) {
             data: "name",
             render: function (data, type, row) {
                 // return '<a  class="pointer tdn data-name">'+ data +'</a>';
-                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ row.id +'">' + data + '</a>';
+                return '<a  class="pointer tdn data-name" href="../createRule/index.html?id='+ $('#dictSelect').val() +'">' + data + '</a>';
             },
             orderable: false
         },
-        {   data: "founder" , orderable: false  },
         {   data: "time" , orderable: false },
         {   data: "groupId" , orderable: false },
         {   data: "artifactId" , orderable: false },
@@ -104,14 +103,15 @@ function drawcallback(ele, tableele) {
 function callbackBtn(ele, tableele){
     if($(ele).hasClass('table-edit')){
         //表格编辑-弹层
+        $('.has-error').removeClass('has-error')
         layershow("表格编辑",["500px","350px"],$(".layer-form1"));
         $('#table-form1 #form-save').attr('data-id', $(ele).closest('div').attr('data-id'));
-        $('#table-form1 #name').val($(ele).closest('tr').find('td:nth-child(2)').text());
-        $('#table-form1 #founder').val($(ele).closest('tr').find('td:nth-child(3)').text());
-        $('#table-form1 #time').val($(ele).closest('tr').find('td:nth-child(4)').text().slice(0, 10));
-        $('#table-form1 #groupId').val($(ele).closest('tr').find('td:nth-child(5)').text());
-        $('#table-form1 #artifactId').val($(ele).closest('tr').find('td:nth-child(6)').text());
-        $('#table-form1 #version').val($(ele).closest('tr').find('td:nth-child(7)').text());
+        $('#table-form1 #name').val($(ele).closest('tr').find('td:nth-child(1)').text());
+        // $('#table-form1 #founder').val($(ele).closest('tr').find('td:nth-child(2)').text());
+        $('#table-form1 #time').val($(ele).closest('tr').find('td:nth-child(2)').text().slice(0, 10));
+        $('#table-form1 #groupId').val($(ele).closest('tr').find('td:nth-child(3)').text());
+        $('#table-form1 #artifactId').val($(ele).closest('tr').find('td:nth-child(4)').text());
+        $('#table-form1 #version').val($(ele).closest('tr').find('td:nth-child(5)').text());
 
     }else if($(ele).hasClass('table-delete')){//表格删除
         //删除确认回调
@@ -188,10 +188,6 @@ $('.layer-form1').on('click','#form-save',function () {
     if(!formdata.name){
         layer.msg('请输入工程规则名称');
         $('#table-form1 #name').focus().addClass('has-error');
-        return false;
-    }else if(!formdata.founder){
-        layer.msg('请输入创建人');
-        $('#table-form1 #founder').focus().addClass('has-error');
         return false;
     }else if(!formdata.groupId){
         layer.msg('请输入组织标识');
