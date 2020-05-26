@@ -71,7 +71,7 @@ function tableFun1(treeId, search) {
         {
             data: "name",
             render: function (data, type, row) {
-                return '<a  class="pointer tdn data-name" data-id="'+ treeId +'">' + data + '</a>';
+                return '<a  class="pointer tdn data-name" data-id="'+ row.id +'">' + data + '</a>';
             },
             orderable: false
         },
