@@ -22,7 +22,7 @@ function tableFun1(search) {
             orderable: false
         },
         {   data: "pnick",  orderable: false },
-        {   data: "content",  orderable: false },
+        // {   data: "content",  orderable: false },
         // {
         //     data: "methodid",
         //     render: function (data, type, row) {

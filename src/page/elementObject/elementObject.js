@@ -71,7 +71,7 @@ function tableFun1(treeId, search) {
         {
             data: "name",
             render: function (data, type, row) {
-                return '<a  class="pointer tdn data-name">' + data + '</a>';
+                return '<a  class="pointer tdn data-name" data-id="'+ treeId +'">' + data + '</a>';
             },
             orderable: false
         },
@@ -186,7 +186,7 @@ function singaltree_click(id, treeId, treeNode) {
 //点击table1-tr事件--table2加载
 let trId = null;
 $('body').on('click', '.table-datatable tbody tr', function (event) {
-    trId = $(this).find('input[type="checkbox"]').attr('data-id');
+    trId = $(this).find('a').attr('data-id');
     tableFun2(trId)
 });
 

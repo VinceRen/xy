@@ -47,3 +47,6 @@
     color: #50a0eb;
 }
 /* main-e */
+.pointer {
+    min-width: 200px;
+}
