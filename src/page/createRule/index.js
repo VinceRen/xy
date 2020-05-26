@@ -1245,7 +1245,6 @@ function loadTableRuleInfo(id, search) {
         },
         { data: "desc", orderable: false },
         { data: "createtime", orderable: false },
-        { data: "creator", orderable: false },
         { data: "version", orderable: false },
         {
             data: "lableName",
