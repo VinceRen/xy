@@ -1229,13 +1229,13 @@ function loadTableRuleInfo(id, search) {
     var ajaxSearch = search ? search : null;
     var param = {classId: id, search: ajaxSearch, pId: urlId};
     var datatable_columns = [
-        {
-            data: "id",
-            render: function (data, type, row) {
-                return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
-            },
-            orderable: false
-        },
+        // {
+        //     data: "id",
+        //     render: function (data, type, row) {
+        //         return '<input data-id="' + data + '" type="checkbox" name="select" title="" lay-skin="primary">'
+        //     },
+        //     orderable: false
+        // },
         {
             data: "name",
             render: function (data, type, row) {
