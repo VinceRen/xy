@@ -1,5 +1,7 @@
 const SUCCESS = 200;
 let urlId = getUrlParam('id');
+let pid = getUrlParam('pid');
+console.log(pid)
 let singleTreeId = null;
 let ruleId = null;
 let treeDataUrl = `${basePath}ruleService/rule/getRuleClassTree`;
@@ -57,7 +59,7 @@ layui.use('form', function () {
         })
 
         ajaxData.classId = singleTreeId;
-        ajaxData.pId = urlId;
+        ajaxData.pId = pid;
         ajaxData.lableId  = labelData.join(',')
         ajaxData.dictId = urlId
         $.ajax({
@@ -89,7 +91,7 @@ layui.use('form', function () {
             lableName: $(this).closest('tr').find('td:nth-child(7)').text(),
             lableId: $(this).closest('tr').find('td:nth-child(7) div').attr('data-id'),
             classId: singleTreeId,
-            pId: urlId,
+            pId: pid,
         }
         $('.summary-operating').removeClass('d-hidden');
         $('#detailForm2 .summary-add').attr('data-id', $(this).closest('div').attr('data-id'));
@@ -1037,7 +1039,7 @@ function loadFuncTable() {
                 //排序方式asc或者desc
                 param.orderDir = data.order[0].dir;
             }
-
+            // console.log()
             //组装分页参数
             param.startIndex = data.start;
             param.pageSize = data.length;
@@ -1227,7 +1229,7 @@ function drawcallback(ele, tableele) {
 //规则信息表格加载函数
 function loadTableRuleInfo(id, search) {
     var ajaxSearch = search ? search : null;
-    var param = {classId: id, search: ajaxSearch, pId: urlId};
+    var param = {classId: id, search: ajaxSearch, pId: pid};
     var datatable_columns = [
         // {
         //     data: "id",
