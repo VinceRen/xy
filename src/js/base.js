@@ -2,7 +2,7 @@
  * Created by Administrator
  */
 //基础服务路径
-var basePath = 'http://172.18.84.114:8081/';
+var basePath = 'http://172.18.137.114:8081/';
 
 var CONSTANT = {
 	DATA_TABLES: {
@@ -757,9 +757,9 @@ function setselect(ele, data) {
 	}
 }
 
-//上传文件
 function getMessage() {}
 
+//上传文件
 function uploadFile(pathsrc, ele,socketport) {
 	debugger;
 	var uploadpoint = ele;
